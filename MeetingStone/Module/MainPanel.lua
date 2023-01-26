@@ -270,35 +270,35 @@ function MainPanel:OnInitialize()
     end
 
     if ADDON_REGIONSUPPORT then
-        self:CreateTitleButton{
-            title = L['意见建议'],
-            texture = [[Interface\AddOns\MeetingStone\Media\RaidbuilderIcons]],
-            coords = {0, 32 / 256, 0, 0.5},
-            callback = function()
-                GUI:CallFeedbackDialog(ADDON_NAME, function(result, text)
-                    Logic:SendServer('SFEEDBACK', ADDON_NAME, ADDON_VERSION, text)
-                end)
-            end,
-        }
+        -- self:CreateTitleButton{
+        --     title = L['意见建议'],
+        --     texture = [[Interface\AddOns\MeetingStone\Media\RaidbuilderIcons]],
+        --     coords = {0, 32 / 256, 0, 0.5},
+        --     callback = function()
+        --         GUI:CallFeedbackDialog(ADDON_NAME, function(result, text)
+        --             Logic:SendServer('SFEEDBACK', ADDON_NAME, ADDON_VERSION, text)
+        --         end)
+        --     end,
+        -- }
 
-        self:CreateTitleButton{
-            title = L['公告'],
-            texture = [[Interface\AddOns\MeetingStone\Media\RaidbuilderIcons]],
-            coords = {96 / 256, 128 / 256, 0, 0.5},
-            callback = function()
-                self:ToggleBlocker('AnnBlocker')
-            end,
-        }
+        -- self:CreateTitleButton{
+        --     title = L['公告'],
+        --     texture = [[Interface\AddOns\MeetingStone\Media\RaidbuilderIcons]],
+        --     coords = {96 / 256, 128 / 256, 0, 0.5},
+        --     callback = function()
+        --         self:ToggleBlocker('AnnBlocker')
+        --     end,
+        -- }
     end
 
-    self:CreateTitleButton{
-        title = L['插件简介'],
-        texture = [[Interface\AddOns\MeetingStone\Media\RaidbuilderIcons]],
-        coords = {224 / 256, 1, 0.5, 1},
-        callback = function()
-            self:ToggleBlocker('HelpBlocker')
-        end,
-    }
+    -- self:CreateTitleButton{
+    --     title = L['插件简介'],
+    --     texture = [[Interface\AddOns\MeetingStone\Media\RaidbuilderIcons]],
+    --     coords = {224 / 256, 1, 0.5, 1},
+    --     callback = function()
+    --         self:ToggleBlocker('HelpBlocker')
+    --     end,
+    -- }
 
     self.GameTooltip = GUI:GetClass('Tooltip'):New(self)
 	

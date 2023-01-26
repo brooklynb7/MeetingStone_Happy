@@ -1,8 +1,8 @@
 ## Interface: 100005
 ## Version: 100000.05
 ## Title: Meeting Stone
-## Title-zhCN: |cffff565e[Happy]|r 集合石EX
-## Title-zhTW: |cffff565e[Happy]|r 集合石EX
+## Title-zhCN: |cffff565e[Happy]|r 集合石
+## Title-zhTW: |cffff565e[Happy]|r 集合石
 ## Notes-zhCN: |cff00ff00MeetingStone|r|n|cffbc8f8f帮助您更好的组建队伍。|r |cFF008080g|r|cFF008080i|r|cFF008080t|r|cFF008080 |r|cFF008080搜|r|cFF008080索|r|cFF008080 |r|cFFFF80C0【|r|cFF8080C0M|r|cFF8080C0e|r|cFF8080C0e|r|cFF8080C0t|r|cFF8080C0i|r|cFF8080C0n|r|cFF8080C0g|r|cFF8080C0S|r|cFF8080C0t|r|cFF8080C0o|r|cFF8080C0n|r|cFF8080C0e|r|cFF8080C0_|r|cFF8080C0H|r|cFF8080C0a|r|cFF8080C0p|r|cFF8080C0p|r|cFF8080C0y|r|cFFFF80C0】|r
 ## Notes-zhTW: |cff00ff00MeetingStone|r|n|cffbc8f8f幫助您更好的組建隊伍。|r|cFF008080g|r|cFF008080i|r|cFF008080t|r|cFF008080 |r|cFF008080搜|r|cFF008080索|r|cFF008080 |r|cFFFF80C0【|r|cFF8080C0M|r|cFF8080C0e|r|cFF8080C0e|r|cFF8080C0t|r|cFF8080C0i|r|cFF8080C0n|r|cFF8080C0g|r|cFF8080C0S|r|cFF8080C0t|r|cFF8080C0o|r|cFF8080C0n|r|cFF8080C0e|r|cFF8080C0_|r|cFF8080C0H|r|cFF8080C0a|r|cFF8080C0p|r|cFF8080C0p|r|cFF8080C0y|r|cFFFF80C0】|r
 ## SavedVariables: MEETINGSTONE_UI_DB,MEETINGSTONE_UI_E_POINTS
