@@ -309,13 +309,13 @@ function MainPanel:OnInitialize()
         CopyUpdUrlBtn:SetHighlightFontObject('GameFontHighlightSmall')
         CopyUpdUrlBtn:SetSize(70, 22)
         CopyUpdUrlBtn:SetPoint('TOPRIGHT', MainPanel, -80, 0)
-        CopyUpdUrlBtn:SetText('|Hurl:https://gitee.com/xmmmmm/meeting-stone_-happy|h|cff00ffff[更新地址]|r|h')
+        CopyUpdUrlBtn:SetText('|Hurl:https://github.com/brooklynb7/MeetingStone_Happy|h|cff00ffff[更新地址]|r|h')
 		
 		CopyUpdUrlBtn:SetScript('OnEnter', function()
             local GameTooltip = self.GameTooltip
 			GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 			GameTooltip:SetText('|cFFFF8040点|r|cFFFF8040击|r|cFFFF8040复|r|cFFFF8040制|r|cFFFF0080(|r|cFF8080C0不|r|cFF8080C0行|r|cFF8080C0就|r|cFF8080C0多|r|cFF8080C0点|r|cFF8080C0几|r|cFF8080C0下|r|cFFFF0080)|r')
-			GameTooltip:AddLine('|cFF0080FFhttps://gitee.com/xmmmmm/meeting-stone_-happy|r', 1, 1, 1, true)
+			GameTooltip:AddLine('|cFF0080FFhttps://github.com/brooklynb7/MeetingStone_Happy|r', 1, 1, 1, true)
 			GameTooltip:Show()
         end)
 		CopyUpdUrlBtn:SetScript('OnLeave', function()
@@ -324,7 +324,7 @@ function MainPanel:OnInitialize()
         end)
 	
         CopyUpdUrlBtn:SetScript('OnClick', function()
-           ApplyUrlButton(CopyUpdUrlBtn,'https://gitee.com/xmmmmm/meeting-stone_-happy')
+           ApplyUrlButton(CopyUpdUrlBtn,'https://github.com/brooklynb7/MeetingStone_Happy')
         end)
     end
 end
