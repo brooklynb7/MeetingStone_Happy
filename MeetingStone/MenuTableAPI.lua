@@ -392,6 +392,17 @@ function ListOfDungeons927(menuType)
     local Dungeons = {302,306,307,308,12,120,114,61}
     local Activitys = {1160,1176,1180,1184,1193,466,461,1192}
 
+    -- 10.1
+    if C_MythicPlus.GetCurrentSeason() ~= 9 then
+        Dungeons = {303,304,305,309,142,138,115,59}
+        Activitys = {1164,1168,1172,1188,518,507,462,1195}
+    end    
+    -- local Dungeons = {303,304,305,309,142,138,115,59}
+    -- local Activitys = {1164,1168,1172,1188,518,507,462,1192}
+    -- C_MythicPlus.IsMythicPlusActive()
+    -- C_LFGList.GetActivityInfoTable(i)
+    -- /run for i=750,2000 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
+
     local gameLocale = GetLocale()
 	local activitytypeText7
 	if gameLocale == "zhCN" then
@@ -401,7 +412,7 @@ function ListOfDungeons927(menuType)
 	end
 
 	
-    for k, groupId in ipairs(Dungeons) do	
+    for k, groupId in ipairs(Dungeons) do
         local data = {}
 		data.text = C_LFGList.GetActivityGroupInfo(groupId)
 		data.fullName = data.text

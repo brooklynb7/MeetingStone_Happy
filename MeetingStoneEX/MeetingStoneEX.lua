@@ -29,19 +29,30 @@ GUI = LibStub('NetEaseGUI-2.0')
 --     ,'青龙寺'
 -- }
 
--- 302,306,307,308,309,12,120,114,61
+-- 10.0 - 302,306,307,308,309,12,120,114,61
+-- 10.1 - 303,304,305,309,142,138,115,59
 -- /dump C_LFGList.GetActivityGroupInfo(302)
+
+-- 10.1
+    -- local Dungeons = {303,304,305,309,142,138,115,59}
+    -- local Activitys = {1164,1168,1172,1188,518,507,462,1192}
+    -- /run for i=750,2000 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
 
 -- 2023-01-01 使用ID，避免台服文字不匹配
 ACTIVITY_NAMES = {}
 do
 	local Dungeons = {302,306,307,308,12,120,114,61}
-	local Activitys = {1160,1176,1180,1184,1193,466,461,1192}
+    
+    if C_MythicPlus.GetCurrentSeason() ~= 9 then
+        Dungeons = {303,304,305,309,142,138,115,59}
+    end    
+	-- local Activitys = {1160,1176,1180,1184,1193,466,461,1195}
 	for k, groupId in ipairs(Dungeons) do	
 		local DeText = C_LFGList.GetActivityGroupInfo(groupId)
 		tinsert(ACTIVITY_NAMES, DeText)
 	end
 end
+
 local gameLocale = GetLocale()
 
 local BrowsePanel = Addon:GetModule('BrowsePanel')

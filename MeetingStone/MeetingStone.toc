@@ -1,5 +1,5 @@
-## Interface: 100005
-## Version: 100000.05
+## Interface: 100100
+## Version: 10.1
 ## Title: Meeting Stone
 ## Title-zhCN: |cffff565e[Happy]|r 集合石
 ## Title-zhTW: |cffff565e[Happy]|r 集合石
