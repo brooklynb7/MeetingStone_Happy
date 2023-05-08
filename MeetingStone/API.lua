@@ -656,7 +656,9 @@ function InitMeetingStoneClass()
     Profile:OnInitialize()
     local showico = Profile:Getshowclassico() 
     if showico==nil or showico==false then return end
-    hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
+    if not IsAddOnLoaded("ElvUI_WindTools") then
+        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)    
+    end
     local MSEnv = _G.LibStub("NetEaseEnv-1.0")._NSList.MeetingStone
     local MemberDisplay = MSEnv.MemberDisplay
     local origSetActivity = MemberDisplay.SetActivity
