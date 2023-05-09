@@ -28,6 +28,7 @@ function Profile:OnInitialize()
             spamWord       = {},
             searchProfiles = {},
 			showclassico = true,
+            showWindClassIco = false,
             filters = {
             }
         },
@@ -152,6 +153,13 @@ function Profile:Getshowclassico()
 end
 function Profile:Saveshowclassico(value)
 	self.gdb.global.showclassico = value
+end
+
+function Profile:GetShowWindClassIco()
+	return self.gdb.global.showWindClassIco
+end
+function Profile:SaveShowWindClassIco(value)
+	self.gdb.global.showWindClassIco = value
 end
 
 

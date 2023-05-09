@@ -590,7 +590,7 @@ local function UpdateGroupRoles(self)
     sort(roleCache, sortRoleOrder)
 end
 
-local function ReplaceGroupRoles(self, numPlayers, _, disabled)
+local function ReplaceGroupRoles(self, numPlayers, _, disabled)    
     UpdateGroupRoles(self)
     for i = 1, 5 do
         local icon = self.Icons[i]
@@ -658,13 +658,16 @@ end
 
 function InitMeetingStoneClass()	
     Profile:OnInitialize()
-    local showico = Profile:Getshowclassico() 
-    if showico==nil or showico==false then return end
+    local showico = Profile:Getshowclassico()
+    if showico==nil or showico==false then return end    
     if IsAddOnLoaded("ElvUI_WindTools") then
-        local origLFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update;
-        LFGListGroupDataDisplayEnumerate_Update = function(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
-            origLFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
-            ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
+        local showWindClassIco = Profile:GetShowWindClassIco()
+        if not showWindClassIco then
+            local origLFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update;
+            LFGListGroupDataDisplayEnumerate_Update = function(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
+                origLFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
+                ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
+            end        
         end        
     else        
         hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)

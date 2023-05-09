@@ -31,16 +31,23 @@ function SettingPanel:OnInitialize()
         get = function(item)
 			if item[#item]=='showclassico' then 
 				return Profile:Getshowclassico()
+            elseif item[#item]=='showWindClassIco' then 
+                return Profile:GetShowWindClassIco()
 			else
 				return Profile:GetSetting(item[#item])
 			end
+            
         end,
         set = function(item, value)
 			if item[#item]=='showclassico' then
 				Profile:Saveshowclassico(value)
 				--2022-11-19 增加提示框自动重载
 				GUI:CallWarningDialog('设置职业图标后需要重载UI！', true, nil, ReloadUI)
-			else
+            elseif item[#item]=='showWindClassIco' then
+                Profile:SaveShowWindClassIco(value)
+                --2022-11-19 增加提示框自动重载
+                GUI:CallWarningDialog('设置职业图标后需要重载UI！', true, nil, ReloadUI)
+			else 
 				Profile:SetSetting(item[#item], value)
 			end
         end,
@@ -95,6 +102,16 @@ function SettingPanel:OnInitialize()
                 name = L['显示职业图标(触发重载UI)'],
                 width = 'full',
                 order = order(),
+            },
+            -- 增加设置选项
+            showWindClassIco = {
+                type = 'toggle',
+                name = L['显示Wind职业图标(触发重载UI)'],
+                width = 'full',
+                order = order(),
+                disabled = function()
+                    return not IsAddOnLoaded("ElvUI_WindTools")
+                end
             },
             uiScale = {
                 type = 'range',
