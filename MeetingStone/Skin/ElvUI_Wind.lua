@@ -1,3 +1,5 @@
+BuildEnv(...)
+
 local function defaultcvar()
   local W, F, E, L = unpack(_G.WindTools)
   local S = W.Modules.Skins
@@ -469,11 +471,12 @@ end
 local once = true
 local frame = CreateFrame("FRAME", "defaultcvar") 
 frame:RegisterEvent("ADDON_LOADED") 
-local function eventHandler(self, event, addOnName) 
-if once and IsAddOnLoaded("ElvUI_WindTools") and IsAddOnLoaded("MeetingStone") then
-  defaultcvar()
-  once = false
-end
+local function eventHandler(self, event, addOnName)
+    local useWindSkin = Profile:GetUseWindSkin()
+    if once and IsAddOnLoaded("ElvUI_WindTools") and IsAddOnLoaded("MeetingStone") and useWindSkin then
+        defaultcvar()
+        once = false
+    end
 end 
 frame:SetScript("OnEvent", eventHandler)
 
