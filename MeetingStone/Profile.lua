@@ -29,6 +29,7 @@ function Profile:OnInitialize()
             searchProfiles = {},
 			showclassico = true,
             showWindClassIco = false,
+            useWindSkin = true,
             filters = {
             }
         },
@@ -160,6 +161,13 @@ function Profile:GetShowWindClassIco()
 end
 function Profile:SaveShowWindClassIco(value)
 	self.gdb.global.showWindClassIco = value
+end
+
+function Profile:GetUseWindSkin()
+	return self.gdb.global.useWindSkin
+end
+function Profile:SaveWindSkin(value)
+	self.gdb.global.useWindSkin = value
 end
 
 

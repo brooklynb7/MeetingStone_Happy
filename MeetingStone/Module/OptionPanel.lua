@@ -33,6 +33,8 @@ function SettingPanel:OnInitialize()
 				return Profile:Getshowclassico()
             elseif item[#item]=='showWindClassIco' then 
                 return Profile:GetShowWindClassIco()
+            elseif item[#item]=='useWindSkin' then 
+                return Profile:GetUseWindSkin()
 			else
 				return Profile:GetSetting(item[#item])
 			end
@@ -44,9 +46,11 @@ function SettingPanel:OnInitialize()
 				--2022-11-19 增加提示框自动重载
 				GUI:CallWarningDialog('设置职业图标后需要重载UI！', true, nil, ReloadUI)
             elseif item[#item]=='showWindClassIco' then
-                Profile:SaveShowWindClassIco(value)
-                --2022-11-19 增加提示框自动重载
+                Profile:SaveShowWindClassIco(value)                
                 GUI:CallWarningDialog('设置职业图标后需要重载UI！', true, nil, ReloadUI)
+            elseif item[#item]=='useWindSkin' then
+                Profile:SaveWindSkin(value)                
+                GUI:CallWarningDialog('设置Wind皮肤后需要重载UI！', true, nil, ReloadUI)
 			else 
 				Profile:SetSetting(item[#item], value)
 			end
@@ -96,17 +100,27 @@ function SettingPanel:OnInitialize()
                 width = 'full',
                 order = order(),
             },
-			-- 增加设置选项
+			-- 增加职业图标设置选项
             showclassico = {
                 type = 'toggle',
                 name = L['显示职业图标(触发重载UI)'],
                 width = 'full',
                 order = order(),
             },
-            -- 增加设置选项
+            -- 增加wind职业图标设置选项
             showWindClassIco = {
                 type = 'toggle',
                 name = L['显示Wind职业图标(触发重载UI)'],
+                width = 'full',
+                order = order(),
+                disabled = function()
+                    return not IsAddOnLoaded("ElvUI_WindTools")
+                end
+            },
+            -- 增加wind职业图标设置选项
+            useWindSkin = {
+                type = 'toggle',
+                name = L['使用Wind皮肤(触发重载UI)'],
                 width = 'full',
                 order = order(),
                 disabled = function()
