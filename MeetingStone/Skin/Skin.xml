@@ -1,0 +1,4 @@
+<Ui xmlns:xsi="" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    <Script file="ElvUI_Wind.lua"/>
+</Ui>

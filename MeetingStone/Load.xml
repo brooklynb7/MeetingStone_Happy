@@ -23,6 +23,8 @@
 
     <Script file="System.lua"/>
     <Include file="Quest\Quest.xml"/>
+
+    <Include file="Skin\Skin.xml"/>
     <!-- <Script file="Report.lua" build="debug" /> -->
 
     <!-- <Include file="Blizzard\Blizzard.xml" /> -->
