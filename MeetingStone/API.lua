@@ -652,12 +652,22 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     end
 end
 
+local function ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
+    ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)    
+end
+
 function InitMeetingStoneClass()	
     Profile:OnInitialize()
     local showico = Profile:Getshowclassico() 
     if showico==nil or showico==false then return end
-    if not IsAddOnLoaded("ElvUI_WindTools") then
-        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)    
+    if IsAddOnLoaded("ElvUI_WindTools") then
+        local origLFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update;
+        LFGListGroupDataDisplayEnumerate_Update = function(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
+            origLFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
+            ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
+        end        
+    else        
+        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
     end
     local MSEnv = _G.LibStub("NetEaseEnv-1.0")._NSList.MeetingStone
     local MemberDisplay = MSEnv.MemberDisplay
