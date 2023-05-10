@@ -397,25 +397,25 @@ function ListOfDungeons927(menuType)
         Dungeons = {303,304,305,309,142,138,115,59}
         Activitys = {1164,1168,1172,1188,518,507,462,1195}
     end    
-    -- local Dungeons = {303,304,305,309,142,138,115,59}
-    -- local Activitys = {1164,1168,1172,1188,518,507,462,1192}
+  
     -- C_MythicPlus.IsMythicPlusActive()
     -- C_LFGList.GetActivityInfoTable(i)
     -- /run for i=750,2000 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
 
-    local gameLocale = GetLocale()
-	local activitytypeText7
-	if gameLocale == "zhCN" then
-		activitytypeText7 = '（史诗钥石）'
-	else
-		activitytypeText7 = '(傳奇鑰石)'
-	end
+    -- local gameLocale = GetLocale()
+	-- local activitytypeText7
+	-- if gameLocale == "zhCN" then
+	-- 	activitytypeText7 = '（史诗钥石）'
+	-- else
+	-- 	activitytypeText7 = '(傳奇鑰石)'
+	-- end
 
 	
     for k, groupId in ipairs(Dungeons) do
         local data = {}
-		data.text = C_LFGList.GetActivityGroupInfo(groupId)
-		data.fullName = data.text
+        local actInfo = C_LFGList.GetActivityInfoTable(Activitys[k])
+		data.text = actInfo.fullName -- C_LFGList.GetActivityGroupInfo(groupId)
+		data.fullName = actInfo.fullName -- data.text
 		data.categoryId = 2
 		data.groupId = groupId
         data.activityId = Activitys[k]
@@ -431,7 +431,7 @@ function ListOfDungeons927(menuType)
                 customId = data.customId,
                 baseFilter = data.baseFilter,
                 value = data.value,
-                text = data.text..activitytypeText7,
+                text = data.text, -- ..activitytypeText7,
                 fullName = data.fullName,
             }
 			
