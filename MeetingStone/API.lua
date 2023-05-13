@@ -656,7 +656,7 @@ local function ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
     ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)    
 end
 
-local function ElvUI_Icon_Align(enmuerate, numPlayers, _, disabled)
+local function Adjust_Normal_Icon_Align(enmuerate, numPlayers, _, disabled)
     for i = 1, 5 do
         local icon = enmuerate.Icons[i]        
         if i == 1 then
@@ -669,12 +669,8 @@ function InitMeetingStoneClass()
     Profile:OnInitialize()
     local showico = Profile:Getshowclassico()
     if showico==nil or showico==false then
-        if IsAddOnLoaded("ElvUI") then
-            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ElvUI_Icon_Align)    
-            return
-        else
-            return
-        end
+        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
+        return        
     end
     if IsAddOnLoaded("ElvUI_WindTools") then
         local showWindClassIco = Profile:GetShowWindClassIco()
@@ -685,7 +681,7 @@ function InitMeetingStoneClass()
                 ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
             end
         else
-            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ElvUI_Icon_Align)    
+            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)    
         end
     else        
         hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
