@@ -91,8 +91,46 @@ function SummaryGrid:Constructor()
     self.Summary = Summary
 end
 
+local hardDeclinedGroups = {}
+local softDeclinedGroups = {}
+local DECLINED_GROUPS_RESET = 60 * 15
+local function GetDeclinedGroupsKey(searchResultInfo)
+    return searchResultInfo.activityID .. searchResultInfo.leaderName
+end
+local function IsDeclinedGroup(lookupTable, searchResultInfo)
+    if searchResultInfo.leaderName then -- leaderName is not available for brand new groups
+        local lastDeclined = lookupTable[GetDeclinedGroupsKey(searchResultInfo)] or 0
+        if lastDeclined > time() - DECLINED_GROUPS_RESET then
+            return true
+        end
+    end
+    return false
+end
+local function IsHardDeclinedGroup(searchResultInfo)
+    return IsDeclinedGroup(hardDeclinedGroups, searchResultInfo)
+end
+local function IsSoftDeclinedGroup(searchResultInfo)
+    return IsDeclinedGroup(softDeclinedGroups, searchResultInfo)
+end
+local COLOR_ENTRY_DECLINED_SOFT = { R = 0.6, G = 0.3, B = 0.1 } -- dark orange
+local COLOR_ENTRY_DECLINED_HARD = { R = 0.6, G = 0.1, B = 0.1 } -- dark red
+local function GetDeclinedColor(searchResultInfo)
+    if not searchResultInfo or not searchResultInfo.leaderName then return end
+    if IsHardDeclinedGroup(searchResultInfo) then return COLOR_ENTRY_DECLINED_HARD end
+    if IsSoftDeclinedGroup(searchResultInfo) then return COLOR_ENTRY_DECLINED_SOFT end
+end
+
 function SummaryGrid:SetActivity(activity)
     local appStatus, pendingStatus = activity:GetApplicationStatus(), activity:GetPendingStatus()
+    local searchResultInfo = C_LFGList.GetSearchResultInfo(activity:GetActivityID())
+    -- leaderName is not available for brand new groups
+    if searchResultInfo and  searchResultInfo.leaderName then
+        if appStatus == "declined" then
+            hardDeclinedGroups[GetDeclinedGroupsKey(searchResultInfo)] = time()
+        elseif appStatus == "declined_delisted" or appStatus == "timedout" then
+            softDeclinedGroups[GetDeclinedGroupsKey(searchResultInfo)] = time()
+        end
+    end
 
     self.expiration = activity:GetApplicationExpiration()
     self.voiceChat = activity:GetVoiceChat()
@@ -152,7 +190,14 @@ function SummaryGrid:SetActivity(activity)
         self.ExpirationTime:Show()
         self.CancelButton:Show()
     else
-        self.PendingLabel:Hide()
+        local declined_color = GetDeclinedColor(searchResultInfo)
+        if declined_color then
+            self.PendingLabel:SetText("["..LFG_LIST_APP_DECLINED.."]")
+            self.PendingLabel:SetTextColor(declined_color.r, declined_color.g, declined_color.b)
+            self.PendingLabel:Show()
+        else
+            self.PendingLabel:Hide()
+        end
         self.ExpirationTime:Hide()
         self.CancelButton:Hide()
     end
