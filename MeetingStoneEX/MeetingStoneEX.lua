@@ -354,7 +354,7 @@ function BrowsePanel:CreateExSearchPanel()
             local activitytypeText7
             if gameLocale == "zhCN" then
                 activitytypeText7 = '（史诗钥石）'
-			elseif gameLocale == "enUS" then
+            elseif gameLocale == "enUS" then
                 activitytypeText7 = ' (Mythic Keystone)'
             else
                 activitytypeText7 = '(傳奇鑰石)'
