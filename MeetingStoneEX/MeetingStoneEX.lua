@@ -209,6 +209,14 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
 					activitytypeText5 = '竞技场（2v2）'
 					activitytypeText6 = '竞技场（3v3）'
 					activitytypeText7 = '（史诗钥石）'
+				elseif gameLocale == "enUS" then
+					activitytypeText1 = 'Dungeons'
+					activitytypeText2 = 'Raids'
+					activitytypeText3 = 'Rated Battlegrounds'
+					activitytypeText4 = 'Arenas'
+					activitytypeText5 = 'Arena (2v2)'
+					activitytypeText6 = 'Arena (3v3)'
+					activitytypeText7 = ' (Mythic Keystone)'
 				else
 					activitytypeText1 = '地城'
 					activitytypeText2 = '團隊副本'
@@ -346,6 +354,8 @@ function BrowsePanel:CreateExSearchPanel()
             local activitytypeText7
             if gameLocale == "zhCN" then
                 activitytypeText7 = '（史诗钥石）'
+            elseif gameLocale == "enUS" then
+                activitytypeText7 = ' (Mythic Keystone)'
             else
                 activitytypeText7 = '(傳奇鑰石)'
             end
