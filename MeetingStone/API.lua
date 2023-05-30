@@ -179,7 +179,7 @@ function GetActivityCode(activityId, customId, categoryId, groupId)
     return format('%d-%d-%d-%d', categoryId or 0, groupId or 0, activityId or 0, customId or 0)
 end
 --2022-11-17
-function IsUseHonorLevel(activityId)	
+function IsUseHonorLevel(activityId)
 	if activityId then
 		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
 		return activityId and activityInfo.useHonorLevel;
@@ -468,19 +468,19 @@ GetAutoCompleteItem = setmetatable({}, {
 		--2022-11-17
         --local name, shortName, category, group, iLevel, filters, minLevel, maxMembers, displayType =
            -- C_LFGList.GetActivityInfo(activityId)
-		
+
 		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
 		local name = activityInfo.fullName;
 		local shortName = activityInfo.shortName;
 		local category = activityInfo.categoryID;
 		local group = activityInfo.groupFinderActivityGroupID;
 		local filters = activityInfo.filters;
-		
+
 		local iLevel = activityInfo.ilvlSuggestion;
 		local minLevel = activityInfo.minLevel;
 		local maxMembers = activityInfo.maxNumPlayers;
 		local displayType = activityInfo.displayType;
-	
+
         t[activityId] = {
             name = name,
             order = 0xffff - (ACTIVITY_ORDER.A[activityId] or ACTIVITY_ORDER.G[group] or 0),
@@ -552,7 +552,7 @@ end
 local function GetPartyMemberInfo(index)
     local unit = "player"
     if index > 1 then unit = "party" .. (index - 1) end
-    
+
     local class = select(2, UnitClass(unit))
     if not class then return end
     local role = UnitGroupRolesAssigned(unit)
@@ -573,7 +573,7 @@ local function UpdateGroupRoles(self)
     if not self.__owner then
         self.__owner = self:GetParent():GetParent()
     end
-    
+
     local count = 0
     for i = 1, 5 do
         local role, class = GetCorrectRoleInfo(self.__owner, i)
@@ -586,11 +586,26 @@ local function UpdateGroupRoles(self)
             roleCache[count][3] = i == 1
         end
     end
-    
+
     sort(roleCache, sortRoleOrder)
 end
 
-local function ReplaceGroupRoles(self, numPlayers, _, disabled)    
+local function IsLFGList(frame)
+    while true do
+        frame = frame:GetParent()
+        if frame == LFGListFrame then
+            return true
+        elseif frame == nil then
+            return false
+        end
+    end
+end
+
+local function ReplaceGroupRoles(self, numPlayers, _, disabled)
+    if IsLFGList(self) then
+        return
+    end
+
     UpdateGroupRoles(self)
     for i = 1, 5 do
         local icon = self.Icons[i]
@@ -602,18 +617,18 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
                 icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 2, 0)
             end
             icon:SetSize(26, 26)
-            
+
             icon.role = self:CreateTexture(nil, "OVERLAY")
             icon.role:SetSize(16, 16)
             icon.role:SetPoint("TOPLEFT", icon, -4, 5)
-            
+
             icon.leader = self:CreateTexture(nil, "OVERLAY")
             icon.leader:SetSize(13, 13)
             icon.leader:SetPoint("TOP", icon, 3, 7)
             icon.leader:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
             icon.leader:SetRotation(rad(-15))
         end
-        
+
         if i > numPlayers then
             icon.role:Hide()
         else
@@ -625,52 +640,56 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         end
         icon.leader:Hide()
     end
-    
+
     local iconIndex = numPlayers
     for i = 1, #roleCache do
         local roleInfo = roleCache[i]
         if roleInfo then
-            local icon = self.Icons[iconIndex]            
+            local icon = self.Icons[iconIndex]
 			-- 2022-11-17 LFG_LIST_GROUP_DATA_ATLASES 中暂无小龙人儿的图标   "groupfinder-icon-class-"..string.lower(roleInfo[2])
 			-- icon:SetAtlas(LFG_LIST_GROUP_DATA_ATLASES[roleInfo[2]])
 			-- if roleInfo[2]=='EVOKER' then
 				-- icon:SetAtlas("classicon-"..string.lower(roleInfo[2]),false)
 			-- end
-			
+
 			-- 2022-11-19 暴雪可能不再更新图标了，此处使用Wind_Tool工具箱中的职业图标绘制
 			icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
 			--icon:SetSize(22, 22)
-				
+
             icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
             iconIndex = iconIndex - 1
         end
     end
-    
+
     for i = 1, iconIndex do
         self.Icons[i].role:SetAtlas(nil)
     end
 end
 
 local function ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
-    ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)    
+    ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
 end
 
 local function Adjust_Normal_Icon_Align(enmuerate, numPlayers, _, disabled)
+    if IsLFGList(enmuerate) then
+        return
+    end
+
     for i = 1, 5 do
-        local icon = enmuerate.Icons[i]        
+        local icon = enmuerate.Icons[i]
         if i == 1 then
-            icon:SetPoint("RIGHT", -36, -2)        
+            icon:SetPoint("RIGHT", -36, -2)
         end
     end
 end
 
-function InitMeetingStoneClass()	
+function InitMeetingStoneClass()
     Profile:OnInitialize()
     local showico = Profile:Getshowclassico()
     if showico==nil or showico==false then
         hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
-        return        
+        return
     end
     if IsAddOnLoaded("ElvUI_WindTools") then
         local showWindClassIco = Profile:GetShowWindClassIco()
@@ -681,9 +700,9 @@ function InitMeetingStoneClass()
                 ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
             end
         else
-            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)    
+            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
         end
-    else        
+    else
         hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
     end
     local MSEnv = _G.LibStub("NetEaseEnv-1.0")._NSList.MeetingStone
