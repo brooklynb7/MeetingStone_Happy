@@ -170,32 +170,32 @@ end
 
 function GetActivityCode(activityId, customId, categoryId, groupId)
     if activityId and (not categoryId or not groupId) then
-		--2022-11-17
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		categoryId = activityInfo.categoryID;
-		groupId = activityInfo.groupFinderActivityGroupID;
+        --2022-11-17
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        categoryId = activityInfo.categoryID;
+        groupId = activityInfo.groupFinderActivityGroupID;
         --categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityId))
     end
     return format('%d-%d-%d-%d', categoryId or 0, groupId or 0, activityId or 0, customId or 0)
 end
 --2022-11-17
 function IsUseHonorLevel(activityId)
-	if activityId then
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		return activityId and activityInfo.useHonorLevel;
-	end
+    if activityId then
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        return activityId and activityInfo.useHonorLevel;
+    end
 end
 function IsMythicPlusActivity (activityId)
-	if activityId then
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		return activityId and activityInfo.isMythicActivity;
-	end
+    if activityId then
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        return activityId and activityInfo.isMythicActivity;
+    end
 end
 function IsRatedPvpActivity (activityId)
-	if activityId then
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		return activityId and activityInfo.isRatedPvpActivity;
-	end
+    if activityId then
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        return activityId and activityInfo.isRatedPvpActivity;
+    end
 end
 
 local PVP_INDEXS = {[6] = 1, [7] = 1, [8] = 1, [19] = 2}
@@ -465,21 +465,21 @@ end
 
 GetAutoCompleteItem = setmetatable({}, {
     __index = function(t, activityId)
-		--2022-11-17
+        --2022-11-17
         --local name, shortName, category, group, iLevel, filters, minLevel, maxMembers, displayType =
            -- C_LFGList.GetActivityInfo(activityId)
 
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		local name = activityInfo.fullName;
-		local shortName = activityInfo.shortName;
-		local category = activityInfo.categoryID;
-		local group = activityInfo.groupFinderActivityGroupID;
-		local filters = activityInfo.filters;
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        local name = activityInfo.fullName;
+        local shortName = activityInfo.shortName;
+        local category = activityInfo.categoryID;
+        local group = activityInfo.groupFinderActivityGroupID;
+        local filters = activityInfo.filters;
 
-		local iLevel = activityInfo.ilvlSuggestion;
-		local minLevel = activityInfo.minLevel;
-		local maxMembers = activityInfo.maxNumPlayers;
-		local displayType = activityInfo.displayType;
+        local iLevel = activityInfo.ilvlSuggestion;
+        local minLevel = activityInfo.minLevel;
+        local maxMembers = activityInfo.maxNumPlayers;
+        local displayType = activityInfo.displayType;
 
         t[activityId] = {
             name = name,
@@ -590,19 +590,23 @@ local function UpdateGroupRoles(self)
     sort(roleCache, sortRoleOrder)
 end
 
-local function IsLFGList(frame)
+local function IsLFGLIST(frame)
+    if not Profile:GetClassIcoMsOnly() then
+        return false
+    end
+
     while true do
-        frame = frame:GetParent()
         if frame == LFGListFrame then
             return true
         elseif frame == nil then
             return false
         end
+        frame = frame:GetParent()
     end
 end
 
 local function ReplaceGroupRoles(self, numPlayers, _, disabled)
-    if IsLFGList(self) then
+    if IsLFGLIST(self) then
         return
     end
 
@@ -646,15 +650,15 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         local roleInfo = roleCache[i]
         if roleInfo then
             local icon = self.Icons[iconIndex]
-			-- 2022-11-17 LFG_LIST_GROUP_DATA_ATLASES 中暂无小龙人儿的图标   "groupfinder-icon-class-"..string.lower(roleInfo[2])
-			-- icon:SetAtlas(LFG_LIST_GROUP_DATA_ATLASES[roleInfo[2]])
-			-- if roleInfo[2]=='EVOKER' then
-				-- icon:SetAtlas("classicon-"..string.lower(roleInfo[2]),false)
-			-- end
+            -- 2022-11-17 LFG_LIST_GROUP_DATA_ATLASES 中暂无小龙人儿的图标   "groupfinder-icon-class-"..string.lower(roleInfo[2])
+            -- icon:SetAtlas(LFG_LIST_GROUP_DATA_ATLASES[roleInfo[2]])
+            -- if roleInfo[2]=='EVOKER' then
+                -- icon:SetAtlas("classicon-"..string.lower(roleInfo[2]),false)
+            -- end
 
-			-- 2022-11-19 暴雪可能不再更新图标了，此处使用Wind_Tool工具箱中的职业图标绘制
-			icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
-			--icon:SetSize(22, 22)
+            -- 2022-11-19 暴雪可能不再更新图标了，此处使用Wind_Tool工具箱中的职业图标绘制
+            icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
+            --icon:SetSize(22, 22)
 
             icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
@@ -667,12 +671,8 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     end
 end
 
-local function ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
-    ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
-end
-
 local function Adjust_Normal_Icon_Align(enmuerate, numPlayers, _, disabled)
-    if IsLFGList(enmuerate) then
+    if IsLFGLIST(enmuerate) then
         return
     end
 
@@ -686,25 +686,26 @@ end
 
 function InitMeetingStoneClass()
     Profile:OnInitialize()
-    local showico = Profile:Getshowclassico()
-    if showico==nil or showico==false then
+
+    if not Profile:GetShowClassIco() then
         hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
         return
     end
-    if IsAddOnLoaded("ElvUI_WindTools") then
-        local showWindClassIco = Profile:GetShowWindClassIco()
-        if not showWindClassIco then
-            local origLFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update;
-            LFGListGroupDataDisplayEnumerate_Update = function(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
-                origLFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
-                ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
+
+    if not IsAddOnLoaded("ElvUI_WindTools") then
+        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
+    else
+        if not Profile:GetShowWindClassIco() then
+            local _LFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update
+            LFGListGroupDataDisplayEnumerate_Update = function (enmuerate, numPlayers, _, disabled)
+                _LFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled)
+                ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
             end
         else
             hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
         end
-    else
-        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
     end
+
     local MSEnv = _G.LibStub("NetEaseEnv-1.0")._NSList.MeetingStone
     local MemberDisplay = MSEnv.MemberDisplay
     local origSetActivity = MemberDisplay.SetActivity

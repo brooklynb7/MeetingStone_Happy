@@ -27,7 +27,8 @@ function Profile:OnInitialize()
             ignoreHash     = {},
             spamWord       = {},
             searchProfiles = {},
-			showclassico = true,
+            showclassico = true,
+            classIcoMsOnly = true,
             showWindClassIco = false,
             useWindSkin = true,
             filters = {
@@ -149,27 +150,33 @@ function Profile:GetGlobalDB()
     return self.gdb
 end
 
-function Profile:Getshowclassico()
-	return self.gdb.global.showclassico
+function Profile:GetShowClassIco()
+    return self.gdb.global.showclassico
 end
-function Profile:Saveshowclassico(value)
-	self.gdb.global.showclassico = value
+function Profile:SaveShowClassIco(value)
+    self.gdb.global.showclassico = value
+end
+
+function Profile:GetClassIcoMsOnly()
+    return self.gdb.global.classIcoMsOnly
+end
+function Profile:SaveClassIcoMsOnly(value)
+    self.gdb.global.classIcoMsOnly = value
 end
 
 function Profile:GetShowWindClassIco()
-	return self.gdb.global.showWindClassIco
+    return self.gdb.global.showWindClassIco
 end
 function Profile:SaveShowWindClassIco(value)
-	self.gdb.global.showWindClassIco = value
+    self.gdb.global.showWindClassIco = value
 end
 
 function Profile:GetUseWindSkin()
-	return self.gdb.global.useWindSkin
+    return self.gdb.global.useWindSkin
 end
-function Profile:SaveWindSkin(value)
-	self.gdb.global.useWindSkin = value
+function Profile:SaveUseWindSkin(value)
+    self.gdb.global.useWindSkin = value
 end
-
 
 function Profile:GetCharacterDB()
     return self.cdb

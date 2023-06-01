@@ -28,32 +28,36 @@ function SettingPanel:OnInitialize()
     local options = {
         type = 'group',
         name = L['设置'],
-        get = function(item)
-			if item[#item]=='showclassico' then 
-				return Profile:Getshowclassico()
-            elseif item[#item]=='showWindClassIco' then 
-                return Profile:GetShowWindClassIco()
-            elseif item[#item]=='useWindSkin' then 
-                return Profile:GetUseWindSkin()
-			else
-				return Profile:GetSetting(item[#item])
-			end
-            
+        get = function (items)
+            local map = {
+                ['showclassico'] = 'GetShowClassIco',
+                ['classIcoMsOnly'] = 'GetClassIcoMsOnly',
+                ['showWindClassIco'] = 'GetShowWindClassIco',
+                ['useWindSkin'] = 'GetUseWindSkin',
+            }
+            local item = items[#items]
+
+            if map[item] ~= nil then
+                return Profile[map[item]](Profile)
+            else
+                return Profile:GetSetting(item)
+            end
         end,
-        set = function(item, value)
-			if item[#item]=='showclassico' then
-				Profile:Saveshowclassico(value)
-				--2022-11-19 增加提示框自动重载
-				GUI:CallWarningDialog('设置职业图标后需要重载UI！', true, nil, ReloadUI)
-            elseif item[#item]=='showWindClassIco' then
-                Profile:SaveShowWindClassIco(value)                
-                GUI:CallWarningDialog('设置职业图标后需要重载UI！', true, nil, ReloadUI)
-            elseif item[#item]=='useWindSkin' then
-                Profile:SaveWindSkin(value)                
-                GUI:CallWarningDialog('设置Wind皮肤后需要重载UI！', true, nil, ReloadUI)
-			else 
-				Profile:SetSetting(item[#item], value)
-			end
+        set = function(items, value)
+            local map = {
+                ['showclassico'] = 'SaveShowClassIco',
+                ['classIcoMsOnly'] = 'SaveClassIcoMsOnly',
+                ['showWindClassIco'] = 'SaveShowWindClassIco',
+                ['useWindSkin'] = 'SaveUseWindSkin',
+            }
+            local item = items[#items]
+
+            if map[item] ~= nil then
+                Profile[map[item]](Profile, value)
+                GUI:CallWarningDialog('需要重载UI！', true, nil, ReloadUI)
+            else
+                Profile:SetSetting(item, value)
+            end
         end,
         args = {
             minimap = {
@@ -100,10 +104,16 @@ function SettingPanel:OnInitialize()
                 width = 'full',
                 order = order(),
             },
-			-- 增加职业图标设置选项
+            -- 增加职业图标设置选项
             showclassico = {
                 type = 'toggle',
                 name = L['显示职业图标(触发重载UI)'],
+                width = 'full',
+                order = order(),
+            },
+            classIcoMsOnly = {
+                type = 'toggle',
+                name = L['只在集合石上显示职业图标(触发重载UI)'],
                 width = 'full',
                 order = order(),
             },
@@ -143,7 +153,7 @@ function SettingPanel:OnInitialize()
                     if(UIScaleTimer ~= nil) then
                         UIScaleTimer:Cancel()
                     end
-                    UIScaleTimer = C_Timer.NewTimer(0.5,function() MainPanel:SetScale(key) end)                    
+                    UIScaleTimer = C_Timer.NewTimer(0.5,function() MainPanel:SetScale(key) end)
                 end
             },
             -- ignore = {
