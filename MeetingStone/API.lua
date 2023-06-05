@@ -590,24 +590,52 @@ local function UpdateGroupRoles(self)
     sort(roleCache, sortRoleOrder)
 end
 
-local function IsLFGLIST(frame)
-    if not Profile:GetClassIcoMsOnly() then
-        return false
-    end
-
+local function CheckShowIcons(frame)
+    local isLFGList
     while true do
         if frame == LFGListFrame then
-            return true
+            isLFGList = true
+            break
+        -- There is no such frame named MeetingStoneFrame
         elseif frame == nil then
-            return false
+            isLFGList = false
+            break
         end
         frame = frame:GetParent()
+    end
+
+    if not isLFGList then
+        if not Profile:GetShowClassIco() then
+            return "orig"
+        elseif IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
+            -- Module LFGList does not initialize when PremadeGroupsFilter is loaded
+            if not IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
+                return "wind"
+            else
+                return "orig"
+            end
+        else
+            return "meet"
+        end
+    else
+        if IsAddOnLoaded("PremadeGroupsFilter") then
+            return "orig"
+        elseif IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
+            return "wind"
+        elseif Profile:GetShowClassIco() and not Profile:GetClassIcoMsOnly() then
+            return "meet"
+        else
+            return "orig"
+        end
     end
 end
 
 local function ReplaceGroupRoles(self, numPlayers, _, disabled)
-    if IsLFGLIST(self) then
+    local flagCheckShowIcons = CheckShowIcons(self)
+    if flagCheckShowIcons == "orig" then
         return
+    elseif flagCheckShowIcons == "wind" then
+        return WindTools[1]:GetModule("LFGList"):UpdateEnumerate(self)
     end
 
     UpdateGroupRoles(self)
@@ -618,9 +646,9 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
                 icon:SetPoint("RIGHT", -5, -2)
             else
                 icon:ClearAllPoints()
-                icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 2, 0)
+                icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 0, 0)
             end
-            icon:SetSize(26, 26)
+            icon:SetSize(24, 24)
 
             icon.role = self:CreateTexture(nil, "OVERLAY")
             icon.role:SetSize(16, 16)
@@ -650,15 +678,7 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         local roleInfo = roleCache[i]
         if roleInfo then
             local icon = self.Icons[iconIndex]
-            -- 2022-11-17 LFG_LIST_GROUP_DATA_ATLASES 中暂无小龙人儿的图标   "groupfinder-icon-class-"..string.lower(roleInfo[2])
-            -- icon:SetAtlas(LFG_LIST_GROUP_DATA_ATLASES[roleInfo[2]])
-            -- if roleInfo[2]=='EVOKER' then
-                -- icon:SetAtlas("classicon-"..string.lower(roleInfo[2]),false)
-            -- end
-
-            -- 2022-11-19 暴雪可能不再更新图标了，此处使用Wind_Tool工具箱中的职业图标绘制
             icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
-            --icon:SetSize(22, 22)
 
             icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
@@ -671,46 +691,18 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     end
 end
 
-local function Adjust_Normal_Icon_Align(enmuerate, numPlayers, _, disabled)
-    if IsLFGLIST(enmuerate) then
-        return
-    end
-
-    for i = 1, 5 do
-        local icon = enmuerate.Icons[i]
-        if i == 1 then
-            icon:SetPoint("RIGHT", -36, -2)
-        end
-    end
-end
-
 function InitMeetingStoneClass()
+    local F = "LFGListGroupDataDisplayEnumerate_Update"
     Profile:OnInitialize()
 
-    if not Profile:GetShowClassIco() then
-        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
-        return
-    end
-
     if not IsAddOnLoaded("ElvUI_WindTools") then
-        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
+        hooksecurefunc(F, ReplaceGroupRoles)
     else
-        if not Profile:GetShowWindClassIco() then
-            local _LFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update
-            LFGListGroupDataDisplayEnumerate_Update = function (enmuerate, numPlayers, _, disabled)
-                _LFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled)
-                ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
-            end
-        else
-            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
-        end
-    end
-
-    local MSEnv = _G.LibStub("NetEaseEnv-1.0")._NSList.MeetingStone
-    local MemberDisplay = MSEnv.MemberDisplay
-    local origSetActivity = MemberDisplay.SetActivity
-    MemberDisplay.SetActivity = function(self, activity)
-        self.resultID = activity and activity.GetID and activity:GetID()
-        origSetActivity(self, activity)
+        local W, _, E = unpack(WindTools)
+        local L = W:GetModule("LFGList")
+        E:Delay(0, function ()
+            if L:IsHooked(F) then L:Unhook(F) end
+            L:SecureHook(F, ReplaceGroupRoles)
+        end)
     end
 end
