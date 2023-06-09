@@ -469,7 +469,7 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
         end
     end
 
-    if activity:IsAnyFriend() then
+    if activity:IsAnyFriend() and activity:GetNumMembers() ~= 0 then
         tooltip:AddSepatator()
         tooltip:AddLine(LFG_LIST_TOOLTIP_FRIENDS_IN_GROUP)
         tooltip:AddLine(LFGListSearchEntryUtil_GetFriendList(activity:GetID()), 1, 1, 1, true)
