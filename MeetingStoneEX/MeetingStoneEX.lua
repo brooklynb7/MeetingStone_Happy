@@ -302,6 +302,9 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
         --     return false
         -- end
     end
+    if BrowsePanel.IgnoreWithLeader[leader] then        
+        return false
+    end
 
     if MEETINGSTONE_UI_DB['SCORE'] then
         if not activity:GetLeaderScore() or activity:GetLeaderScore() < MEETINGSTONE_UI_DB['SCORE'] then

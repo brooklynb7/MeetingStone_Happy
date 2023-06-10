@@ -7,7 +7,7 @@ function MainPanel:OnInitialize()
     GUI:Embed(self, 'Refresh', 'Help', 'Blocker')
 
     self:SetSize(922, 447)
-    self:SetText(L['集合石'] .. ' 开心快乐每一天 ' .. ADDON_VERSION .. ' 20230609')
+    self:SetText(L['集合石'] .. ' 开心快乐每一天 ' .. ADDON_VERSION .. ' 20230610')
     --self:SetIcon(ADDON_LOGO)
     self:EnableUIPanel(true)
     self:SetTabStyle('BOTTOM')
