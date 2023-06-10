@@ -1,4 +1,3 @@
-
 BuildEnv(...)
 
 SettingPanel = Addon:NewModule(CreateFrame('Frame', nil, MainPanel), 'SettingPanel', 'AceEvent-3.0', 'AceTimer-3.0')
@@ -17,7 +16,8 @@ function SettingPanel:OnInitialize()
 
     self.db = Profile:GetCharacterDB()
 
-    local order do
+    local order
+    do
         local index = 0
         function order()
             index = index + 1
@@ -25,36 +25,33 @@ function SettingPanel:OnInitialize()
         end
     end
 
+    local globalOptions = {
+        ['enableIgnoreTitle'] = true,
+        ['showclassico']      = true,
+        ['classIcoMsOnly']    = true,
+        ['showWindClassIco']  = true,
+        ['useWindSkin']       = true,
+    }
+
     local options = {
         type = 'group',
         name = L['设置'],
         get = function (items)
-            local map = {
-                ['showclassico'] = 'GetShowClassIco',
-                ['classIcoMsOnly'] = 'GetClassIcoMsOnly',
-                ['showWindClassIco'] = 'GetShowWindClassIco',
-                ['useWindSkin'] = 'GetUseWindSkin',
-            }
             local item = items[#items]
 
-            if map[item] ~= nil then
-                return Profile[map[item]](Profile)
+            if globalOptions[item] == true then
+                return Profile:GetGlobalOption(item)
             else
                 return Profile:GetSetting(item)
             end
         end,
         set = function(items, value)
-            local map = {
-                ['showclassico'] = 'SaveShowClassIco',
-                ['classIcoMsOnly'] = 'SaveClassIcoMsOnly',
-                ['showWindClassIco'] = 'SaveShowWindClassIco',
-                ['useWindSkin'] = 'SaveUseWindSkin',
-            }
             local item = items[#items]
 
-            if map[item] ~= nil then
-                Profile[map[item]](Profile, value)
-                GUI:CallWarningDialog('需要重载UI！', true, nil, ReloadUI)
+            if globalOptions[item] == true then
+                if Profile:SaveGlobalOption(item, value) then
+                    GUI:CallWarningDialog(L['需要重载UI！'], true, nil, ReloadUI)
+                end
             else
                 Profile:SetSetting(item, value)
             end
@@ -104,6 +101,12 @@ function SettingPanel:OnInitialize()
                 width = 'full',
                 order = order(),
             },
+            enableIgnoreTitle = {
+                type = 'toggle',
+                name = L['启用同标题屏蔽'],
+                width = 'full',
+                order = order(),
+            },
             -- 增加职业图标设置选项
             showclassico = {
                 type = 'toggle',
@@ -123,6 +126,9 @@ function SettingPanel:OnInitialize()
                 name = L['显示Wind职业图标(触发重载UI)'],
                 width = 'full',
                 order = order(),
+                hidden = function()
+                    return not IsAddOnLoaded("ElvUI_WindTools")
+                end,
                 disabled = function()
                     return not IsAddOnLoaded("ElvUI_WindTools")
                 end
@@ -133,6 +139,9 @@ function SettingPanel:OnInitialize()
                 name = L['使用Wind皮肤(触发重载UI)'],
                 width = 'full',
                 order = order(),
+                hidden = function()
+                    return not IsAddOnLoaded("ElvUI_WindTools")
+                end,
                 disabled = function()
                     return not IsAddOnLoaded("ElvUI_WindTools")
                 end
@@ -148,12 +157,12 @@ function SettingPanel:OnInitialize()
                 get = function()
                     return self.db.profile.settings.uiscale
                 end,
-                set = function(info,key)
+                set = function(info, key)
                     self.db.profile.settings.uiscale = key
-                    if(UIScaleTimer ~= nil) then
+                    if (UIScaleTimer ~= nil) then
                         UIScaleTimer:Cancel()
                     end
-                    UIScaleTimer = C_Timer.NewTimer(0.5,function() MainPanel:SetScale(key) end)
+                    UIScaleTimer = C_Timer.NewTimer(0.5, function() MainPanel:SetScale(key) end)
                 end
             },
             -- ignore = {
@@ -177,7 +186,7 @@ function SettingPanel:OnInitialize()
                     return GetBindingKey(BINDING_KEY)
                 end,
                 set = function(info, key)
-                    for _, key in ipairs({GetBindingKey(BINDING_KEY)}) do
+                    for _, key in ipairs({ GetBindingKey(BINDING_KEY) }) do
                         SetBinding(key, nil)
                     end
                     SetBinding(key, BINDING_KEY)
@@ -186,7 +195,8 @@ function SettingPanel:OnInitialize()
                 confirm = function(info, key)
                     local action = GetBindingAction(key)
                     if action ~= '' and action ~= BINDING_KEY then
-                        return L['按键已绑定到|cffffd100%s|r，你确定要覆盖吗？']:format(_G['BINDING_NAME_' .. action] or action)
+                        return L['按键已绑定到|cffffd100%s|r，你确定要覆盖吗？']:format(_G
+                            ['BINDING_NAME_' .. action] or action)
                     end
                 end
             },
@@ -203,16 +213,16 @@ function SettingPanel:OnInitialize()
                 end
             }
             -- ,clearBlackListedLeaders = {
-                -- type = 'execute',
-                -- name = L['清理队长黑名单列表'],
-                -- width = 'full',
-                -- order = order(),
-                -- confirm = function()
-                    -- return L['你确定要清理已拉黑的队长吗？']
-                -- end,
-                -- func = function()
-                    -- _G["MEETINGSTONE_UI_BLACKLISTEDLEADERS"] = {}
-                -- end
+            -- type = 'execute',
+            -- name = L['清理队长黑名单列表'],
+            -- width = 'full',
+            -- order = order(),
+            -- confirm = function()
+            -- return L['你确定要清理已拉黑的队长吗？']
+            -- end,
+            -- func = function()
+            -- _G["MEETINGSTONE_UI_BLACKLISTEDLEADERS"] = {}
+            -- end
             -- }
         }
     }
@@ -295,19 +305,22 @@ function SettingPanel:OnInitialize()
 
 
         do -- spam word.
-            local SpamWordWidget = GUI:GetClass('TitleWidget'):New(self) do
+            local SpamWordWidget = GUI:GetClass('TitleWidget'):New(self)
+            do
                 SpamWordWidget:SetPoint('TOPLEFT', filterGroup.frame, 'BOTTOMLEFT', 10, -10)
                 SpamWordWidget:SetPoint('BOTTOMRIGHT', -20, 30)
                 SpamWordWidget:SetText(L['关键字过滤'])
                 SpamWordWidget:SetBgShown(false)
             end
 
-            local SpamWordInset = CreateFrame('Frame', nil, SpamWordWidget, 'InsetFrameTemplate') do
+            local SpamWordInset = CreateFrame('Frame', nil, SpamWordWidget, 'InsetFrameTemplate')
+            do
                 SpamWordInset:SetPoint('TOPLEFT', 2, -25)
                 SpamWordInset:SetPoint('BOTTOMRIGHT', -2, 5)
             end
 
-            local InputSpamWord = Addon:GetClass('InputDialog'):New(UIParent) do
+            local InputSpamWord = Addon:GetClass('InputDialog'):New(UIParent)
+            do
                 InputSpamWord:SetTitle(L['请输入需要屏蔽的关键字'])
                 InputSpamWord:SetCheckBoxLabel(L['正则?'])
                 InputSpamWord:SetMaxLetters(50)
@@ -326,7 +339,8 @@ function SettingPanel:OnInitialize()
                 end)
             end
 
-            local SpamWordList = GUI:GetClass('ListView'):New(SpamWordInset) do
+            local SpamWordList = GUI:GetClass('ListView'):New(SpamWordInset)
+            do
                 SpamWordList:SetPoint('TOPLEFT', 5, -5)
                 SpamWordList:SetPoint('BOTTOMRIGHT', -5, 5)
                 SpamWordList:SetItemClass(Addon:GetClass('SpamWordItem'))
@@ -339,7 +353,8 @@ function SettingPanel:OnInitialize()
                 end)
             end
 
-            local SpamWordAdd = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate') do
+            local SpamWordAdd = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate')
+            do
                 SpamWordAdd:SetPoint('LEFT', SpamWordWidget.Text, 'RIGHT', 0, 0)
                 SpamWordAdd:SetSize(50, 22)
                 SpamWordAdd:SetText(ADD)
@@ -348,7 +363,8 @@ function SettingPanel:OnInitialize()
                 end)
             end
 
-            local SpamWordReset = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate') do
+            local SpamWordReset = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate')
+            do
                 SpamWordReset:SetPoint('TOPRIGHT', 0, -2)
                 SpamWordReset:SetSize(50, 22)
                 SpamWordReset:SetText(RESET)
@@ -361,22 +377,26 @@ function SettingPanel:OnInitialize()
                 end)
             end
 
-            local EditDialog = Addon:GetClass('EditDialog'):New(UIParent) do
+            local EditDialog = Addon:GetClass('EditDialog'):New(UIParent)
+            do
                 EditDialog:SetCallback('OnSubmit', function(_, text)
                     Profile:ImportSpamWord(text)
                 end)
             end
 
-            local SpamWordExport = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate') do
+            local SpamWordExport = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate')
+            do
                 SpamWordExport:SetPoint('TOPRIGHT', SpamWordWidget, 'BOTTOMRIGHT', 0, 0)
                 SpamWordExport:SetSize(50, 22)
                 SpamWordExport:SetText(L['导出'])
                 SpamWordExport:SetScript('OnClick', function()
-                    EditDialog:Open(L['导出关键字'], L['点击 Ctrl+A 全选，Ctrl+C 复制'], Profile:ExportSpamWord(), false)
+                    EditDialog:Open(L['导出关键字'], L['点击 Ctrl+A 全选，Ctrl+C 复制'],
+                        Profile:ExportSpamWord(), false)
                 end)
             end
 
-            local SpamWordImport = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate') do
+            local SpamWordImport = CreateFrame('Button', nil, SpamWordWidget, 'UIPanelButtonTemplate')
+            do
                 SpamWordImport:SetPoint('RIGHT', SpamWordExport, 'LEFT', -2, 0)
                 SpamWordImport:SetSize(50, 22)
                 SpamWordImport:SetText(L['导入'])

@@ -7,7 +7,7 @@ function MainPanel:OnInitialize()
     GUI:Embed(self, 'Refresh', 'Help', 'Blocker')
 
     self:SetSize(922, 447)
-    self:SetText(L['集合石'] .. ' 开心快乐每一天 ' .. ADDON_VERSION..' 20230527')
+    self:SetText(L['集合石'] .. ' 开心快乐每一天 ' .. ADDON_VERSION .. ' 20230609')
     --self:SetIcon(ADDON_LOGO)
     self:EnableUIPanel(true)
     self:SetTabStyle('BOTTOM')
@@ -21,26 +21,27 @@ function MainPanel:OnInitialize()
     GUI:RegisterUIPanel(self)
     --self:RegisterEvent("PLAYER_REGEN_DISABLED");
     local scale = Profile:GetSetting('uiscale')
-    if(scale == nil or scale < 1.0) then
+    if (scale == nil or scale < 1.0) then
         scale = 1.0
     end
     self:SetScale(scale)
 
     self:HookScript("OnHide", function()
-        local anchor1,_,anchor2,x,y = self:GetPoint();
+        local anchor1, _, anchor2, x, y = self:GetPoint();
         MEETINGSTONE_UI_E_POINTS.x = x
         MEETINGSTONE_UI_E_POINTS.y = y
         MEETINGSTONE_UI_E_POINTS.a1 = anchor1
         MEETINGSTONE_UI_E_POINTS.a2 = anchor2
-    end) 
+    end)
 
     self:HookScript('OnShow', function()
         C_LFGList.RequestAvailableActivities()
         self:UpdateBlockers()
         self:SendMessage('MEETINGSTONE_OPEN')
-        if(MEETINGSTONE_UI_E_POINTS ~= nil and MEETINGSTONE_UI_E_POINTS.x ~= nil) then
+        if (MEETINGSTONE_UI_E_POINTS ~= nil and MEETINGSTONE_UI_E_POINTS.x ~= nil) then
             self:ClearAllPoints();
-            self:SetPoint(MEETINGSTONE_UI_E_POINTS.a1, UIParent, MEETINGSTONE_UI_E_POINTS.a2, MEETINGSTONE_UI_E_POINTS.x, MEETINGSTONE_UI_E_POINTS.y)
+            self:SetPoint(MEETINGSTONE_UI_E_POINTS.a1, UIParent, MEETINGSTONE_UI_E_POINTS.a2, MEETINGSTONE_UI_E_POINTS.x,
+                MEETINGSTONE_UI_E_POINTS.y)
         end
     end)
 
@@ -301,30 +302,32 @@ function MainPanel:OnInitialize()
     -- }
 
     self.GameTooltip = GUI:GetClass('Tooltip'):New(self)
-	
-	-- 增加更新地址展示
+
+    -- 增加更新地址展示
     local CopyUpdUrlBtn
-    CopyUpdUrlBtn = CreateFrame('Button', nil, self) do
+    CopyUpdUrlBtn = CreateFrame('Button', nil, self)
+    do
         CopyUpdUrlBtn:SetNormalFontObject('GameFontNormalSmall')
         CopyUpdUrlBtn:SetHighlightFontObject('GameFontHighlightSmall')
         CopyUpdUrlBtn:SetSize(70, 22)
         CopyUpdUrlBtn:SetPoint('TOPRIGHT', MainPanel, -30, 0)
         CopyUpdUrlBtn:SetText('|Hurl:https://ngabbs.com/read.php?tid=35102502|h|cff00ffff[更新地址]|r|h')
-		
-		CopyUpdUrlBtn:SetScript('OnEnter', function()
+
+        CopyUpdUrlBtn:SetScript('OnEnter', function()
             local GameTooltip = self.GameTooltip
-			GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
-			GameTooltip:SetText('|cFFFF8040点|r|cFFFF8040击|r|cFFFF8040复|r|cFFFF8040制|r|cFFFF0080(|r|cFF8080C0不|r|cFF8080C0行|r|cFF8080C0就|r|cFF8080C0多|r|cFF8080C0点|r|cFF8080C0几|r|cFF8080C0下|r|cFFFF0080)|r')
-			GameTooltip:AddLine('|cFF0080FFhttps://ngabbs.com/read.php?tid=35102502|r', 1, 1, 1, true)
-			GameTooltip:Show()
+            GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
+            GameTooltip:SetText(
+                '|cFFFF8040点|r|cFFFF8040击|r|cFFFF8040复|r|cFFFF8040制|r|cFFFF0080(|r|cFF8080C0不|r|cFF8080C0行|r|cFF8080C0就|r|cFF8080C0多|r|cFF8080C0点|r|cFF8080C0几|r|cFF8080C0下|r|cFFFF0080)|r')
+            GameTooltip:AddLine('|cFF0080FFhttps://ngabbs.com/read.php?tid=35102502|r', 1, 1, 1, true)
+            GameTooltip:Show()
         end)
-		CopyUpdUrlBtn:SetScript('OnLeave', function()
+        CopyUpdUrlBtn:SetScript('OnLeave', function()
             local GameTooltip = self.GameTooltip
-			GameTooltip:Hide()
+            GameTooltip:Hide()
         end)
-	
+
         CopyUpdUrlBtn:SetScript('OnClick', function()
-           ApplyUrlButton(CopyUpdUrlBtn,'https://ngabbs.com/read.php?tid=35102502')
+            ApplyUrlButton(CopyUpdUrlBtn, 'https://ngabbs.com/read.php?tid=35102502')
         end)
     end
 end
@@ -363,21 +366,21 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
     tooltip:AddSepatator()
 
     if activity:GetLeader() then
-		-- local prefix = ""
-		-- if activity:GetCrossFactionListing() then
-            -- local faction
-            -- if activity:GetLeaderFactionGroup() == 0 then
-                -- faction = "horde"
-            -- elseif activity:GetLeaderFactionGroup() == 1 then
-                -- faction = "alliance"
-            -- end
-            -- if faction then
-				-- prefix = format("|TInterface/FriendsFrame/PlusManz-%s:28:28:0:0|t", faction)
-                -- --prefix = format("|Tinterface/battlefieldframe/battleground-%s:32:32:0:0|t", faction)
-                -- --prefix = format("|Tinterface/icons/pvpcurrency-honor-%s:0:0:0:0|t", faction)
-            -- end
+        -- local prefix = ""
+        -- if activity:GetCrossFactionListing() then
+        -- local faction
+        -- if activity:GetLeaderFactionGroup() == 0 then
+        -- faction = "horde"
+        -- elseif activity:GetLeaderFactionGroup() == 1 then
+        -- faction = "alliance"
         -- end
-        tooltip:AddLine(format(LFG_LIST_TOOLTIP_LEADER,  activity:GetLeaderText()))
+        -- if faction then
+        -- prefix = format("|TInterface/FriendsFrame/PlusManz-%s:28:28:0:0|t", faction)
+        -- --prefix = format("|Tinterface/battlefieldframe/battleground-%s:32:32:0:0|t", faction)
+        -- --prefix = format("|Tinterface/icons/pvpcurrency-honor-%s:0:0:0:0|t", faction)
+        -- end
+        -- end
+        tooltip:AddLine(format(LFG_LIST_TOOLTIP_LEADER, activity:GetLeaderText()))
 
         if activity:GetLeaderItemLevel() then
             tooltip:AddLine(format(L['队长物品等级：|cffffffff%s|r'], activity:GetLeaderItemLevel()))
@@ -385,8 +388,8 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
         if activity:GetLeaderHonorLevel() then
             tooltip:AddLine(format(L['队长荣誉等级：|cffffffff%s|r'], activity:GetLeaderHonorLevel()))
         end
-		
-		local pvpRating = activity:GetLeaderPvpRating() or 0
+
+        local pvpRating = activity:GetLeaderPvpRating() or 0
         if pvpRating > 0 then
             tooltip:AddLine(format(L['队长PvP 等级：|cffffffff%s|r'], pvpRating))
         end
@@ -397,8 +400,10 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
             tooltip:AddLine(format(L['队长大秘评分：%s'], color:WrapTextInColorCode(score)))
             local info = activity:GetLeaderScoreInfo()
             if info and info.mapScore and info.mapScore > 0 then
-                local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
-                local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r", info.bestRunLevel or 0)
+                local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
+                    HIGHLIGHT_FONT_COLOR
+                local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
+                    info.bestRunLevel or 0)
                 tooltip:AddLine(format("队长当前副本: %s / %s", color:WrapTextInColorCode(info.mapScore), levelText))
             else
                 tooltip:AddLine(format("队长当前副本: |cff7f7f7f 无信息|r"))
@@ -408,7 +413,7 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
     end
 
     -- if activity:GetCrossFactionListing() then
-        -- tooltip:AddLine(L["|cff00ff00跨阵营队伍|r"])
+    -- tooltip:AddLine(L["|cff00ff00跨阵营队伍|r"])
     -- end
     if activity:GetItemLevel() > 0 then
         tooltip:AddLine(format(LFG_LIST_TOOLTIP_ILVL, activity:GetItemLevel()))
@@ -422,15 +427,16 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
     if activity:GetAge() > 0 then
         tooltip:AddLine(string.format(LFG_LIST_TOOLTIP_AGE, SecondsToTime(activity:GetAge(), false, false, 1, false)))
     end
-	--2022-11-17
+    --2022-11-17
     if activity:GetDisplayType() == Enum.LFGListDisplayType.ClassEnumerate then
         tooltip:AddSepatator()
         tooltip:AddLine(string.format(LFG_LIST_TOOLTIP_MEMBERS_SIMPLE, activity:GetNumMembers()))
         for i = 1, activity:GetNumMembers() do
-            local role, class, classLocalized , specLocalized  = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
-            local classColor = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
-            tooltip:AddLine(string.format(LFG_LIST_TOOLTIP_CLASS_ROLE, classLocalized, specLocalized or _G[role]), classColor.r,
-                            classColor.g, classColor.b)
+            local role, class, classLocalized, specLocalized = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
+            local classColor                                 = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR
+            tooltip:AddLine(string.format(LFG_LIST_TOOLTIP_CLASS_ROLE, classLocalized, specLocalized or _G[role]),
+                classColor.r,
+                classColor.g, classColor.b)
         end
     else
         -- Modification begin
@@ -438,25 +444,28 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
         local roles = {}
         local classInfo = {}
         for i = 1, activity:GetNumMembers() do
-            local role, class, classLocalized , specLocalized  = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
+            local role, class, classLocalized, specLocalized = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
             if (class) then
-                classInfo[class..specLocalized] = {
+                classInfo[class .. specLocalized] = {
                     name = classLocalized,
-                    color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR ,
-					spec =specLocalized
+                    color = RAID_CLASS_COLORS[class] or NORMAL_FONT_COLOR,
+                    spec = specLocalized
                 }
                 if not roles[role] then roles[role] = {} end
-                if not roles[role][class..specLocalized] then roles[role][class..specLocalized] = 0 end
-                roles[role][class..specLocalized] = roles[role][class..specLocalized] + 1
+                if not roles[role][class .. specLocalized] then roles[role][class .. specLocalized] = 0 end
+                roles[role][class .. specLocalized] = roles[role][class .. specLocalized] + 1
             end
         end
-    
+
         for role, classes in pairs(roles) do
-            tooltip:AddLine(_G[role]..": ")
+            tooltip:AddLine(_G[role] .. ": ")
             for classAndspec, count in pairs(classes) do
                 local text = "   "
                 if count > 1 then text = text .. count .. " " else text = text .. "   " end
-                text = text .. "|c" .. classInfo[classAndspec].color.colorStr ..  classInfo[classAndspec].name .. " - " .. classInfo[classAndspec].spec .. "|r "
+                text = text ..
+                    "|c" ..
+                    classInfo[classAndspec].color.colorStr ..
+                    classInfo[classAndspec].name .. " - " .. classInfo[classAndspec].spec .. "|r "
                 tooltip:AddLine(text)
             end
         end
@@ -465,11 +474,11 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
         if memberCounts then
             tooltip:AddSepatator()
             tooltip:AddLine(string.format(LFG_LIST_TOOLTIP_MEMBERS, activity:GetNumMembers(), memberCounts.TANK,
-                                          memberCounts.HEALER, memberCounts.DAMAGER))
+                memberCounts.HEALER, memberCounts.DAMAGER))
         end
     end
 
-    if activity:IsAnyFriend() then
+    if activity:IsAnyFriend() and activity:GetNumMembers() ~= 0 then
         tooltip:AddSepatator()
         tooltip:AddLine(LFG_LIST_TOOLTIP_FRIENDS_IN_GROUP)
         tooltip:AddLine(LFGListSearchEntryUtil_GetFriendList(activity:GetID()), 1, 1, 1, true)
@@ -519,7 +528,7 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
     tooltip:Show()
 end
 
-local FACTION_STRINGS = { [0] = '|cff00ff00' .. FACTION_HORDE .. '|r', [1] = '|cff00ff00' .. FACTION_ALLIANCE .. '|r'};
+local FACTION_STRINGS = { [0] = '|cff00ff00' .. FACTION_HORDE .. '|r', [1] = '|cff00ff00' .. FACTION_ALLIANCE .. '|r' };
 
 function MainPanel:OpenApplicantTooltip(applicant)
     local GameTooltip = self.GameTooltip
@@ -538,7 +547,6 @@ function MainPanel:OpenApplicantTooltip(applicant)
         local classTextColor = RAID_CLASS_COLORS[class]
         GameTooltip:AddHeader(name, classTextColor.r, classTextColor.g, classTextColor.b)
         GameTooltip:AddLine(string.format(UNIT_TYPE_LEVEL_TEMPLATE, level, localizedClass), 1, 1, 1)
-
     else
         GameTooltip:AddHeader(UnitName('none'), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
     end
@@ -557,8 +565,10 @@ function MainPanel:OpenApplicantTooltip(applicant)
         GameTooltip:AddLine(format(L['大秘评分：%s'], color:WrapTextInColorCode(score)))
         local info = applicant:GetBestDungeonScore()
         if info and info.mapScore and info.mapScore > 0 then
-            local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
-            local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r", info.bestRunLevel or 0)
+            local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
+                HIGHLIGHT_FONT_COLOR
+            local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
+                info.bestRunLevel or 0)
             GameTooltip:AddLine(format("当前副本: %s / %s", color:WrapTextInColorCode(info.mapScore), levelText))
         else
             GameTooltip:AddLine(format("当前副本: |cff7f7f7f 无信息|r"))

@@ -376,16 +376,13 @@ end
 
 
 function ListOfDungeons(menuType)
-    	local DungeonsList = {}
+    local DungeonsList = {}
 	do
 		local function f()
 			return {}
 		end
 		DungeonsList = f()
-	end	
-
-    local Dungeons = {}
-    local Activitys = {}
+	end
 
     --9.27
     -- Dungeons = {280,281,256,257,127,128,7,10}
@@ -396,10 +393,13 @@ function ListOfDungeons(menuType)
     -- Activitys = {1160,1176,1180,1184,1193,466,461,1192}
 
     -- 10.1
-    if C_MythicPlus.GetCurrentSeason() == 10 then
-        Dungeons = {303,304,305,309,142,138,115,59}
-        Activitys = {1164,1168,1172,1188,518,507,462,1195}    
-    end    
+    -- if C_MythicPlus.GetCurrentSeason() == 10 then
+    --     Dungeons = {303,304,305,309,142,138,115,59}
+    --     Activitys = {1164,1168,1172,1188,518,507,462,1195}
+    -- end
+
+    local Dungeons = {303,304,305,309,142,138,115,59}
+    local Activitys = {1164,1168,1172,1188,518,507,462,1195}
   
     -- C_MythicPlus.IsMythicPlusActive()
     -- C_LFGList.GetActivityInfoTable(i)
