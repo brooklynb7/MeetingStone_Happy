@@ -7,4 +7,5 @@
     <Script file="Recent.lua"/>
     <Script file="CombatStat.lua"/>
     <Script file="LfgService.lua"/>
+    <Script file="RaiderIO.lua"/>
 </Ui>
