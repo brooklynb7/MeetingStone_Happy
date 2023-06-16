@@ -7,7 +7,7 @@ function MainPanel:OnInitialize()
     GUI:Embed(self, 'Refresh', 'Help', 'Blocker')
 
     self:SetSize(922, 447)
-    self:SetText(L['集合石'] .. ' 开心快乐每一天 ' .. ADDON_VERSION .. ' 20230615')
+    self:SetText(L['集合石'] .. ' 开心快乐每一天 ' .. ADDON_VERSION .. ' 20230616')
     --self:SetIcon(ADDON_LOGO)
     self:EnableUIPanel(true)
     self:SetTabStyle('BOTTOM')
@@ -512,7 +512,7 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
         tooltip:AddDoubleLine(' ', GetFullVersion(version), 1, 1, 1, 0.5, 0.5, 0.5)
     end
 
-    if RaiderIO and RaiderIO.GetProfile then
+    if RaiderIO and RaiderIO.GetProfile and Profile:GetEnableRaiderIO() then
         RaiderIOService:appendRaiderIOData(activity:GetLeader(), activity:GetLeaderScore(), tooltip)
     end
 
@@ -621,8 +621,7 @@ function MainPanel:OpenApplicantTooltip(applicant)
         end
     end
 
-    if RaiderIO and RaiderIO.GetProfile then
-        print(applicant:GetName())
+    if RaiderIO and RaiderIO.GetProfile and Profile:GetEnableRaiderIO() then
         RaiderIOService:appendRaiderIOData(applicant:GetName(), applicant:GetDungeonScore(), GameTooltip)
     end
 
