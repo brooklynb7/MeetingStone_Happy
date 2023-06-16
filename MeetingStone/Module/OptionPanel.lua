@@ -32,6 +32,7 @@ function SettingPanel:OnInitialize()
         ['showWindClassIco']  = true,
         ['useWindSkin']       = true,
         ['enableRaiderIO']    = true,
+        ['enableLeaderColor'] = true
     }
 
     local options = {
@@ -118,6 +119,12 @@ function SettingPanel:OnInitialize()
             classIcoMsOnly = {
                 type = 'toggle',
                 name = L['只在集合石上显示职业图标(触发重载UI)'],
+                width = 'full',
+                order = order(),
+            },
+            enableLeaderColor = {
+                type = 'toggle',
+                name = L['显示队长职业颜色'],
                 width = 'full',
                 order = order(),
             },
