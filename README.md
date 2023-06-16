@@ -15,6 +15,7 @@
 
 - Config class icon only for ms
 - Config IO display
+- Config color of leader
 
 20230609
 
