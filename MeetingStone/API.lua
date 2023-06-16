@@ -170,32 +170,32 @@ end
 
 function GetActivityCode(activityId, customId, categoryId, groupId)
     if activityId and (not categoryId or not groupId) then
-		--2022-11-17
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		categoryId = activityInfo.categoryID;
-		groupId = activityInfo.groupFinderActivityGroupID;
+        --2022-11-17
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        categoryId = activityInfo.categoryID;
+        groupId = activityInfo.groupFinderActivityGroupID;
         --categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityId))
     end
     return format('%d-%d-%d-%d', categoryId or 0, groupId or 0, activityId or 0, customId or 0)
 end
 --2022-11-17
-function IsUseHonorLevel(activityId)	
-	if activityId then
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		return activityId and activityInfo.useHonorLevel;
-	end
+function IsUseHonorLevel(activityId)
+    if activityId then
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        return activityId and activityInfo.useHonorLevel;
+    end
 end
 function IsMythicPlusActivity (activityId)
-	if activityId then
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		return activityId and activityInfo.isMythicActivity;
-	end
+    if activityId then
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        return activityId and activityInfo.isMythicActivity;
+    end
 end
 function IsRatedPvpActivity (activityId)
-	if activityId then
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		return activityId and activityInfo.isRatedPvpActivity;
-	end
+    if activityId then
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        return activityId and activityInfo.isRatedPvpActivity;
+    end
 end
 
 local PVP_INDEXS = {[6] = 1, [7] = 1, [8] = 1, [19] = 2}
@@ -465,22 +465,22 @@ end
 
 GetAutoCompleteItem = setmetatable({}, {
     __index = function(t, activityId)
-		--2022-11-17
+        --2022-11-17
         --local name, shortName, category, group, iLevel, filters, minLevel, maxMembers, displayType =
            -- C_LFGList.GetActivityInfo(activityId)
-		
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		local name = activityInfo.fullName;
-		local shortName = activityInfo.shortName;
-		local category = activityInfo.categoryID;
-		local group = activityInfo.groupFinderActivityGroupID;
-		local filters = activityInfo.filters;
-		
-		local iLevel = activityInfo.ilvlSuggestion;
-		local minLevel = activityInfo.minLevel;
-		local maxMembers = activityInfo.maxNumPlayers;
-		local displayType = activityInfo.displayType;
-	
+
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        local name = activityInfo.fullName;
+        local shortName = activityInfo.shortName;
+        local category = activityInfo.categoryID;
+        local group = activityInfo.groupFinderActivityGroupID;
+        local filters = activityInfo.filters;
+
+        local iLevel = activityInfo.ilvlSuggestion;
+        local minLevel = activityInfo.minLevel;
+        local maxMembers = activityInfo.maxNumPlayers;
+        local displayType = activityInfo.displayType;
+
         t[activityId] = {
             name = name,
             order = 0xffff - (ACTIVITY_ORDER.A[activityId] or ACTIVITY_ORDER.G[group] or 0),
@@ -552,7 +552,7 @@ end
 local function GetPartyMemberInfo(index)
     local unit = "player"
     if index > 1 then unit = "party" .. (index - 1) end
-    
+
     local class = select(2, UnitClass(unit))
     if not class then return end
     local role = UnitGroupRolesAssigned(unit)
@@ -573,7 +573,7 @@ local function UpdateGroupRoles(self)
     if not self.__owner then
         self.__owner = self:GetParent():GetParent()
     end
-    
+
     local count = 0
     for i = 1, 5 do
         local role, class = GetCorrectRoleInfo(self.__owner, i)
@@ -586,11 +586,58 @@ local function UpdateGroupRoles(self)
             roleCache[count][3] = i == 1
         end
     end
-    
+
     sort(roleCache, sortRoleOrder)
 end
 
-local function ReplaceGroupRoles(self, numPlayers, _, disabled)    
+local function CheckShowIcons(frame)
+    local isLFGList
+    while true do
+        if frame == LFGListFrame then
+            isLFGList = true
+            break
+        -- There is no such frame named MeetingStoneFrame
+        elseif frame == nil then
+            isLFGList = false
+            break
+        end
+        frame = frame:GetParent()
+    end
+
+    if not isLFGList then
+        if not Profile:GetShowClassIco() then
+            return "orig"
+        elseif IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
+            -- Module LFGList does not initialize when PremadeGroupsFilter is loaded
+            if not IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
+                return "wind"
+            else
+                return "orig"
+            end
+        else
+            return "meet"
+        end
+    else
+        if IsAddOnLoaded("PremadeGroupsFilter") then
+            return "orig"
+        elseif IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
+            return "wind"
+        elseif Profile:GetShowClassIco() and not Profile:GetClassIcoMsOnly() then
+            return "meet"
+        else
+            return "orig"
+        end
+    end
+end
+
+local function ReplaceGroupRoles(self, numPlayers, _, disabled)
+    local flagCheckShowIcons = CheckShowIcons(self)
+    if flagCheckShowIcons == "orig" then
+        return
+    elseif flagCheckShowIcons == "wind" then
+        return WindTools[1]:GetModule("LFGList"):UpdateEnumerate(self)
+    end
+
     UpdateGroupRoles(self)
     for i = 1, 5 do
         local icon = self.Icons[i]
@@ -599,21 +646,21 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
                 icon:SetPoint("RIGHT", -5, -2)
             else
                 icon:ClearAllPoints()
-                icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 2, 0)
+                icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 0, 0)
             end
-            icon:SetSize(26, 26)
-            
+            icon:SetSize(24, 24)
+
             icon.role = self:CreateTexture(nil, "OVERLAY")
             icon.role:SetSize(16, 16)
             icon.role:SetPoint("TOPLEFT", icon, -4, 5)
-            
+
             icon.leader = self:CreateTexture(nil, "OVERLAY")
             icon.leader:SetSize(13, 13)
             icon.leader:SetPoint("TOP", icon, 3, 7)
             icon.leader:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
             icon.leader:SetRotation(rad(-15))
         end
-        
+
         if i > numPlayers then
             icon.role:Hide()
         else
@@ -625,72 +672,37 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         end
         icon.leader:Hide()
     end
-    
+
     local iconIndex = numPlayers
     for i = 1, #roleCache do
         local roleInfo = roleCache[i]
         if roleInfo then
-            local icon = self.Icons[iconIndex]            
-			-- 2022-11-17 LFG_LIST_GROUP_DATA_ATLASES 中暂无小龙人儿的图标   "groupfinder-icon-class-"..string.lower(roleInfo[2])
-			-- icon:SetAtlas(LFG_LIST_GROUP_DATA_ATLASES[roleInfo[2]])
-			-- if roleInfo[2]=='EVOKER' then
-				-- icon:SetAtlas("classicon-"..string.lower(roleInfo[2]),false)
-			-- end
-			
-			-- 2022-11-19 暴雪可能不再更新图标了，此处使用Wind_Tool工具箱中的职业图标绘制
-			icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
-			--icon:SetSize(22, 22)
-				
+            local icon = self.Icons[iconIndex]
+            icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
+
             icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
             iconIndex = iconIndex - 1
         end
     end
-    
+
     for i = 1, iconIndex do
         self.Icons[i].role:SetAtlas(nil)
     end
 end
 
-local function ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
-    ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)    
-end
-
-local function Adjust_Normal_Icon_Align(enmuerate, numPlayers, _, disabled)
-    for i = 1, 5 do
-        local icon = enmuerate.Icons[i]        
-        if i == 1 then
-            icon:SetPoint("RIGHT", -36, -2)        
-        end
-    end
-end
-
-function InitMeetingStoneClass()	
+function InitMeetingStoneClass()
+    local F = "LFGListGroupDataDisplayEnumerate_Update"
     Profile:OnInitialize()
-    local showico = Profile:Getshowclassico()
-    if showico==nil or showico==false then
-        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)
-        return        
-    end
-    if IsAddOnLoaded("ElvUI_WindTools") then
-        local showWindClassIco = Profile:GetShowWindClassIco()
-        if not showWindClassIco then
-            local origLFGListGroupDataDisplayEnumerate_Update = LFGListGroupDataDisplayEnumerate_Update;
-            LFGListGroupDataDisplayEnumerate_Update = function(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
-                origLFGListGroupDataDisplayEnumerate_Update(enmuerate, numPlayers, _, disabled, LFG_LIST_GROUP_DATA_ROLE_ORDER)
-                ElvUI_Wind_ReplaceGroupRoles(enmuerate, numPlayers, _, disabled)
-            end
-        else
-            hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", Adjust_Normal_Icon_Align)    
-        end
-    else        
-        hooksecurefunc("LFGListGroupDataDisplayEnumerate_Update", ReplaceGroupRoles)
-    end
-    local MSEnv = _G.LibStub("NetEaseEnv-1.0")._NSList.MeetingStone
-    local MemberDisplay = MSEnv.MemberDisplay
-    local origSetActivity = MemberDisplay.SetActivity
-    MemberDisplay.SetActivity = function(self, activity)
-        self.resultID = activity and activity.GetID and activity:GetID()
-        origSetActivity(self, activity)
+
+    if not IsAddOnLoaded("ElvUI_WindTools") then
+        hooksecurefunc(F, ReplaceGroupRoles)
+    else
+        local W, _, E = unpack(WindTools)
+        local L = W:GetModule("LFGList")
+        E:Delay(0, function ()
+            if L:IsHooked(F) then L:Unhook(F) end
+            L:SecureHook(F, ReplaceGroupRoles)
+        end)
     end
 end

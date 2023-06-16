@@ -25,37 +25,35 @@ function SettingPanel:OnInitialize()
         end
     end
 
+    local globalOptions = {
+        ['enableIgnoreTitle'] = true,
+        ['showclassico']      = true,
+        ['classIcoMsOnly']    = true,
+        ['showWindClassIco']  = true,
+        ['useWindSkin']       = true,
+    }
+
     local options = {
         type = 'group',
         name = L['设置'],
-        get = function(item)
-            if item[#item] == 'showclassico' then
-                return Profile:Getshowclassico()
-            elseif item[#item] == 'showWindClassIco' then
-                return Profile:GetShowWindClassIco()
-            elseif item[#item] == 'useWindSkin' then
-                return Profile:GetUseWindSkin()
-            elseif item[#item] == 'enableIgnoreTitle' then
-                return Profile:GetEnableIgnoreTitle()
+        get = function (items)
+            local item = items[#items]
+
+            if globalOptions[item] == true then
+                return Profile:GetGlobalOption(item)
             else
-                return Profile:GetSetting(item[#item])
+                return Profile:GetSetting(item)
             end
         end,
-        set = function(item, value)
-            if item[#item] == 'showclassico' then
-                Profile:Saveshowclassico(value)
-                GUI:CallWarningDialog('需要重载UI！', true, nil, ReloadUI)
-                --2022-11-19 增加提示框自动重载
-            elseif item[#item] == 'showWindClassIco' then
-                Profile:SaveShowWindClassIco(value)
-                GUI:CallWarningDialog('需要重载UI！', true, nil, ReloadUI)
-            elseif item[#item] == 'useWindSkin' then
-                Profile:SaveWindSkin(value)
-                GUI:CallWarningDialog('需要重载UI！', true, nil, ReloadUI)
-            elseif item[#item] == 'enableIgnoreTitle' then
-                Profile:SaveEnableIgnoreTitle(value)
+        set = function(items, value)
+            local item = items[#items]
+
+            if globalOptions[item] == true then
+                if Profile:SaveGlobalOption(item, value) then
+                    GUI:CallWarningDialog(L['需要重载UI！'], true, nil, ReloadUI)
+                end
             else
-                Profile:SetSetting(item[#item], value)
+                Profile:SetSetting(item, value)
             end
         end,
         args = {
@@ -113,6 +111,12 @@ function SettingPanel:OnInitialize()
             showclassico = {
                 type = 'toggle',
                 name = L['显示职业图标(触发重载UI)'],
+                width = 'full',
+                order = order(),
+            },
+            classIcoMsOnly = {
+                type = 'toggle',
+                name = L['只在集合石上显示职业图标(触发重载UI)'],
                 width = 'full',
                 order = order(),
             },

@@ -17,10 +17,10 @@ end
 
 local function LFGListGroupDataDisplay_Update(self, activityID, displayData, disabled)
     local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
-   	if(not activityInfo) then
-   		return;
-   	end
-	--2022-11-17
+       if(not activityInfo) then
+           return;
+       end
+    --2022-11-17
     if activityInfo.displayType == Enum.LFGListDisplayType.RoleCount or activityInfo.displayType == Enum.LFGListDisplayType.HideAll then
         self.RoleCount:Show()
         self.Enumerate:Hide()
@@ -49,7 +49,8 @@ local function LFGListGroupDataDisplay_Update(self, activityID, displayData, dis
 end
 
 function MemberDisplay:SetActivity(activity)
-    local displayData = C_LFGList.GetSearchResultMemberCounts(activity:GetID())
+    self.resultID = activity:GetID()
+    local displayData = C_LFGList.GetSearchResultMemberCounts(self.resultID)
     if displayData then
         LFGListGroupDataDisplay_Update(self.DataDisplay, activity:GetActivityID(), displayData, activity:IsDelisted() or activity:IsApplicationFinished())
         self.DataDisplay:Show()

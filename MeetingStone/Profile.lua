@@ -28,10 +28,10 @@ function Profile:OnInitialize()
             searchProfiles    = {},
             enableIgnoreTitle = true,
             showclassico      = true,
+            classIcoMsOnly    = true,
             showWindClassIco  = false,
             useWindSkin       = true,
-            filters           = {
-            }
+            filters           = {},
         },
     }
 
@@ -149,36 +149,40 @@ function Profile:GetGlobalDB()
     return self.gdb
 end
 
+function Profile:GetGlobalOption(key)
+    return self.gdb.global[key]
+end
+
 function Profile:GetEnableIgnoreTitle()
-    return self.gdb.global.enableIgnoreTitle
+    return self:GetGlobalOption('enableIgnoreTitle')
 end
 
-function Profile:SaveEnableIgnoreTitle(value)
-    self.gdb.global.enableIgnoreTitle = value
+function Profile:GetShowClassIco()
+    return self:GetGlobalOption('showclassico')
 end
 
-function Profile:Getshowclassico()
-    return self.gdb.global.showclassico
-end
-
-function Profile:Saveshowclassico(value)
-    self.gdb.global.showclassico = value
+function Profile:GetClassIcoMsOnly()
+    return self:GetGlobalOption('classIcoMsOnly')
 end
 
 function Profile:GetShowWindClassIco()
-    return self.gdb.global.showWindClassIco
-end
-
-function Profile:SaveShowWindClassIco(value)
-    self.gdb.global.showWindClassIco = value
+    return self:GetGlobalOption('showWindClassIco')
 end
 
 function Profile:GetUseWindSkin()
-    return self.gdb.global.useWindSkin
+    return self:GetGlobalOption('useWindSkin')
 end
 
-function Profile:SaveWindSkin(value)
-    self.gdb.global.useWindSkin = value
+function Profile:SaveGlobalOption(key, value)
+    local needReload = {
+        ['showclassico']     = true,
+        ['classIcoMsOnly']   = true,
+        ['showWindClassIco'] = true,
+        ['useWindSkin']      = true,
+    }
+
+    self.gdb.global[key] = value
+    return needReload[key] == true
 end
 
 function Profile:GetCharacterDB()
