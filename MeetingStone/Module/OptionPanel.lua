@@ -31,12 +31,13 @@ function SettingPanel:OnInitialize()
         ['classIcoMsOnly']    = true,
         ['showWindClassIco']  = true,
         ['useWindSkin']       = true,
+        ['enableRaiderIO']    = true,
     }
 
     local options = {
         type = 'group',
         name = L['设置'],
-        get = function (items)
+        get = function(items)
             local item = items[#items]
 
             if globalOptions[item] == true then
@@ -119,6 +120,15 @@ function SettingPanel:OnInitialize()
                 name = L['只在集合石上显示职业图标(触发重载UI)'],
                 width = 'full',
                 order = order(),
+            },
+            enableRaiderIO = {
+                type = 'toggle',
+                name = L['显示RaiderIO数据'],
+                width = 'full',
+                order = order(),
+                hidden = function()
+                    return not RaiderIO
+                end,
             },
             -- 增加wind职业图标设置选项
             showWindClassIco = {

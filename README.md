@@ -11,6 +11,11 @@
 
 ========
 
+20230616
+
+- Config class icon only for ms
+- Config IO display
+
 20230609
 
 - Search result issue for old content(categoryid 2,4)
