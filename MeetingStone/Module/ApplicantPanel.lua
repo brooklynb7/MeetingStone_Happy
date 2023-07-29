@@ -367,6 +367,7 @@ end
 
 function ApplicantPanel:UpdateAutoInvite()
     if Profile:GetSetting('AUTO_INVITE_JOIN') and UnitIsGroupLeader('player') then
+		ConsoleExec("profanityFilter 1")
         local applicants = C_LFGList.GetApplicants() or {}
         for k, v in pairs(applicants) do
             if self:CheckCanInvite(v) then

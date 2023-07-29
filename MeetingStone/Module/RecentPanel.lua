@@ -12,8 +12,8 @@ function RecentPanel:OnInitialize()
     GUI:Embed(self, 'Refresh')
 
     -- MainPanel:RegisterPanel([[|TInterface\ChatFrame\UI-ChatConversationIcon:16|t ]] .. L['最近玩友'], self, 5, 100, 5)
-    MainPanel:RegisterPanel(L['最近玩友'], self, 5, 100, 5)
-
+    --MainPanel:RegisterPanel(L['最近玩友'], self, 5, 100, 5)
+	return
     local function UpdateFilter()
         local class  = self.ClassDropdown:GetValue()
         local role   = self.RoleDropdown:GetValue()
