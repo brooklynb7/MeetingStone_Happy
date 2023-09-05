@@ -47,6 +47,10 @@ function RaiderIOService:appendRaiderIOData(player, currentScore, tooltip)
 
   local result = RaiderIO.GetProfile(name, realm)
   if result and result.mythicKeystoneProfile then
+    if result.mythicKeystoneProfile.blocked then
+      return
+    end
+
     local keystoneProfile = result.mythicKeystoneProfile
 
     local currentSeason = keystoneProfile.mplusCurrent
