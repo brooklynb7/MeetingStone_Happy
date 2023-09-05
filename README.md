@@ -8,17 +8,3 @@
 此 repo 将基于原作者的工作基础上，继续更新集合石插件。
 
 具体修改内容：https://ngabbs.com/read.php?tid=35102502
-
-========
-
-20230616
-
-- Config class icon only for ms
-- Config IO display
-- Config color of leader
-
-20230609
-
-- Search result issue for old content(categoryid 2,4)
-- (DONE) bNet null value issue
-- ignoreWithTitle set as cofiguration
