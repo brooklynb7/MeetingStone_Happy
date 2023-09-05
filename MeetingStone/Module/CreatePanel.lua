@@ -11,6 +11,14 @@ function CreatePanel:OnInitialize()
     local panelWidth=169 --219
     self:SetWidth(panelWidth)
 
+	local gameLocale = GetLocale()
+	local shortlang
+	if gameLocale == "zhTW" then
+		shortlang = 'TW'
+	else
+		shortlang = 'CN'
+	end
+	
     local line = GUI:GetClass('VerticalLine'):New(self) do
         line:SetPoint('TOPLEFT', self, 'TOPRIGHT', -3, 5)
         line:SetPoint('BOTTOMLEFT', self, 'BOTTOMRIGHT', -3, -5)
@@ -299,12 +307,23 @@ function CreatePanel:OnInitialize()
     do
         AutoInvite:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT', 20, 7)
         AutoInvite:SetText(L['自动邀请(需开语言过滤)'])
-        AutoInvite:SetChecked(not not Profile:GetSetting('AUTO_INVITE_JOIN'))
+        AutoInvite:SetChecked(setAutoInvite(not not Profile:GetSetting('AUTO_INVITE_JOIN')))
         AutoInvite:SetScript('OnClick', function()
             Profile:SetSetting('AUTO_INVITE_JOIN', AutoInvite:GetChecked())
+			setAutoInvite(AutoInvite:GetChecked())
             ApplicantPanel:UpdateAutoInvite()
         end)
     end
+	function setAutoInvite(checked)
+		if checked then
+			ConsoleExec("portal "..shortlang)
+			ConsoleExec("profanityFilter 1")
+		else 
+			ConsoleExec("portal TW")
+			ConsoleExec("profanityFilter 0")
+		end
+		return checked
+	end
 	
     --- summary
     local SummaryWidget = GUI:GetClass('TitleWidget'):New(CreateWidget) do

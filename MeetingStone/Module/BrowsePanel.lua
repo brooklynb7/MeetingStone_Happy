@@ -6,10 +6,13 @@ BrowsePanel = Addon:NewModule(CreateFrame('Frame'), 'BrowsePanel', 'AceEvent-3.0
 function BrowsePanel:OnInitialize()
     local gameLocale = GetLocale()
     local lang
+	local shortlang
     if gameLocale == "zhTW" then
         lang = 'zhCN'
+		shortlang = 'TW'
     else
         lang = 'zhTW'
+		shortlang = 'CN'
     end
 
     local enabled = C_LFGList.GetLanguageSearchFilter();
@@ -555,7 +558,7 @@ function BrowsePanel:OnInitialize()
             do
                 Shine:SetPoint('TOPLEFT', 5, -5)
                 Shine:SetPoint('BOTTOMRIGHT', -5, 5)
-                Shine:Start()
+               -- Shine:Start()
             end
             AdvButton.Shine = Shine
             AdvButton:SetScript('OnClick', function()
@@ -638,13 +641,25 @@ function BrowsePanel:OnInitialize()
 
     function NoticeBp()
         if AutoJoinCheckBox:GetChecked() then
-            MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox = true
+            --MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox = true
             logText('\124cFF00FF00开启\124r' .. '自动进组')
         else
-            MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox = false
+            --MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox = false
             logText('\124cFFFF0000关闭\124r' .. '自动进组')
         end
+		setAutoInvite(AutoJoinCheckBox:GetChecked())
     end
+	
+	function setAutoInvite(checked) 
+		if checked then
+			ConsoleExec("portal "..shortlang)
+			ConsoleExec("profanityFilter 1")
+		else 
+			ConsoleExec("portal TW")
+			ConsoleExec("profanityFilter 0")
+		end
+		return checked
+	end
 
     LFDRoleCheckPopup:SetScript("OnShow", function()
         if AutoJoinCheckBox:GetChecked() then
@@ -675,9 +690,9 @@ function BrowsePanel:OnInitialize()
     end
 
 
-    if (MEETINGSTONE_UI_E_POINTS ~= nil and MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox ~= nil) then
-        AutoJoinCheckBox:SetChecked(MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox)
-    end
+    --if (MEETINGSTONE_UI_E_POINTS ~= nil and MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox ~= nil) then
+        --AutoJoinCheckBox:SetChecked(MEETINGSTONE_UI_E_POINTS.AutoJoinCheckBox)
+    --end
 
     local ActivityTotals = self:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightRight')
     do

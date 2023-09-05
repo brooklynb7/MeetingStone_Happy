@@ -9,5 +9,6 @@
 ## SavedVariablesPerCharacter: MEETINGSTONE_CHARACTER_DB
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
+## IconTexture: Interface\AddOns\MeetingStone\Media\Logo
 
 Load.xml

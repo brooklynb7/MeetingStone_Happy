@@ -8,6 +8,7 @@
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
 ## RequiredDeps: MeetingStone
+## IconTexture: Interface\AddOns\MeetingStone\Media\Logo
 
 CheckBox.lua
 MeetingStoneEX.lua
