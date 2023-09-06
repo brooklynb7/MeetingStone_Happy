@@ -302,7 +302,7 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
         --     return false
         -- end
     end
-    if BrowsePanel.IgnoreWithLeader[leader] then        
+    if BrowsePanel.IgnoreWithLeader[leader] then
         return false
     end
 
@@ -319,48 +319,56 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
             return false
         end
     end
-	
-	local classFilter = MEETINGSTONE_UI_DB.ClassNeed == false
-	local allnoCheck = true
-	
+
+    --大米职业过滤 改动开始
+    if Profile:GetEnableClassFilter() then
+        local classFilter = MEETINGSTONE_UI_DB.ClassNeed == false
+        local allnoCheck = true
+
+        for i = 1, activity:GetNumMembers() do
+            local role, class, classLocalized, specLocalized = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
+            if MEETINGSTONE_UI_DB[class] == true then
+                if MEETINGSTONE_UI_DB.ClassNeed then
+                    classFilter = true
+                else
+                    classFilter = false
+                end
+            end
+        end
 
 
-	for i = 1, activity:GetNumMembers() do
-		local role, class, classLocalized, specLocalized = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
-		if MEETINGSTONE_UI_DB[class] == true  then
-			if MEETINGSTONE_UI_DB.ClassNeed then
-				classFilter = true
-			else
-				classFilter = false
-			end
-		end
-	end
-	 
-	
-	if classFilter == false then
-		for classID = 1,GetNumClasses() do
-			local className, classFile, classID = GetClassInfo(classID)
-			if MEETINGSTONE_UI_DB[classFile] == true  then
-				allnoCheck = false
-			end
-		end
-	end
-	if allnoCheck == false and classFilter == false then
-		return false
-	end
+        if classFilter == false then
+            for classID = 1, GetNumClasses() do
+                local className, classFile, classID = GetClassInfo(classID)
+                if MEETINGSTONE_UI_DB[classFile] == true then
+                    allnoCheck = false
+                end
+            end
+        end
+        if allnoCheck == false and classFilter == false then
+            return false
+        end
+    end
     --改动结束
+
     return activity:Match(...)
 end)
 
 function BrowsePanel:CreateExSearchPanel()
     -- body
     local ExSearchPanel = CreateFrame('Frame', nil, self, 'SimplePanelTemplate')
-	
+
     do
         GUI:Embed(ExSearchPanel, 'Refresh')
         --by 易安玥 调整筛选框大小
-        ExSearchPanel:SetSize(310, 330)
-        ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', 0, -30)
+        if Profile:GetEnableClassFilter() then
+            ExSearchPanel:SetSize(310, 330)
+            ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', 0, -30)
+        else
+            ExSearchPanel:SetSize(210, 230)
+            ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', -2, -30)
+        end
+
         ExSearchPanel:SetFrameLevel(self.ActivityList:GetFrameLevel() + 5)
         ExSearchPanel:EnableMouse(true)
 
@@ -386,7 +394,7 @@ function BrowsePanel:CreateExSearchPanel()
     end
 
     self.MD = {}
-	
+
     for i, v in ipairs(ACTIVITY_NAMES) do
         if not self.MDSearchs then
             self.MDSearchs = {}
@@ -435,65 +443,68 @@ function BrowsePanel:CreateExSearchPanel()
     end
 
 
-	local function GetClassColoredText(class, text)
-		if not class or not text then
-			return text
-		end
-		local color = RAID_CLASS_COLORS[class]
-		if color then
-			return format('|c%s%s|r', color.colorStr, text)
-		end
-		return text
-	end
-	for classID = 1,GetNumClasses() do
-		local className, classFile, classID = GetClassInfo(classID)
-		local Box = Addon:GetClass('CheckBox'):New(ExSearchPanel.Inset)
-		MEETINGSTONE_UI_DB[classFile] = false
-        Box.Check:SetText(GetClassColoredText(classFile,className))
-		Box:SetSize(90, 20)
-		if classID == 1 then
-			Box:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + classID - 1], 'BOTTOMLEFT') 
-		elseif classID%3 == 1 then	
-			Box:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + classID - 3], 'BOTTOMLEFT') 
-		else
-			Box:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + classID - 1],"TOPRIGHT") 
-		end
-		Box.Check:SetChecked(MEETINGSTONE_UI_DB[classFile] or false)
-		Box:SetCallback('OnChanged', function(box)
-            MEETINGSTONE_UI_DB[classFile] = box.Check:GetChecked()
-			self.ActivityList:Refresh()
-        end)
-        table.insert(self.MD, Box)
-	end
-	local BoxNeed = Addon:GetClass('CheckBox'):New(ExSearchPanel.Inset)
-	
-	local BoxNotNeed = Addon:GetClass('CheckBox'):New(ExSearchPanel.Inset)
-	
-        BoxNeed.Check:SetText("需要")
-		BoxNeed:SetSize(90, 20)
-		BoxNeed:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + GetNumClasses()],"TOPRIGHT") 
-		BoxNeed.Check:SetChecked(MEETINGSTONE_UI_DB.ClassNeed or true)
-		BoxNeed:SetCallback('OnChanged', function(box)
-            MEETINGSTONE_UI_DB.ClassNeed = box.Check:GetChecked()
-			if box.Check:GetChecked() == BoxNotNeed.Check:GetChecked() then
-				BoxNotNeed.Check:SetChecked( box.Check:GetChecked() == false)
-				self.ActivityList:Refresh()
-			end 
-        end)
-        table.insert(self.MD, BoxNeed)
-	
-        BoxNotNeed.Check:SetText("避开")
-		BoxNotNeed:SetSize(90, 20)
-		BoxNotNeed:SetPoint('TOPLEFT', BoxNeed,"TOPRIGHT") 
-		BoxNotNeed:SetCallback('OnChanged', function(box)
-            MEETINGSTONE_UI_DB.ClassNeed = box.Check:GetChecked() == false
-			if box.Check:GetChecked() == BoxNeed.Check:GetChecked() then
-				BoxNeed.Check:SetChecked( box.Check:GetChecked() == false)
-				self.ActivityList:Refresh()
-			end 
-        end)		
-        table.insert(self.MD, BoxNotNeed)
-	
+    local function GetClassColoredText(class, text)
+        if not class or not text then
+            return text
+        end
+        local color = RAID_CLASS_COLORS[class]
+        if color then
+            return format('|c%s%s|r', color.colorStr, text)
+        end
+        return text
+    end
+
+    if Profile:GetEnableClassFilter() then
+        for classID = 1, GetNumClasses() do
+            local className, classFile, classID = GetClassInfo(classID)
+            local Box = Addon:GetClass('CheckBox'):New(ExSearchPanel.Inset)
+            MEETINGSTONE_UI_DB[classFile] = false
+            Box.Check:SetText(GetClassColoredText(classFile, className))
+            Box:SetSize(90, 20)
+            if classID == 1 then
+                Box:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + classID - 1], 'BOTTOMLEFT')
+            elseif classID % 3 == 1 then
+                Box:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + classID - 3], 'BOTTOMLEFT')
+            else
+                Box:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + classID - 1], "TOPRIGHT")
+            end
+            Box.Check:SetChecked(MEETINGSTONE_UI_DB[classFile] or false)
+            Box:SetCallback('OnChanged', function(box)
+                MEETINGSTONE_UI_DB[classFile] = box.Check:GetChecked()
+                self.ActivityList:Refresh()
+            end)
+            table.insert(self.MD, Box)
+        end
+    end
+    local BoxNeed = Addon:GetClass('CheckBox'):New(ExSearchPanel.Inset)
+
+    local BoxNotNeed = Addon:GetClass('CheckBox'):New(ExSearchPanel.Inset)
+
+    BoxNeed.Check:SetText("需要")
+    BoxNeed:SetSize(90, 20)
+    BoxNeed:SetPoint('TOPLEFT', self.MD[#ACTIVITY_NAMES + GetNumClasses()], "TOPRIGHT")
+    BoxNeed.Check:SetChecked(MEETINGSTONE_UI_DB.ClassNeed or true)
+    BoxNeed:SetCallback('OnChanged', function(box)
+        MEETINGSTONE_UI_DB.ClassNeed = box.Check:GetChecked()
+        if box.Check:GetChecked() == BoxNotNeed.Check:GetChecked() then
+            BoxNotNeed.Check:SetChecked(box.Check:GetChecked() == false)
+            self.ActivityList:Refresh()
+        end
+    end)
+    table.insert(self.MD, BoxNeed)
+
+    BoxNotNeed.Check:SetText("避开")
+    BoxNotNeed:SetSize(90, 20)
+    BoxNotNeed:SetPoint('TOPLEFT', BoxNeed, "TOPRIGHT")
+    BoxNotNeed:SetCallback('OnChanged', function(box)
+        MEETINGSTONE_UI_DB.ClassNeed = box.Check:GetChecked() == false
+        if box.Check:GetChecked() == BoxNeed.Check:GetChecked() then
+            BoxNeed.Check:SetChecked(box.Check:GetChecked() == false)
+            self.ActivityList:Refresh()
+        end
+    end)
+    table.insert(self.MD, BoxNotNeed)
+
 
     self.MDSearchs = nil
     local ResetFilterButton = CreateFrame('Button', nil, ExSearchPanel, 'UIPanelButtonTemplate')
@@ -505,22 +516,26 @@ function BrowsePanel:CreateExSearchPanel()
             for i, box in ipairs(self.MD) do
                 box:Clear()
             end
-			for classID = 1,GetNumClasses() do
-				local className, classFile, classID = GetClassInfo(classID)
-				MEETINGSTONE_UI_DB[classFile] = false
-				MEETINGSTONE_UI_DB.ClassNeed =  true
-			end 
-			BoxNeed.Check:SetChecked(true)
+
+            if Profile:GetEnableClassFilter() then
+                for classID = 1, GetNumClasses() do
+                    local className, classFile, classID = GetClassInfo(classID)
+                    MEETINGSTONE_UI_DB[classFile] = false
+                    MEETINGSTONE_UI_DB.ClassNeed = true
+                end
+            end
+
+            BoxNeed.Check:SetChecked(true)
             self.MDSearchs = nil
-			self.ActivityList:Refresh()
+            self.ActivityList:Refresh()
         end)
     end
-	
-	
-	
-	
-	--GetNumClasses()
-	--className, classFile, classID = GetClassInfo(classID)
+
+
+
+
+    --GetNumClasses()
+    --className, classFile, classID = GetClassInfo(classID)
 end
 
 local function CreateMemberFilter(self, point, MainPanel, x, text, DB_Name, tooltip)

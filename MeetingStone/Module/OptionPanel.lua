@@ -32,7 +32,8 @@ function SettingPanel:OnInitialize()
         ['showWindClassIco']  = true,
         ['useWindSkin']       = true,
         ['enableRaiderIO']    = true,
-        ['enableLeaderColor'] = true
+        ['enableLeaderColor'] = true,
+        ['enableClassFilter'] = true
     }
 
     local options = {
@@ -49,7 +50,8 @@ function SettingPanel:OnInitialize()
         end,
         set = function(items, value)
             local item = items[#items]
-
+            print(item)
+            print(value)
             if globalOptions[item] == true then
                 if Profile:SaveGlobalOption(item, value) then
                     GUI:CallWarningDialog(L['需要重载UI！'], true, nil, ReloadUI)
@@ -136,6 +138,12 @@ function SettingPanel:OnInitialize()
                 hidden = function()
                     return not RaiderIO
                 end,
+            },
+            enableClassFilter = {
+                type = 'toggle',
+                name = L['显示大秘境职业过滤'],
+                width = 'full',
+                order = order()
             },
             -- 增加wind职业图标设置选项
             showWindClassIco = {

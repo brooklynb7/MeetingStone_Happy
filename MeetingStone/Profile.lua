@@ -33,6 +33,7 @@ function Profile:OnInitialize()
             useWindSkin       = true,
             enableRaiderIO    = true,
             enableLeaderColor = true,
+            enableClassFilter = false,
             filters           = {},
         },
     }
@@ -171,6 +172,10 @@ function Profile:GetShowWindClassIco()
     return self:GetGlobalOption('showWindClassIco')
 end
 
+function Profile:GetEnableClassFilter()
+    return self:GetGlobalOption('enableClassFilter')
+end
+
 function Profile:GetUseWindSkin()
     return self:GetGlobalOption('useWindSkin')
 end
@@ -185,10 +190,11 @@ end
 
 function Profile:SaveGlobalOption(key, value)
     local needReload = {
-        ['showclassico']     = true,
-        ['classIcoMsOnly']   = true,
-        ['showWindClassIco'] = true,
-        ['useWindSkin']      = true,
+        ['showclassico']      = true,
+        ['classIcoMsOnly']    = true,
+        ['showWindClassIco']  = true,
+        ['useWindSkin']       = true,
+        ['enableClassFilter'] = true
     }
 
     self.gdb.global[key] = value
