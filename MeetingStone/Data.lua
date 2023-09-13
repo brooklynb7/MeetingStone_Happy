@@ -2,6 +2,7 @@ BuildEnv(...)
 
 L = LibStub('AceLocale-3.0'):GetLocale('MeetingStone')
 
+
 ADDON_NAME = ...
 ADDON_LOGO = [[Interface\AddOns\]] .. ADDON_NAME .. [[\Media\Logo]]
 ADDON_VERSION = GetAddOnMetadata(ADDON_NAME, 'Version')

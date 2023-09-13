@@ -4,6 +4,14 @@ BuildEnv(...)
 MainPanel = Addon:NewModule(GUI:GetClass('Panel'):New(UIParent), 'MainPanel', 'AceEvent-3.0', 'AceBucket-3.0')
 
 function MainPanel:OnInitialize()
+    --修复不再同一个地区无法组队
+    local pre = C_BattleNet.GetFriendGameAccountInfo
+    C_BattleNet.GetFriendGameAccountInfo = function(...)
+        local gameAccountInfo = pre(...)
+        gameAccountInfo.isInCurrentRegion = true
+        return gameAccountInfo;
+    end
+
     GUI:Embed(self, 'Refresh', 'Help', 'Blocker')
 
     self:SetSize(922, 447)
