@@ -31,7 +31,7 @@ end
 
 function IsActivityManager()
     return UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) or
-               (IsInRaid(LE_PARTY_CATEGORY_HOME) and UnitIsGroupAssistant('player', LE_PARTY_CATEGORY_HOME))
+        (IsInRaid(LE_PARTY_CATEGORY_HOME) and UnitIsGroupAssistant('player', LE_PARTY_CATEGORY_HOME))
 end
 
 function ToggleCreatePanel(...)
@@ -102,30 +102,30 @@ function CodeCommentData(activity)
     local activityId = activity:GetActivityID()
     local customId = activity:GetCustomID()
     local data = format('(%s)',
-                        AceSerializer:Serialize(CompressNumber(customId), ADDON_VERSION_SHORT, activity:GetMode(),
-                                                activity:GetLoot(), GetPlayerClass(),
-                                                GetPlayerItemLevel(activity:IsUseHonorLevel()),
-                                                GetPlayerRaidProgression(activityId, customId),
-                                                GetPlayerPvPRating(activityId), CompressNumber(activity:GetMinLevel()),
-                                                CompressNumber(activity:GetMaxLevel()),
-                                                CompressNumber(activity:GetPvPRating()), GetAddonSource(),
-                                                GetPlayerFullName(), GetPlayerSavedInstance(customId), nil,
-                                                CompressNumber(
-                                                    activity:IsUseHonorLevel() and UnitHonorLevel('player') or nil)))
+        AceSerializer:Serialize(CompressNumber(customId), ADDON_VERSION_SHORT, activity:GetMode(),
+            activity:GetLoot(), GetPlayerClass(),
+            GetPlayerItemLevel(activity:IsUseHonorLevel()),
+            GetPlayerRaidProgression(activityId, customId),
+            GetPlayerPvPRating(activityId), CompressNumber(activity:GetMinLevel()),
+            CompressNumber(activity:GetMaxLevel()),
+            CompressNumber(activity:GetPvPRating()), GetAddonSource(),
+            GetPlayerFullName(), GetPlayerSavedInstance(customId), nil,
+            CompressNumber(
+                activity:IsUseHonorLevel() and UnitHonorLevel('player') or nil)))
     return data
 end
 
 function GetSafeSummaryLength(activityId, customId, mode, loot)
     local data = format('(%s)', AceSerializer:Serialize(customId, ADDON_VERSION_SHORT, mode, loot, GetPlayerClass(),
-                                                        GetPlayerItemLevel(IsUseHonorLevel(activityId)),
-                                                        GetPlayerRaidProgression(activityId, customId),
-                                                        GetPlayerPvPRating(activityId), 999, 999,
-                                                        IsUsePvPRating(activityId) and 9999 or nil, GetAddonSource(),
-                                                        GetPlayerFullName(), GetPlayerSavedInstance(customId), format(
-                                                            '%s-%s-%s', GetModeName(mode), GetLootName(loot),
-                                                            GetActivityName(activityId, customId)), CompressNumber(
-                                                            IsUseHonorLevel(activityId) and UnitHonorLevel('player') or
-                                                                nil)))
+        GetPlayerItemLevel(IsUseHonorLevel(activityId)),
+        GetPlayerRaidProgression(activityId, customId),
+        GetPlayerPvPRating(activityId), 999, 999,
+        IsUsePvPRating(activityId) and 9999 or nil, GetAddonSource(),
+        GetPlayerFullName(), GetPlayerSavedInstance(customId), format(
+            '%s-%s-%s', GetModeName(mode), GetLootName(loot),
+            GetActivityName(activityId, customId)), CompressNumber(
+            IsUseHonorLevel(activityId) and UnitHonorLevel('player') or
+            nil)))
     return min(MAX_MEETINGSTONE_SUMMARY_LETTERS, MAX_SUMMARY_LETTERS - strlenutf8(data))
 end
 
@@ -139,8 +139,8 @@ function CodeDescriptionData(activity)
     else
         local activityId = activity:GetActivityID()
         local data = format('(%s)',
-                            AceSerializer:Serialize(GetPlayerRaidProgression(activityId, activity:GetCustomID()),
-                                                    GetPlayerPvPRating(activityId), GetAddonSource()))
+            AceSerializer:Serialize(GetPlayerRaidProgression(activityId, activity:GetCustomID()),
+                GetPlayerPvPRating(activityId), GetAddonSource()))
         return data, strlenutf8(data)
     end
 end
@@ -178,6 +178,7 @@ function GetActivityCode(activityId, customId, categoryId, groupId)
     end
     return format('%d-%d-%d-%d', categoryId or 0, groupId or 0, activityId or 0, customId or 0)
 end
+
 --2022-11-17
 function IsUseHonorLevel(activityId)
     if activityId then
@@ -185,20 +186,22 @@ function IsUseHonorLevel(activityId)
         return activityId and activityInfo.useHonorLevel;
     end
 end
-function IsMythicPlusActivity (activityId)
+
+function IsMythicPlusActivity(activityId)
     if activityId then
         local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
         return activityId and activityInfo.isMythicActivity;
     end
 end
-function IsRatedPvpActivity (activityId)
+
+function IsRatedPvpActivity(activityId)
     if activityId then
         local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
         return activityId and activityInfo.isRatedPvpActivity;
     end
 end
 
-local PVP_INDEXS = {[6] = 1, [7] = 1, [8] = 1, [19] = 2}
+local PVP_INDEXS = { [6] = 1, [7] = 1, [8] = 1, [19] = 2 }
 
 function IsUsePvPRating(activityId)
     return PVP_INDEXS[activityId]
@@ -265,7 +268,7 @@ function GetProgressionTex(value, bossIndex)
     local killed = bit.band(value, bit.lshift(1, bossIndex - 1)) > 0
 
     return killed and [[|TINTERFACE\FriendsFrame\StatusIcon-Online:16|t]] or
-               [[|TINTERFACE\FriendsFrame\StatusIcon-Offline:16|t]]
+        [[|TINTERFACE\FriendsFrame\StatusIcon-Offline:16|t]]
 end
 
 function GetActivityName(activityId, customId)
@@ -290,7 +293,7 @@ end
 
 function CodeActivityTitle(activityId, customId, mode, loot)
     return format('%s-%s-%s-%s', L['集合石'], GetLootName(loot), GetModeName(mode),
-                  GetActivityName(activityId, customId))
+        GetActivityName(activityId, customId))
 end
 
 function GetFullVersion(version)
@@ -399,8 +402,8 @@ end
 
 function GetAddonSource()
     for line in gmatch(
-                    '\066\105\103\070\111\111\116\058\049\010\033\033\033\049\054\051\085\073\033\033\033\058\050\010\068\117\111\119\097\110\058\052\010\069\108\118\085\073\058\056',
-                    '[^\r\n]+') do
+        '\066\105\103\070\111\111\116\058\049\010\033\033\033\049\054\051\085\073\033\033\033\058\050\010\068\117\111\119\097\110\058\052\010\069\108\118\085\073\058\056',
+        '[^\r\n]+') do
         local n, v = line:match('^(.+):(%d+)$')
         if IsAddOnLoaded(n) then
             return tonumber(v)
@@ -467,7 +470,7 @@ GetAutoCompleteItem = setmetatable({}, {
     __index = function(t, activityId)
         --2022-11-17
         --local name, shortName, category, group, iLevel, filters, minLevel, maxMembers, displayType =
-           -- C_LFGList.GetActivityInfo(activityId)
+        -- C_LFGList.GetActivityInfo(activityId)
 
         local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
         local name = activityInfo.fullName;
@@ -516,7 +519,6 @@ function ApplyUrlButton(button, url)
         button.url = nil
     end
 end
-
 
 --------------------------
 -- NDui MOD
@@ -596,7 +598,7 @@ local function CheckShowIcons(frame)
         if frame == LFGListFrame then
             isLFGList = true
             break
-        -- There is no such frame named MeetingStoneFrame
+            -- There is no such frame named MeetingStoneFrame
         elseif frame == nil then
             isLFGList = false
             break
@@ -678,7 +680,8 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         local roleInfo = roleCache[i]
         if roleInfo then
             local icon = self.Icons[iconIndex]
-            icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(roleInfo[2]).."_flatborder2")
+            icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) ..
+                "_flatborder2")
 
             icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
@@ -700,9 +703,35 @@ function InitMeetingStoneClass()
     else
         local W, _, E = unpack(WindTools)
         local L = W:GetModule("LFGList")
-        E:Delay(0, function ()
+        E:Delay(0, function()
             if L:IsHooked(F) then L:Unhook(F) end
             L:SecureHook(F, ReplaceGroupRoles)
         end)
     end
+end
+
+function GetPlayerRegion()
+    local regionTable = { "US", "KR", "EU", "TW", "CN" }
+    local playerAccountInfo = C_BattleNet.GetAccountInfoByGUID(UnitGUID("player"))
+    local currentRegion = GetCurrentRegion()
+
+    if not playerAccountInfo or not playerAccountInfo.gameAccountInfo or not playerAccountInfo.gameAccountInfo.regionID then
+        return regionTable[currentRegion]
+    else
+        return regionTable[playerAccountInfo.gameAccountInfo.regionID]
+    end
+end
+
+function GetPortalByLocale()
+    local gameLocale = GetLocale()
+    local portalVal
+    if gameLocale == "zhTW" then
+        portalVal = 'TW'
+    elseif gameLocale == "zhCN" then
+        portalVal = 'CN'
+    else
+        portalVal = 'US'
+    end
+
+    return portalVal
 end

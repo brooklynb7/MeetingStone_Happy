@@ -1,9 +1,9 @@
-
 BuildEnv(...)
 
-ApplicantPanel = Addon:NewModule(CreateFrame('Frame', nil, ManagerPanel), 'ApplicantPanel', 'AceEvent-3.0', 'AceTimer-3.0')
+ApplicantPanel = Addon:NewModule(CreateFrame('Frame', nil, ManagerPanel), 'ApplicantPanel', 'AceEvent-3.0',
+    'AceTimer-3.0')
 
-local AllMythicChallengeMaps = {691,695,699,703,705,709,713,717}
+local AllMythicChallengeMaps = { 691, 695, 699, 703, 705, 709, 713, 717 }
 
 local function _PartySortHandler(applicant)
     return applicant:GetNumMembers() > 1 and format('%08x', applicant:GetID())
@@ -50,7 +50,8 @@ local APPLICANT_LIST_HEADER = {
         style = 'ICON:18:18',
         iconHandler = function(applicant)
             -- return [[INTERFACE\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES]], CLASS_ICON_TCOORDS[applicant:GetClass()]
-			return "Interface/AddOns/MeetingStone/Media/ClassIcon/"..string.lower(applicant:GetClass()).."_flatborder2"
+            return "Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(applicant:GetClass()) ..
+                "_flatborder2"
         end,
         sortHandler = function(applicant)
             return _PartySortHandler(applicant) or applicant:GetClass()
@@ -60,13 +61,13 @@ local APPLICANT_LIST_HEADER = {
         key = 'FactionGroup',
         text = L['阵营'],
         width = 40,
-        style = 'ICON:18:18',		
+        style = 'ICON:18:18',
         iconHandler = function(applicant)
-			if applicant:GetFactionIndex() == 0 then
-				return "|TInterface/FriendsFrame/PlusManz-horde:18:18:0:0|t"
-			else
-				return "|TInterface/FriendsFrame/PlusManz-alliance:18:18:0:0|t"
-			end
+            if applicant:GetFactionIndex() == 0 then
+                return "|TInterface/FriendsFrame/PlusManz-horde:18:18:0:0|t"
+            else
+                return "|TInterface/FriendsFrame/PlusManz-alliance:18:18:0:0|t"
+            end
         end,
         sortHandler = function(applicant)
             return _PartySortHandler(applicant) or applicant:GetFactionIndex()
@@ -85,9 +86,12 @@ local APPLICANT_LIST_HEADER = {
                     local scoreText
                     local info = applicant:GetBestDungeonScore()
                     if info and info.mapScore and info.mapScore > 0 then
-                        local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
-                        local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r", info.bestRunLevel or 0)
-                        scoreText = format("%s / %s / %s ", colorAll:WrapTextInColorCode(score), color:WrapTextInColorCode(info.mapScore),color:WrapTextInColorCode(levelText))
+                        local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
+                            HIGHLIGHT_FONT_COLOR
+                        local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
+                            info.bestRunLevel or 0)
+                        scoreText = format("%s / %s / %s ", colorAll:WrapTextInColorCode(score),
+                            color:WrapTextInColorCode(info.mapScore), color:WrapTextInColorCode(levelText))
                     else
                         scoreText = format("%s / %s", colorAll:WrapTextInColorCode(score), "|cff7f7f7f无|r")
                     end
@@ -97,27 +101,27 @@ local APPLICANT_LIST_HEADER = {
                 end
                 return
             end
-			
-          
-			local pvPRating = applicant:GetPvPRating()
-			return pvPRating or '-'
-			
-			
+
+
+            local pvPRating = applicant:GetPvPRating()
+            return pvPRating or '-'
+
+
             --local level = applicant:GetLevel()
             --if applicant:GetResult() then
-                --local activity = CreatePanel:GetCurrentActivity()
-                --if activity and activity:IsMeetingStone() and (level < activity:GetMinLevel() or level > activity:GetMaxLevel()) then
-                    --return level, RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b
-                --else
-                    --return level
-                --end
+            --local activity = CreatePanel:GetCurrentActivity()
+            --if activity and activity:IsMeetingStone() and (level < activity:GetMinLevel() or level > activity:GetMaxLevel()) then
+            --return level, RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b
             --else
-                --return applicant:GetLevel(), GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b
+            --return level
+            --end
+            --else
+            --return applicant:GetLevel(), GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b
             --end
         end,
         sortHandler = function(applicant)
             local score = applicant:GetDungeonScore()
-			local pvPRating = applicant:GetPvPRating()
+            local pvPRating = applicant:GetPvPRating()
             if applicant:IsMythicPlusActivity() or score > 0 then
                 return _PartySortHandler(applicant) or tostring(9999 - score)
             else
@@ -171,9 +175,9 @@ local APPLICANT_LIST_HEADER = {
     {
         key = 'Msg',
         text = L['描述'],
-		--by 易安玥 修正宽度，适配VV修改的宽度
-		--by 易安玥 缩小一下，显示阵营
-        width = 102+44+50-40+13,
+        --by 易安玥 修正宽度，适配VV修改的宽度
+        --by 易安玥 缩小一下，显示阵营
+        width = 102 + 44 + 50 - 40 + 13,
         style = 'LEFT',
         showHandler = function(applicant)
             if applicant:GetResult() then
@@ -199,7 +203,8 @@ function ApplicantPanel:OnInitialize()
     self:SetPoint('BOTTOMRIGHT')
     self:SetPoint('TOPLEFT', CreatePanel, 'TOPRIGHT', 8, 0)
 
-    local ApplicantList = GUI:GetClass('DataGridView'):New(self) do
+    local ApplicantList = GUI:GetClass('DataGridView'):New(self)
+    do
         ApplicantList:SetAllPoints(true)
         ApplicantList:InitHeader(APPLICANT_LIST_HEADER)
         ApplicantList:SetItemHeight(32)
@@ -239,14 +244,14 @@ function ApplicantPanel:OnInitialize()
 
     -- local AutoInvite = GUI:GetClass('CheckBox'):New(self)
     -- do
-		-- --by 易安玥 修正位置和描述，适配VV修改的宽度
-        -- AutoInvite:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT', -150, 7)
-        -- AutoInvite:SetText(L['自动邀请(需开语言过滤)'])
-        -- AutoInvite:SetChecked(not not Profile:GetSetting('AUTO_INVITE_JOIN'))
-        -- AutoInvite:SetScript('OnClick', function()
-            -- Profile:SetSetting('AUTO_INVITE_JOIN', AutoInvite:GetChecked())
-            -- self:UpdateAutoInvite()
-        -- end)
+    -- --by 易安玥 修正位置和描述，适配VV修改的宽度
+    -- AutoInvite:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT', -150, 7)
+    -- AutoInvite:SetText(L['自动邀请(需开语言过滤)'])
+    -- AutoInvite:SetChecked(not not Profile:GetSetting('AUTO_INVITE_JOIN'))
+    -- AutoInvite:SetScript('OnClick', function()
+    -- Profile:SetSetting('AUTO_INVITE_JOIN', AutoInvite:GetChecked())
+    -- self:UpdateAutoInvite()
+    -- end)
     -- end
 
     self.ApplicantList = ApplicantList
@@ -290,10 +295,10 @@ function ApplicantPanel:UpdateApplicantsList()
 
     if applicants and C_LFGList.HasActiveEntryInfo() then
         local isMythicPlusActivity = C_LFGList.GetActiveEntryInfo().isMythicPlusActivity
-		-- print(activityID)
-		-- --2022-11-17
-		-- local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		-- local isMythicPlusActivity = activityInfo.isMythicActivity;	
+        -- print(activityID)
+        -- --2022-11-17
+        -- local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        -- local isMythicPlusActivity = activityInfo.isMythicActivity;	
         --local isMythicPlusActivity = select(13, C_LFGList.GetActivityInfo(activityID))
         for i, id in ipairs(applicants) do
             local numMembers = C_LFGList.GetApplicantInfo(id).numMembers
@@ -346,10 +351,10 @@ function ApplicantPanel:ToggleEventMenu(button, applicant)
             disabled = not name or not applicant:GetResult(),
         },
         {
-			text = LFG_LIST_REPORT_PLAYER,
-            func = function()  
-				LFGList_ReportApplicant(applicant:GetID(), applicant:GetName())
-            end;
+            text = LFG_LIST_REPORT_PLAYER,
+            func = function()
+                LFGList_ReportApplicant(applicant:GetID(), applicant:GetName())
+            end,
         },
         {
             text = IGNORE_PLAYER,
@@ -367,11 +372,16 @@ end
 
 function ApplicantPanel:UpdateAutoInvite()
     if Profile:GetSetting('AUTO_INVITE_JOIN') and UnitIsGroupLeader('player') then
-		ConsoleExec("profanityFilter 1")
+        ConsoleExec("profanityFilter 1")
+
+        local playerRegion = GetPlayerRegion()
+
         local applicants = C_LFGList.GetApplicants() or {}
         for k, v in pairs(applicants) do
             if self:CheckCanInvite(v) then
+                ConsoleExec("portal CN")
                 C_LFGList.InviteApplicant(v)
+                ConsoleExec("portal " .. playerRegion)
             end
         end
     end
@@ -381,11 +391,11 @@ function ApplicantPanel:CheckCanInvite(id)
     local applicantInfo = C_LFGList.GetApplicantInfo(id)
     local status = applicantInfo.applicationStatus
     local numMembers = applicantInfo.numMembers
-	
-	--2022-11-17
-	local activityInfo = C_LFGList.GetActivityInfoTable(CreatePanel:GetCurrentActivity():GetActivityID());
-	local numAllowed = activityInfo.maxNumPlayers;
-    
+
+    --2022-11-17
+    local activityInfo = C_LFGList.GetActivityInfoTable(CreatePanel:GetCurrentActivity():GetActivityID());
+    local numAllowed = activityInfo.maxNumPlayers;
+
     if numAllowed == 0 then
         numAllowed = MAX_RAID_MEMBERS
     end
@@ -397,41 +407,5 @@ function ApplicantPanel:CheckCanInvite(id)
         return
     elseif status == 'applied' then
         return true
-    end
-end
-
-function ApplicantPanel:CanInvite(applicant)
-    local status = applicant:GetStatus()
-    local numMembers = applicant:GetNumMembers()
-
-	--2022-11-17
-	local activityInfo = C_LFGList.GetActivityInfoTable(CreatePanel:GetCurrentActivity():GetActivityID());
-	local numAllowed = activityInfo.maxNumPlayers;
-	
-    if numAllowed == 0 then
-        numAllowed = MAX_RAID_MEMBERS
-    end
-
-    local currentCount = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
-    local numInvited = C_LFGList.GetNumInvitedApplicantMembers()
-
-    if numMembers + currentCount > numAllowed then
-        return
-    elseif numMembers + currentCount + numInvited > numAllowed then
-        return
-    elseif status == 'applied' then
-        return true
-    end
-end
-
-function ApplicantPanel:StartInvite()
-    local list = self.ApplicantList:GetItemList()
-    for i, v in ipairs(list) do
-        if self:CanInvite(v) then
-            if self:Invite(v:GetID(), v:GetNumMembers()) then
-                debug('invite: ' .. v:GetName() .. ' ' .. v:GetLocalizedClass())
-            end
-            break
-        end
     end
 end

@@ -1,4 +1,3 @@
-
 BuildEnv(...)
 
 CreatePanel = Addon:NewModule(CreateFrame('Frame', nil, ManagerPanel), 'CreatePanel', 'AceEvent-3.0')
@@ -8,23 +7,17 @@ function CreatePanel:OnInitialize()
 
     self:SetPoint('TOPLEFT')
     self:SetPoint('BOTTOMLEFT')
-    local panelWidth=169 --219
+    local panelWidth = 169 --219
     self:SetWidth(panelWidth)
 
-	local gameLocale = GetLocale()
-	local shortlang
-	if gameLocale == "zhTW" then
-		shortlang = 'TW'
-	else
-		shortlang = 'CN'
-	end
-	
-    local line = GUI:GetClass('VerticalLine'):New(self) do
+    local line = GUI:GetClass('VerticalLine'):New(self)
+    do
         line:SetPoint('TOPLEFT', self, 'TOPRIGHT', -3, 5)
         line:SetPoint('BOTTOMLEFT', self, 'BOTTOMRIGHT', -3, -5)
     end
     -- view board
-    local ViewBoardWidget = CreateFrame('Frame', nil, self) do
+    local ViewBoardWidget = CreateFrame('Frame', nil, self)
+    do
         ViewBoardWidget:SetAllPoints(true)
         ViewBoardWidget:Hide()
         ViewBoardWidget:SetScript('OnShow', function()
@@ -33,7 +26,8 @@ function CreatePanel:OnInitialize()
     end
 
     --- frames
-    local InfoWidget = CreateFrame('Frame', nil, ViewBoardWidget) do
+    local InfoWidget = CreateFrame('Frame', nil, ViewBoardWidget)
+    do
         InfoWidget:SetPoint('TOPLEFT')
         InfoWidget:SetSize(panelWidth, 120)
 
@@ -62,13 +56,15 @@ function CreatePanel:OnInitialize()
             if (summaryLabel:GetStringWidth() or 0) > summaryLabel:GetWidth() then
                 GameTooltip:SetOwner(summary, 'ANCHOR_RIGHT')
                 GameTooltip:SetText(title:GetText() or '')
-                GameTooltip:AddLine(summaryLabel:GetText() or '', GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b, true)
+                GameTooltip:AddLine(summaryLabel:GetText() or '', GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR
+                    .b, true)
                 GameTooltip:Show()
             end
         end)
         summary:SetScript('OnLeave', GameTooltip_Hide)
 
-        local privateGroupLabel = InfoWidget:CreateFontString(nil, 'OVERLAY', 'GameFontNormalLeft') do
+        local privateGroupLabel = InfoWidget:CreateFontString(nil, 'OVERLAY', 'GameFontNormalLeft')
+        do
             privateGroupLabel:SetPoint('TOPLEFT', summary, 'BOTTOMLEFT', -10, -4)
             privateGroupLabel:SetText(L['仅好友和公会可见'])
             privateGroupLabel:SetTextColor(0.51, 0.77, 1)
@@ -98,7 +94,8 @@ function CreatePanel:OnInitialize()
         InfoWidget.PrivateGroup = privateGroupLabel
     end
 
-    local MemberWidget = GUI:GetClass('TitleWidget'):New(ViewBoardWidget) do
+    local MemberWidget = GUI:GetClass('TitleWidget'):New(ViewBoardWidget)
+    do
         MemberWidget:SetPoint('TOPLEFT', InfoWidget, 'BOTTOMLEFT', 2, -3)
         MemberWidget:SetPoint('TOPRIGHT', InfoWidget, 'BOTTOMRIGHT', -2, -3)
         MemberWidget:SetHeight(70)
@@ -127,7 +124,8 @@ function CreatePanel:OnInitialize()
         end
     end
 
-    local MiscWidget = GUI:GetClass('TitleWidget'):New(ViewBoardWidget) do
+    local MiscWidget = GUI:GetClass('TitleWidget'):New(ViewBoardWidget)
+    do
         MiscWidget:SetPoint('TOPLEFT', MemberWidget, 'BOTTOMLEFT', 0, -3)
         MiscWidget:SetPoint('BOTTOMRIGHT', -2, 0)
         MiscWidget:SetHeight(150)
@@ -171,7 +169,8 @@ function CreatePanel:OnInitialize()
     end
 
     -- widgets
-    local CreateWidget = CreateFrame('Frame', nil, self) do
+    local CreateWidget = CreateFrame('Frame', nil, self)
+    do
         CreateWidget:SetAllPoints(true)
         CreateWidget:Hide()
         CreateWidget:SetScript('OnShow', function()
@@ -181,13 +180,15 @@ function CreatePanel:OnInitialize()
     end
 
     --- options
-    local ActivityOptions = GUI:GetClass('TitleWidget'):New(CreateWidget) do
+    local ActivityOptions = GUI:GetClass('TitleWidget'):New(CreateWidget)
+    do
         ActivityOptions:SetPoint('TOPLEFT')
         ActivityOptions:SetSize(panelWidth, 66)
         ActivityOptions:SetText(L['请选择活动属性'])
     end
 
-    local ActivityType = GUI:GetClass('Dropdown'):New(ActivityOptions) do
+    local ActivityType = GUI:GetClass('Dropdown'):New(ActivityOptions)
+    do
         ActivityType:SetPoint('TOP', 0, -30)
         ActivityType:SetSize(170, 26)
         ActivityType:SetDefaultText(L['请选择活动类型'])
@@ -199,7 +200,8 @@ function CreatePanel:OnInitialize()
     end
 
     local TitleBox = LFGListFrame.EntryCreation.Name
-    local TitleWidget = GUI:GetClass('TitleWidget'):New(CreateWidget) do
+    local TitleWidget = GUI:GetClass('TitleWidget'):New(CreateWidget)
+    do
         TitleWidget:SetPoint('TOPLEFT', ActivityOptions, 'BOTTOMLEFT', 0, -3)
         TitleWidget:SetPoint('TOPRIGHT', ActivityOptions, 'BOTTOMRIGHT', 0, -3)
         TitleWidget:SetHeight(56)
@@ -214,12 +216,14 @@ function CreatePanel:OnInitialize()
     end
 
     --- voice and item level
-    local VoiceItemLevelWidget = GUI:GetClass('TitleWidget'):New(CreateWidget) do
+    local VoiceItemLevelWidget = GUI:GetClass('TitleWidget'):New(CreateWidget)
+    do
         VoiceItemLevelWidget:SetPoint('BOTTOMLEFT')
         VoiceItemLevelWidget:SetSize(panelWidth, 100)
     end
 
-    local ItemLevel = GUI:GetClass('NumericBox'):New(VoiceItemLevelWidget) do
+    local ItemLevel = GUI:GetClass('NumericBox'):New(VoiceItemLevelWidget)
+    do
         ItemLevel:SetPoint('TOP', VoiceItemLevelWidget, 30, -3)
         ItemLevel:SetSize(88, 23)
         ItemLevel:SetLabel(L['最低装等'])
@@ -227,7 +231,8 @@ function CreatePanel:OnInitialize()
         ItemLevel:SetMinMaxValues(0, 2000)
     end
 
-    local Score = GUI:GetClass('NumericBox'):New(VoiceItemLevelWidget) do
+    local Score = GUI:GetClass('NumericBox'):New(VoiceItemLevelWidget)
+    do
         Score:SetPoint('TOP', ItemLevel, 'BOTTOM', 0, -1)
         Score:SetSize(88, 23)
         Score:SetLabel(L['最低分数'])
@@ -235,12 +240,13 @@ function CreatePanel:OnInitialize()
         Score:SetMinMaxValues(0, 4000)
     end
 
-    local VoiceBox = LFGListFrame.EntryCreation.VoiceChat.EditBox do
+    local VoiceBox = LFGListFrame.EntryCreation.VoiceChat.EditBox
+    do
         VoiceItemLevelWidget:SetScript('OnShow', function(VoiceItemLevelWidget)
             VoiceBox:ClearAllPoints()
             VoiceBox:SetParent(VoiceItemLevelWidget)
             VoiceBox:SetPoint('TOP', Score, 'BOTTOM', 0, -3)
-			--与其他条件同步大小
+            --与其他条件同步大小
             VoiceBox:SetSize(84, 18)
         end)
         VoiceBox:SetScript('OnTextChanged', nil)
@@ -261,7 +267,8 @@ function CreatePanel:OnInitialize()
         VoiceBox.Instructions.Show = nop
     end
 
-    local PrivateGroup = CreateFrame('CheckButton', nil, VoiceItemLevelWidget) do
+    local PrivateGroup = CreateFrame('CheckButton', nil, VoiceItemLevelWidget)
+    do
         PrivateGroup:SetNormalTexture([[Interface\Buttons\UI-CheckBox-Up]])
         PrivateGroup:SetPushedTexture([[Interface\Buttons\UI-CheckBox-Down]])
         PrivateGroup:SetHighlightTexture([[Interface\Buttons\UI-CheckBox-Highlight]])
@@ -279,54 +286,54 @@ function CreatePanel:OnInitialize()
         GUI:Embed(PrivateGroup, 'Tooltip')
         PrivateGroup:SetTooltip(LFG_LIST_PRIVATE_TOOLTIP)
     end
-	
-	local CrossFactionGroup = CreateFrame('CheckButton', nil, VoiceItemLevelWidget) do
+
+    local CrossFactionGroup = CreateFrame('CheckButton', nil, VoiceItemLevelWidget)
+    do
         CrossFactionGroup:SetNormalTexture([[Interface\Buttons\UI-CheckBox-Up]])
         CrossFactionGroup:SetPushedTexture([[Interface\Buttons\UI-CheckBox-Down]])
         CrossFactionGroup:SetHighlightTexture([[Interface\Buttons\UI-CheckBox-Highlight]])
         CrossFactionGroup:SetCheckedTexture([[Interface\Buttons\UI-CheckBox-Check]])
         CrossFactionGroup:SetDisabledCheckedTexture([[Interface\Buttons\UI-CheckBox-Check-Disabled]])
         CrossFactionGroup:SetSize(22, 22)
-        CrossFactionGroup:SetPoint('TOPLEFT', VoiceBox, 'BOTTOMLEFT',10 , 0)
+        CrossFactionGroup:SetPoint('TOPLEFT', VoiceBox, 'BOTTOMLEFT', 10, 0)
         local text = CrossFactionGroup:CreateFontString(nil, 'ARTWORK')
         text:SetPoint('LEFT', CrossFactionGroup, 'RIGHT', 2, 0)
         CrossFactionGroup:SetFontString(text)
         CrossFactionGroup:SetNormalFontObject('GameFontHighlightSmall')
         CrossFactionGroup:SetHighlightFontObject('GameFontNormalSmall')
         CrossFactionGroup:SetDisabledFontObject('GameFontDisableSmall')
-		
-		local _, localizedFaction = UnitFactionGroup("player");		
+
+        local _, localizedFaction = UnitFactionGroup("player");
         CrossFactionGroup:SetText(LFG_LIST_CROSS_FACTION:format(localizedFaction));
-		--CrossFactionGroup.tooltip = LFG_LIST_CROSS_FACTION_TOOLTIP:format(localizedFaction);
-		--CrossFactionGroup.disableTooltip = LFG_LIST_CROSS_FACTION_DISABLE_TOOLTIP:format(localizedFaction);
-		GUI:Embed(CrossFactionGroup, 'Tooltip')
+        --CrossFactionGroup.tooltip = LFG_LIST_CROSS_FACTION_TOOLTIP:format(localizedFaction);
+        --CrossFactionGroup.disableTooltip = LFG_LIST_CROSS_FACTION_DISABLE_TOOLTIP:format(localizedFaction);
+        GUI:Embed(CrossFactionGroup, 'Tooltip')
         CrossFactionGroup:SetTooltip(LFG_LIST_CROSS_FACTION_TOOLTIP:format(localizedFaction))
     end
-	
-	local AutoInvite = GUI:GetClass('CheckBox'):New(self)
+
+    local AutoInvite = GUI:GetClass('CheckBox'):New(self)
     do
         AutoInvite:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT', 20, 7)
         AutoInvite:SetText(L['自动邀请(需开语言过滤)'])
         AutoInvite:SetChecked(setAutoInvite(not not Profile:GetSetting('AUTO_INVITE_JOIN')))
         AutoInvite:SetScript('OnClick', function()
             Profile:SetSetting('AUTO_INVITE_JOIN', AutoInvite:GetChecked())
-			setAutoInvite(AutoInvite:GetChecked())
+            setAutoInvite(AutoInvite:GetChecked())
             ApplicantPanel:UpdateAutoInvite()
         end)
     end
-	function setAutoInvite(checked)
-		if checked then
-			ConsoleExec("portal "..shortlang)
-			ConsoleExec("profanityFilter 1")
-		else 
-			ConsoleExec("portal TW")
-			ConsoleExec("profanityFilter 0")
-		end
-		return checked
-	end
-	
+    function setAutoInvite(checked)
+        if checked then
+            ConsoleExec("profanityFilter 1")
+        else
+            ConsoleExec("profanityFilter 0")
+        end
+        return checked
+    end
+
     --- summary
-    local SummaryWidget = GUI:GetClass('TitleWidget'):New(CreateWidget) do
+    local SummaryWidget = GUI:GetClass('TitleWidget'):New(CreateWidget)
+    do
         SummaryWidget:SetPoint('TOPLEFT', TitleWidget, 'BOTTOMLEFT', 0, -3)
         SummaryWidget:SetPoint('BOTTOMRIGHT', VoiceItemLevelWidget, 'TOPRIGHT', 0, 3)
         SummaryWidget:SetText(L['活动说明'])
@@ -337,7 +344,8 @@ function CreatePanel:OnInitialize()
     end
 
     -- buttons
-    local DisbandButton = CreateFrame('Button', nil, self, 'UIPanelButtonTemplate') do
+    local DisbandButton = CreateFrame('Button', nil, self, 'UIPanelButtonTemplate')
+    do
         DisbandButton:SetPoint('BOTTOM', ManagerPanel:GetOwner(), 'BOTTOM', 60, 4)
         DisbandButton:SetSize(120, 22)
         DisbandButton:SetText(L['解散活动'])
@@ -348,7 +356,8 @@ function CreatePanel:OnInitialize()
         MagicButton_OnLoad(DisbandButton)
     end
 
-    local CreateButton = CreateFrame('Button', nil, self, 'UIPanelButtonTemplate') do
+    local CreateButton = CreateFrame('Button', nil, self, 'UIPanelButtonTemplate')
+    do
         CreateButton:SetPoint('RIGHT', DisbandButton, 'LEFT')
         CreateButton:SetSize(120, 22)
         CreateButton:SetText(L['创建活动'])
@@ -361,19 +370,19 @@ function CreatePanel:OnInitialize()
 
 
     -- local LeavePartyButton = CreateFrame('Button', nil, self, 'UIPanelButtonTemplate') do
-		-- LeavePartyButton:SetPoint('RIGHT', CreateButton, 'LEFT')
-        -- LeavePartyButton:SetSize(120, 22)
-        -- LeavePartyButton:SetText(L['离开队伍'])		
-        -- LeavePartyButton:SetNormalFontObject('GameFontNormal')
-        -- LeavePartyButton:SetHighlightFontObject('GameFontHighlight')
-        -- LeavePartyButton:SetDisabledFontObject('GameFontDisable')
-        -- LeavePartyButton:Enable()
-        -- LeavePartyButton:SetScript('OnClick', function()
-            -- LeaveParty()
-        -- end)
-        -- MagicButton_OnLoad(LeavePartyButton)
+    -- LeavePartyButton:SetPoint('RIGHT', CreateButton, 'LEFT')
+    -- LeavePartyButton:SetSize(120, 22)
+    -- LeavePartyButton:SetText(L['离开队伍'])		
+    -- LeavePartyButton:SetNormalFontObject('GameFontNormal')
+    -- LeavePartyButton:SetHighlightFontObject('GameFontHighlight')
+    -- LeavePartyButton:SetDisabledFontObject('GameFontDisable')
+    -- LeavePartyButton:Enable()
+    -- LeavePartyButton:SetScript('OnClick', function()
+    -- LeaveParty()
+    -- end)
+    -- MagicButton_OnLoad(LeavePartyButton)
     -- end
-    
+
     -- local CreateHelpPlate do
     --     CreateHelpPlate = {
     --         FramePos = { x = -10,          y = 55 },
@@ -504,28 +513,28 @@ function CreatePanel:UpdateControlState()
     self.ActivityType:SetEnabled(isLeader and not isCreated)
 
     self.PrivateGroup:SetEnabled(editable)
-		
-	self.CrossFactionGroup:SetEnabled(editable)    
-	
-	-- 任务、战场、自定义不可跨阵营，清空值并置为不可用
-	if activityItem then
-		--2022-11-17
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityItem.activityId);
-		local categoryId = activityInfo.categoryID;	
-		local groupId = activityInfo.groupFinderActivityGroupID;	
-	
-		--local categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityItem.activityId))
-		if categoryId == 6 or categoryId == 1 or categoryId == 8 then
-			self.CrossFactionGroup:SetChecked(true)
-			self.CrossFactionGroup:SetEnabled(false)
-		end
-	end
+
+    self.CrossFactionGroup:SetEnabled(editable)
+
+    -- 任务、战场、自定义不可跨阵营，清空值并置为不可用
+    if activityItem then
+        --2022-11-17
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityItem.activityId);
+        local categoryId = activityInfo.categoryID;
+        local groupId = activityInfo.groupFinderActivityGroupID;
+
+        --local categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityItem.activityId))
+        if categoryId == 6 or categoryId == 1 or categoryId == 8 then
+            self.CrossFactionGroup:SetChecked(true)
+            self.CrossFactionGroup:SetEnabled(false)
+        end
+    end
     self.ItemLevel:SetEnabled(editable)
     self.VoiceBox:SetEnabled(editable)
     self.TitleBox:SetEnabled(editable)
     self.SummaryBox:SetEnabled(editable)
     --self.HonorLevel:SetEnabled(editable and IsUseHonorLevel(activityItem and activityItem.activityId))
-	self.Score:SetEnabled(editable)
+    self.Score:SetEnabled(editable)
 
     self.DisbandButton:SetEnabled(isCreated and isLeader)
     self.CreateButton:SetEnabled(enable and isLeader and self.TitleBox:GetText():trim() ~= '')
@@ -533,23 +542,23 @@ function CreatePanel:UpdateControlState()
     if enable then
         self.ItemLevel:SetMinMaxValues(0, GetPlayerItemLevel())
         --self.HonorLevel:SetMinMaxValues(0, UnitHonorLevel('player'))
-		
-		if IsMythicPlusActivity(activityItem and activityItem.activityId) then
-			self.Score:SetMinMaxValues(0, C_ChallengeMode.GetOverallDungeonScore())
-		end
-		if IsRatedPvpActivity(activityItem and activityItem.activityId) then
-			if activityItem.activityId == 6 then --22  /dump GetPersonalRatedInfo(4)
-				self.Score:SetMinMaxValues(0, select(1,GetPersonalRatedInfo(1)))
-			end
-			if activityItem.activityId == 7 then --33
-				self.Score:SetMinMaxValues(0, select(1,GetPersonalRatedInfo(2)))
-			end
-			if activityItem.activityId == 19 then --pj
-				self.Score:SetMinMaxValues(0, select(1,GetPersonalRatedInfo(4)))
-			end
-		end
-		
-		--self.HonorLevel:SetMinMaxValues(0, 4000)
+
+        if IsMythicPlusActivity(activityItem and activityItem.activityId) then
+            self.Score:SetMinMaxValues(0, C_ChallengeMode.GetOverallDungeonScore())
+        end
+        if IsRatedPvpActivity(activityItem and activityItem.activityId) then
+            if activityItem.activityId == 6 then --22  /dump GetPersonalRatedInfo(4)
+                self.Score:SetMinMaxValues(0, select(1, GetPersonalRatedInfo(1)))
+            end
+            if activityItem.activityId == 7 then --33
+                self.Score:SetMinMaxValues(0, select(1, GetPersonalRatedInfo(2)))
+            end
+            if activityItem.activityId == 19 then --pj
+                self.Score:SetMinMaxValues(0, select(1, GetPersonalRatedInfo(4)))
+            end
+        end
+
+        --self.HonorLevel:SetMinMaxValues(0, 4000)
     end
 
     self.CreateButton:SetText(isCreated and L['更新活动'] or L['创建活动'])
@@ -560,23 +569,23 @@ function CreatePanel:InitProfile()
     if not activityItem then
         return
     end
-	--2022-11-17
-	local activityInfo = C_LFGList.GetActivityInfoTable(activityItem.activityId);
-	local categoryId = activityInfo.categoryID;	
-	local groupId = activityInfo.groupFinderActivityGroupID;	
-	
-	--local categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityItem.activityId))
-	if categoryId ~= 6 and categoryId ~= 1 and categoryId ~= 8 then
-		--20220605 易安玥 除了任务、战场、自定义，默认跨阵营
-		self.CrossFactionGroup:SetChecked(false)
-		self.CrossFactionGroup:SetEnabled(true)
-	end
-	
+    --2022-11-17
+    local activityInfo = C_LFGList.GetActivityInfoTable(activityItem.activityId);
+    local categoryId = activityInfo.categoryID;
+    local groupId = activityInfo.groupFinderActivityGroupID;
+
+    --local categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityItem.activityId))
+    if categoryId ~= 6 and categoryId ~= 1 and categoryId ~= 8 then
+        --20220605 易安玥 除了任务、战场、自定义，默认跨阵营
+        self.CrossFactionGroup:SetChecked(false)
+        self.CrossFactionGroup:SetEnabled(true)
+    end
+
     local activityId = activityItem.activityId
     local customId = activityItem.customId
 
     local profile, voice = Profile:GetActivityProfile(activityItem.text)
-    local iLvl, summary, minLvl, maxLvl, pvpRating, honorLevel ,dungeonScore = 0, '', 10, MAX_PLAYER_LEVEL, 0, 0 ,0
+    local iLvl, summary, minLvl, maxLvl, pvpRating, honorLevel, dungeonScore = 0, '', 10, MAX_PLAYER_LEVEL, 0, 0, 0
 
     if IsSoloCustomID(customId) then
         iLvl = min(100, GetPlayerItemLevel())
@@ -585,27 +594,27 @@ function CreatePanel:InitProfile()
         iLvl = profile.ItemLevel
         summary = profile.Summary
         pvpRating = profile.PvpRating or 0
-		dungeonScore = profile.DungeonScore or 0
+        dungeonScore = profile.DungeonScore or 0
     else
         --local fullName, shortName, categoryID, groupID, iLevel, filters, minLevel, maxPlayers, displayType = C_LFGList.GetActivityInfo(activityId)
 
-		--2022-11-17
-		local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
-		local iLevel = activityInfo.ilvlSuggestion;
-		local minLevel = activityInfo.minLevel;
-	
+        --2022-11-17
+        local activityInfo = C_LFGList.GetActivityInfoTable(activityId);
+        local iLevel = activityInfo.ilvlSuggestion;
+        local minLevel = activityInfo.minLevel;
+
         iLvl = min(iLevel, GetPlayerItemLevel())
         minLvl = minLevel == 0 and MIN_PLAYER_LEVEL or minLevel
         maxLvl = MAX_PLAYER_LEVEL
     end
 
     self.ItemLevel:SetText(iLvl)
-	if IsMythicPlusActivity(activityItem and activityItem.activityId) then
-		self.Score:SetText(dungeonScore)
-	end
-	if IsRatedPvpActivity(activityItem and activityItem.activityId) then
-		self.Score:SetText(pvpRating)
-	end
+    if IsMythicPlusActivity(activityItem and activityItem.activityId) then
+        self.Score:SetText(dungeonScore)
+    end
+    if IsRatedPvpActivity(activityItem and activityItem.activityId) then
+        self.Score:SetText(pvpRating)
+    end
     --self.HonorLevel:SetText(honorLevel)
 end
 
@@ -627,19 +636,19 @@ function CreatePanel:CreateActivity()
     self:ClearInputBoxFocus()
 
     local activityItem = self.ActivityType:GetItem()
-	local mScore,pScore = 0,0
-	if IsMythicPlusActivity(activityItem and activityItem.activityId) then
-		mScore = self.Score:GetNumber()
-	end
-	
-	if IsRatedPvpActivity(activityItem and activityItem.activityId) then
-		pScore = self.Score:GetNumber()
-	end
-	
-	
-	--local categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityItem.activityId))
-	--print(categoryId)
-	
+    local mScore, pScore = 0, 0
+    if IsMythicPlusActivity(activityItem and activityItem.activityId) then
+        mScore = self.Score:GetNumber()
+    end
+
+    if IsRatedPvpActivity(activityItem and activityItem.activityId) then
+        pScore = self.Score:GetNumber()
+    end
+
+
+    --local categoryId, groupId = select(3, C_LFGList.GetActivityInfo(activityItem.activityId))
+    --print(categoryId)
+
     local activity = CurrentActivity:FromAddon({
         ActivityID = activityItem.activityId,
         CustomID = activityItem.customId or 0,
@@ -647,10 +656,10 @@ function CreatePanel:CreateActivity()
         ItemLevel = self.ItemLevel:GetNumber(),
 
         HonorLevel = 0,
-		MythicPlusRating = mScore,
-		PvpRating = pScore,
+        MythicPlusRating = mScore,
+        PvpRating = pScore,
         PrivateGroup = self.PrivateGroup:GetChecked(),
-		CrossFactionGroup = not (self.CrossFactionGroup:GetChecked())
+        CrossFactionGroup = not (self.CrossFactionGroup:GetChecked())
     })
     if self:Create(activity, true) then
         self.CreateButton:Disable()
@@ -699,14 +708,14 @@ function CreatePanel:UpdateActivity()
     local activity = self:GetCurrentActivity()
     if not activity then
         return
-    end 
+    end
     self.ActivityType:SetValue(activity:GetCode())
     self.ItemLevel:SetText(activity:GetItemLevel())
     --self.HonorLevel:SetText(activity:GetHonorLevel() or '')
-	  
-	self.Score:SetText(activity:GetMythicPlusRating() or activity:GetPvpRating() or '')
+
+    self.Score:SetText(activity:GetMythicPlusRating() or activity:GetPvpRating() or '')
     self.PrivateGroup:SetChecked(activity:GetPrivateGroup())
-	self.CrossFactionGroup:SetChecked(not (activity:GetCrossFactionGroup()))
+    self.CrossFactionGroup:SetChecked(not (activity:GetCrossFactionGroup()))
 end
 
 function CreatePanel:UpdateActivityView()
@@ -728,37 +737,43 @@ function CreatePanel:UpdateActivityView()
     self.MemberWidget.Member:SetShown(self.MemberWidget.Member:SetMember(activity))
     self.MiscWidget.Voice:SetText(activity:GetVoiceChat())
     self.MiscWidget.ItemLevel:SetText(activity:GetItemLevel())
-    self.MiscWidget.Level:SetText(minLevel == maxLevel and minLevel or isMax and '≥' .. minLevel or minLevel .. '-' .. maxLevel)
+    self.MiscWidget.Level:SetText(minLevel == maxLevel and minLevel or isMax and '≥' .. minLevel or
+        minLevel .. '-' .. maxLevel)
 
     if activity:GetPrivateGroup() then
         self.InfoWidget.PrivateGroup:Show()
     else
         self.InfoWidget.PrivateGroup:Hide()
     end
-    local atlasName, suffix do
-		--2022-11-24
+    local atlasName, suffix
+    do
+        --2022-11-24
         -- local fullName, shortName, categoryID, groupID, iLevel, filters, minLevel, maxPlayers, displayType = C_LFGList.GetActivityInfo(activity:GetActivityID())
-		
-		local activityInfo = C_LFGList.GetActivityInfoTable(activity:GetActivityID());
-		local categoryId = activityInfo.categoryID;
-		local filters = activityInfo.filters;
-		
+
+        local activityInfo = C_LFGList.GetActivityInfoTable(activity:GetActivityID());
+        local categoryId = activityInfo.categoryID;
+        local filters = activityInfo.filters;
+
         --local _, separateRecommended = C_LFGList.GetCategoryInfo(categoryID)
-		--2022-11-17
-		--if categoryID then print('有categoryID') else print('无categoryID') end
-		local separateRecommended
-		if categoryID then
-			local categoryInfo = C_LFGList.GetLfgCategoryInfo(categoryID);
-			separateRecommended = categoryInfo.separateRecommended
-		end
-		
-		if separateRecommended and bit.band(filters, Enum.LFGListFilter.Recommended) ~= 0 then
-			atlasName = 'groupfinder-background-'..(LFG_LIST_CATEGORY_TEXTURES[categoryID] or 'raids')..'-'..LFG_LIST_PER_EXPANSION_TEXTURES[LFGListUtil_GetCurrentExpansion()]
-		elseif separateRecommended and bit.band(filters, Enum.LFGListFilter.NotRecommended) ~= 0 then
-			atlasName = 'groupfinder-background-'..(LFG_LIST_CATEGORY_TEXTURES[categoryID] or 'raids')..'-'..LFG_LIST_PER_EXPANSION_TEXTURES[math.max(0,LFGListUtil_GetCurrentExpansion() - 1)]
-		else
-			atlasName = 'groupfinder-background-'..(LFG_LIST_CATEGORY_TEXTURES[categoryID] or 'questing')
-		end
+        --2022-11-17
+        --if categoryID then print('有categoryID') else print('无categoryID') end
+        local separateRecommended
+        if categoryID then
+            local categoryInfo = C_LFGList.GetLfgCategoryInfo(categoryID);
+            separateRecommended = categoryInfo.separateRecommended
+        end
+
+        if separateRecommended and bit.band(filters, Enum.LFGListFilter.Recommended) ~= 0 then
+            atlasName = 'groupfinder-background-' ..
+                (LFG_LIST_CATEGORY_TEXTURES[categoryID] or 'raids') ..
+                '-' .. LFG_LIST_PER_EXPANSION_TEXTURES[LFGListUtil_GetCurrentExpansion()]
+        elseif separateRecommended and bit.band(filters, Enum.LFGListFilter.NotRecommended) ~= 0 then
+            atlasName = 'groupfinder-background-' ..
+                (LFG_LIST_CATEGORY_TEXTURES[categoryID] or 'raids') ..
+                '-' .. LFG_LIST_PER_EXPANSION_TEXTURES[math.max(0, LFGListUtil_GetCurrentExpansion() - 1)]
+        else
+            atlasName = 'groupfinder-background-' .. (LFG_LIST_CATEGORY_TEXTURES[categoryID] or 'questing')
+        end
 
         if bit.band(filters, Enum.LFGListFilter.PvE) ~= 0 then
             suffix = '-pve'
@@ -767,7 +782,7 @@ function CreatePanel:UpdateActivityView()
         end
     end
 
-    if not self.InfoWidget.Background:SetAtlas(atlasName..suffix, true) then
+    if not self.InfoWidget.Background:SetAtlas(atlasName .. suffix, true) then
         self.InfoWidget.Background:SetAtlas(atlasName, true)
     end
 end
