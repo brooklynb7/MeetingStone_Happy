@@ -622,6 +622,14 @@ function BrowsePanel:OnInitialize()
     -- end)
     -- end
 
+    function setAutoInvite(checked)
+        if checked then
+            ConsoleExec("profanityFilter 1")
+        else
+            ConsoleExec("profanityFilter 0")
+        end
+        return checked
+    end
 
     local AutoJoinCheckBox = GUI:GetClass('CheckBox'):New(self)
     do
@@ -629,7 +637,9 @@ function BrowsePanel:OnInitialize()
         AutoJoinCheckBox:SetText(L['自动进组'])
         --AutoJoinCheckBox.tooltip(['自动同意来自集合石的邀请'])
         AutoJoinCheckBox:SetSize(24, 24)
+        AutoJoinCheckBox:SetChecked(setAutoInvite(not not Profile:GetSetting('AUTO_JOIN')))
         AutoJoinCheckBox:SetScript("OnClick", function()
+            Profile:SetSetting('AUTO_JOIN', AutoJoinCheckBox:GetChecked())
             NoticeBp()
         end)
         -- 2022-11-19 修改提示位置
@@ -647,15 +657,6 @@ function BrowsePanel:OnInitialize()
             logText('\124cFFFF0000关闭\124r' .. '自动进组')
         end
         setAutoInvite(AutoJoinCheckBox:GetChecked())
-    end
-
-    function setAutoInvite(checked)
-        if checked then
-            ConsoleExec("profanityFilter 1")
-        else
-            ConsoleExec("profanityFilter 0")
-        end
-        return checked
     end
 
     LFDRoleCheckPopup:SetScript("OnShow", function()
