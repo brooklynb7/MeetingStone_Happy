@@ -327,6 +327,7 @@ CATEGORY = {
             [317] = true, -- 恒龙黎明 2
             [310] = true, -- 化身巨龙牢窟
             [313] = true, -- 亞貝魯斯 1235,1236,1237
+            [319] = true, -- 梦境希望 埃达希尔 1251,1252,1253
         },
         activities = {
             [1146] = true, -- 世界首领
@@ -335,7 +336,7 @@ CATEGORY = {
 }
 
 --/run a=LFGListFrame.EntryCreation dump(C_LFGList.GetAvailableActivityGroups(a.selectedCategory, bit.bor(a.baseFilters, a.selectedFilters)))
---/dump C_LFGList.GetActivityGroupInfo(251)
+--/dump C_LFGList.GetActivityGroupInfo(313)
 --/run a=LFGListFrame.EntryCreation dump(C_LFGList.GetAvailableActivities(a.selectedCategory, 0, bit.bor(a.baseFilters, a.selectedFilters)))
 --/dump C_LFGList.GetActivityInfo(657)
 --/dump C_LFGList.GetAvailableActivityGroups(302)
