@@ -41,11 +41,8 @@ GUI = LibStub('NetEaseGUI-2.0')
 -- 2023-01-01 使用ID，避免台服文字不匹配
 ACTIVITY_NAMES = {}
 do
-    local Dungeons = { 302, 306, 307, 308, 12, 120, 114, 61 }
-
-    if C_MythicPlus.GetCurrentSeason() ~= 9 then
-        Dungeons = { 303, 304, 305, 309, 142, 138, 115, 59 }
-    end
+    -- local Dungeons = { 302, 306, 307, 308, 12, 120, 114, 61 }
+    local Dungeons = { 11, 54, 113, 118, 137, 145, 316, 317 }
     -- local Activitys = {1160,1176,1180,1184,1193,466,461,1195}
     for k, groupId in ipairs(Dungeons) do
         local DeText = C_LFGList.GetActivityGroupInfo(groupId)
@@ -362,10 +359,10 @@ function BrowsePanel:CreateExSearchPanel()
         GUI:Embed(ExSearchPanel, 'Refresh')
         --by 易安玥 调整筛选框大小
         if Profile:GetEnableClassFilter() then
-            ExSearchPanel:SetSize(310, 330)
+            ExSearchPanel:SetSize(410, 330)
             ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', 0, -30)
         else
-            ExSearchPanel:SetSize(210, 230)
+            ExSearchPanel:SetSize(310, 230)
             ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', -2, -30)
         end
 
