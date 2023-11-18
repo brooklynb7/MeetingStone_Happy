@@ -92,6 +92,10 @@ function BrowsePanel:OnInitialize()
                 local activeName = activity:GetName()
                 activeName = string.gsub(activeName, "塔扎维什：索·莉亚的宏图", "塔扎维什：宏图")
                 activeName = string.gsub(activeName, "塔扎维什：琳彩天街", "塔扎维什：天街")
+                activeName = string.gsub(activeName, "恆龍黎明：葛拉克朗殞命之地", "恆龍黎明-殞命-上")
+                activeName = string.gsub(activeName, "恆龍黎明：姆多茲諾高地", "恆龍黎明-高地-下")
+                activeName = string.gsub(activeName, "永恒黎明：迦拉克隆的陨落", "永恒黎明-陨落-上")
+                activeName = string.gsub(activeName, "永恒黎明：姆诺兹多的崛起", "永恒黎明-崛起-下")
                 if activity:IsUnusable() then
                     return activeName, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b
                 elseif activity:IsAnyFriend() then
