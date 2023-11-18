@@ -359,10 +359,10 @@ function BrowsePanel:CreateExSearchPanel()
         GUI:Embed(ExSearchPanel, 'Refresh')
         --by 易安玥 调整筛选框大小
         if Profile:GetEnableClassFilter() then
-            ExSearchPanel:SetSize(410, 330)
+            ExSearchPanel:SetSize(360, 330)
             ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', 0, -30)
         else
-            ExSearchPanel:SetSize(310, 230)
+            ExSearchPanel:SetSize(260, 230)
             ExSearchPanel:SetPoint('TOPLEFT', MainPanel, 'TOPRIGHT', -2, -30)
         end
 
