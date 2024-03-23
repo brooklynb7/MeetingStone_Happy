@@ -138,7 +138,44 @@ function LfgService:LFG_LIST_SEARCH_RESULT_UPDATED_BUCKET(results)
     self:SendMessage('MEETINGSTONE_ACTIVITIES_RESULT_UPDATED')
 end
 
-function LfgService:LFG_LIST_SEARCH_RESULT_UPDATED(_, id)
+local hardDeclinedGroups = {}
+local softDeclinedGroups = {}
+local DECLINED_GROUPS_RESET = 60 * 15
+local function GetDeclinedGroupsKey(searchResultInfo)
+    return searchResultInfo.activityID .. searchResultInfo.leaderName
+end
+local function IsDeclinedGroup(lookupTable, searchResultInfo)
+    if searchResultInfo.leaderName then -- leaderName is not available for brand new groups
+        local lastDeclined = lookupTable[GetDeclinedGroupsKey(searchResultInfo)] or 0
+        if lastDeclined > time() - DECLINED_GROUPS_RESET then
+            return true
+        end
+    end
+    return false
+end
+function LfgService:IsHardDeclinedGroup(searchResultInfo)
+    return IsDeclinedGroup(hardDeclinedGroups, searchResultInfo)
+end
+function LfgService:IsSoftDeclinedGroup(searchResultInfo)
+    return IsDeclinedGroup(softDeclinedGroups, searchResultInfo)
+end
+local COLOR_ENTRY_DECLINED_SOFT = { R = 0.6, G = 0.3, B = 0.1 } -- dark orange
+local COLOR_ENTRY_DECLINED_HARD = { R = 0.6, G = 0.1, B = 0.1 } -- dark red
+function LfgService:GetDeclinedColor(searchResultInfo)
+    if not searchResultInfo or not searchResultInfo.leaderName then return end
+    if LfgService:IsHardDeclinedGroup(searchResultInfo) then return COLOR_ENTRY_DECLINED_HARD end
+    if LfgService:IsSoftDeclinedGroup(searchResultInfo) then return COLOR_ENTRY_DECLINED_SOFT end
+end
+function LfgService:LFG_LIST_SEARCH_RESULT_UPDATED(_, id, newStatus, ...)
+    -- possible newStatus: declined, declined_full, declined_delisted, timedout
+    local searchResultInfo = C_LFGList.GetSearchResultInfo(id)
+    if searchResultInfo.leaderName then -- leaderName is not available for brand new groups
+        if newStatus == "declined" then
+            hardDeclinedGroups[GetDeclinedGroupsKey(searchResultInfo)] = time()
+        elseif newStatus == "declined_delisted" or newStatus == "timedout" then
+            softDeclinedGroups[GetDeclinedGroupsKey(searchResultInfo)] = time()
+        end
+    end
     if self.inSearch then
         return
     end
