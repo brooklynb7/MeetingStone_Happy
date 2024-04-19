@@ -404,6 +404,10 @@ function ListOfDungeons(menuType)
     local Dungeons = { 11, 54, 113, 118, 137, 145, 316, 317 }
     local Activitys = { 184, 1274, 460, 463, 502, 530, 1247, 1248 }
 
+    -- S4
+    -- local Dungeons = { 302,303,304,305,306,307,308,309 }
+    -- local Activitys = { 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188 }
+
     -- C_MythicPlus.IsMythicPlusActive()
     -- /run for i=500,600 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
     -- /dump C_LFGList.GetActivityGroupInfo(145)
