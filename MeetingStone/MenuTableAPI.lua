@@ -291,7 +291,7 @@ function GetActivitesMenuTable(menuType)
             text = menuType == ACTIVITY_FILTER_CREATE and L['|cff00ff00最近创建|r'] or L['|cff00ff00最近搜索|r'],
             notClickable = true,
             hasArrow = true,
-            menuTable = RefreshHistoryMenuTable(menuType),
+            menuTable = RefreshHistoryMenuTable(menuType)
         })
         tinsert(list, 2, {
             text = L['|cffffff00当前版本地下城|r'],
@@ -300,6 +300,8 @@ function GetActivitesMenuTable(menuType)
             menuTable = ListOfDungeons(menuType),
         })
     end
+
+    
 
     -- if UnitLevel('player') >= 70 then
     --     if menuType == ACTIVITY_FILTER_CREATE then
