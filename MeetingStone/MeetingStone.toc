@@ -1,6 +1,6 @@
 ## Interface: 100207
 ## Version: 10.2.7
-## VersionDate: 20240509v1
+## VersionDate: 20240509v2
 ## Title: Meeting Stone
 ## Title-zhCN: |cffff565e[Happy]|r 集合石
 ## Title-zhTW: |cffff565e[Happy]|r 集合石
