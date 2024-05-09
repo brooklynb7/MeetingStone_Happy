@@ -679,11 +679,10 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     for i = 1, #roleCache do
         local roleInfo = roleCache[i]
         if roleInfo then
-            local icon = self.Icons[iconIndex]
-            icon:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) ..
-                "_flatborder2")
-
-            icon.role:SetAtlas(roleAtlas[roleInfo[1]])
+            local icon = self.Icons[iconIndex]           
+            
+            -- icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) .. "_flatborder2")
+            -- icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
             iconIndex = iconIndex - 1
         end
