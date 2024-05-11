@@ -51,7 +51,7 @@ local APPLICANT_LIST_HEADER = {
         iconHandler = function(applicant)
             -- return [[INTERFACE\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES]], CLASS_ICON_TCOORDS[applicant:GetClass()]
             return "Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(applicant:GetClass()) ..
-                "_flatborder2"
+                "_flat"
         end,
         sortHandler = function(applicant)
             return _PartySortHandler(applicant) or applicant:GetClass()

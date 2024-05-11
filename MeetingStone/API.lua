@@ -4,6 +4,24 @@ local memorize = require('NetEaseMemorize-1.0')
 local nepy = require('NetEasePinyin-1.0')
 local Base64 = LibStub('NetEaseBase64-1.0')
 local AceSerializer = LibStub('AceSerializer-3.0')
+  
+local RoleIconTextures = {
+	[1] = "Interface/AddOns/MeetingStone/Media/SunUI/TANK.tga",
+	[2] = "Interface/AddOns/MeetingStone/Media/SunUI/Healer.tga",
+	[3] = "Interface/AddOns/MeetingStone/Media/SunUI/DPS.tga",
+}
+local classNameToSpecIcon = {}
+for classID = 1, 13 do
+	local classFile = select(2, GetClassInfo(classID)) -- "WARRIOR"
+	if classFile then
+		for specIndex = 1, 4 do
+			local specId, localizedSpecName, _, icon = GetSpecializationInfoForClassID(classID, specIndex)
+			if specId and localizedSpecName and icon then
+				classNameToSpecIcon[classFile..localizedSpecName] = icon
+			end
+		end
+	end
+end
 
 function GetClassColorText(className, text)
     local color = RAID_CLASS_COLORS[className]
@@ -578,7 +596,8 @@ local function UpdateGroupRoles(self)
 
     local count = 0
     for i = 1, 5 do
-        local role, class = GetCorrectRoleInfo(self.__owner, i)
+        local role, class, classCN, spec = GetCorrectRoleInfo(self.__owner, i)
+
         local roleIndex = role and roleOrder[role]
         if roleIndex then
             count = count + 1
@@ -586,6 +605,7 @@ local function UpdateGroupRoles(self)
             roleCache[count][1] = roleIndex
             roleCache[count][2] = class
             roleCache[count][3] = i == 1
+			roleCache[count][4] = spec
         end
     end
 
@@ -633,12 +653,15 @@ local function CheckShowIcons(frame)
 end
 
 local function ReplaceGroupRoles(self, numPlayers, _, disabled)
+
     local flagCheckShowIcons = CheckShowIcons(self)
     if flagCheckShowIcons == "orig" then
         return
     elseif flagCheckShowIcons == "wind" then
         return WindTools[1]:GetModule("LFGList"):UpdateEnumerate(self)
     end
+
+    local flagCheckShowSpecIcon = Profile:GetShowSpecIco()
 
     UpdateGroupRoles(self)
     for i = 1, 5 do
@@ -661,11 +684,11 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             --     icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 0, 0)
             -- end
             icon:SetPoint("TOPLEFT", icon.role, -4, 5)
-            icon:SetSize(16, 16)
+            icon:SetSize(18, 18)
 
             icon.leader = self:CreateTexture(nil, "OVERLAY")
-            icon.leader:SetSize(12, 12)
-            icon.leader:SetPoint("TOP", icon.role, 2, 8)
+            icon.leader:SetSize(16, 16)
+            icon.leader:SetPoint("TOP", icon.role, 4, 8)
             icon.leader:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
             icon.leader:SetRotation(rad(-15))
         end
@@ -679,6 +702,12 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             icon.leader:SetDesaturated(disabled)
             icon.leader:SetAlpha(disabled and .5 or 1)
         end
+		
+		--icon.RoleIconWithBackground:Hide()
+		--icon.RoleIcon:Hide()
+		--icon.ClassCircle:Hide()
+		--icon.Textures
+		--icon.role:Hide()
         icon.leader:Hide()
     end
 
@@ -687,8 +716,19 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         local roleInfo = roleCache[i]
         if roleInfo then
             local icon = self.Icons[iconIndex]           
+			
             
-            icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) .. "_flatborder2")
+			if roleInfo[4] and flagCheckShowSpecIcon then
+				icon.role:SetTexture(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
+			else
+				icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) .. "_flatborder2")
+			end
+
+			if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
+				-- icon.RoleIconWithBackground:SetTexture(RoleIconTextures[roleInfo[1]])
+                icon.RoleIconWithBackground:SetAtlas(roleAtlas[roleInfo[1]])
+			end
+
             -- icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
             iconIndex = iconIndex - 1
