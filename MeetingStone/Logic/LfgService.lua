@@ -65,8 +65,9 @@ function LfgService:UpdateActivity(id)
         self:CacheActivity(id)
         self:SendMessage('MEETINGSTONE_ACTIVITIES_COUNT_UPDATED', #self.activityList)
     else
-        activity:Update()             
-        if activity:GetNumMembers() == 5 then
+        -- activity:Update()             
+        -- if activity:GetNumMembers() == 5 then
+        if not activity:Update() then
             self:RemoveActivity(id)
         end
     end

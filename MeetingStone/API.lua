@@ -631,6 +631,7 @@ local function CheckShowIcons(frame)
             return "orig"
         elseif IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
             -- Module LFGList does not initialize when PremadeGroupsFilter is loaded
+            -- print(WindTools[3].private.WT.misc.lfgList.enable)
             if not IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
                 return "wind"
             else
@@ -657,7 +658,7 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     local flagCheckShowIcons = CheckShowIcons(self)
     if flagCheckShowIcons == "orig" then
         return
-    elseif flagCheckShowIcons == "wind" then
+    elseif flagCheckShowIcons == "wind" then        
         return WindTools[1]:GetModule("LFGList"):UpdateEnumerate(self)
     end
 
