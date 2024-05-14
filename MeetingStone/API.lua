@@ -11,13 +11,15 @@ local RoleIconTextures = {
 	[3] = "Interface/AddOns/MeetingStone/Media/SunUI/DPS.tga",
 }
 local classNameToSpecIcon = {}
+local classNameToSpecId = {}
 for classID = 1, 13 do
 	local classFile = select(2, GetClassInfo(classID)) -- "WARRIOR"
 	if classFile then
 		for specIndex = 1, 4 do
 			local specId, localizedSpecName, _, icon = GetSpecializationInfoForClassID(classID, specIndex)
-			if specId and localizedSpecName and icon then
+			if specId and localizedSpecName and icon then                
 				classNameToSpecIcon[classFile..localizedSpecName] = icon
+                classNameToSpecId[classFile..localizedSpecName] = specId
 			end
 		end
 	end
@@ -716,11 +718,18 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     for i = 1, #roleCache do
         local roleInfo = roleCache[i]
         if roleInfo then
-            local icon = self.Icons[iconIndex]           
+            local icon = self.Icons[iconIndex]
 			
             
 			if roleInfo[4] and flagCheckShowSpecIcon then
-				icon.role:SetTexture(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
+                -- print(classNameToSpecId[roleInfo[2]..roleInfo[4]])
+                local spec_id = classNameToSpecId[roleInfo[2]..roleInfo[4]]
+                if spec_id == nil then
+                    icon.role:SetTexture(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
+                else                     
+                    icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/SpellIcon/circular_"..spec_id)
+                end
+                -- print(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
 			else
 				icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) .. "_flatborder2")
 			end
