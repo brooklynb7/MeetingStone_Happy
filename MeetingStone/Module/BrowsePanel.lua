@@ -469,7 +469,7 @@ function BrowsePanel:OnInitialize()
 
     local filters = {
         { key = 'LeaderScore', text = L['团长大秘境评分'], min = 0, max = 5000, step = 1 },
-        { key = 'ItemLevel', text = L['装备等级'], min = 0, max = 500, step = 10 },
+        { key = 'ItemLevel', text = L['装备等级'], min = 0, max = 999, step = 10 },
         { key = 'BossKilled', text = L['Boss击杀数量'], min = 0, max = 15, step = 1 },
         { key = 'Age', text = L['活动创建时长'], min = 0, max = 1440, step = 10 },
         { key = 'Members', text = L['队伍人数'], min = 0, max = 40, step = 1 },
