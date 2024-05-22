@@ -665,6 +665,7 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
     end
 
     local flagCheckShowSpecIcon = Profile:GetShowSpecIco()
+    local flagCheckShowSmRoleIcon = Profile:GetShowSmRoleIco()    
 
     UpdateGroupRoles(self)
     for i = 1, 5 do
@@ -679,21 +680,10 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
                 icon.role:ClearAllPoints()
                 icon.role:SetPoint("RIGHT", self.Icons[i - 1].role, "LEFT", 0, 0)
             end
-
-            -- if i == 1 then
-            --     icon:SetPoint("RIGHT", -5, -2)
-            -- else
-            --     icon:ClearAllPoints()
-            --     icon:SetPoint("RIGHT", self.Icons[i - 1], "LEFT", 0, 0)
-            -- end
-            icon:SetPoint("TOPLEFT", icon.role, -4, 5)
-            icon:SetSize(18, 18)
-
             icon.leader = self:CreateTexture(nil, "OVERLAY")
-            icon.leader:SetSize(16, 16)
-            icon.leader:SetPoint("TOP", icon.role, 4, 8)
             icon.leader:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
             icon.leader:SetRotation(rad(-15))
+            
         end
 
         if i > numPlayers then
@@ -719,7 +709,17 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
         local roleInfo = roleCache[i]
         if roleInfo then
             local icon = self.Icons[iconIndex]
-			
+            if flagCheckShowSmRoleIcon then
+                icon:SetSize(15, 15)
+                icon:SetPoint("TOPLEFT", icon.role, -4, 6)
+                icon.leader:SetSize(13, 13)     
+                icon.leader:SetPoint("TOP", icon.role, 4, 8)
+            else
+                icon:SetSize(18, 18)
+                icon:SetPoint("TOPLEFT", icon.role, -4, 5)
+                icon.leader:SetSize(16, 16)     
+                icon.leader:SetPoint("TOP", icon.role, 4, 8)
+            end
             
 			if roleInfo[4] and flagCheckShowSpecIcon then
                 -- print(classNameToSpecId[roleInfo[2]..roleInfo[4]])

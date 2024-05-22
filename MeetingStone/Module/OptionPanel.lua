@@ -29,6 +29,7 @@ function SettingPanel:OnInitialize()
         ['enableIgnoreTitle'] = true,
         ['showclassico']      = true,
         ['showspecico']      = true,
+        ['showSmRoleIco']      = true,
         ['classIcoMsOnly']    = true,
         ['showWindClassIco']  = true,
         ['useWindSkin']       = true,
@@ -120,6 +121,15 @@ function SettingPanel:OnInitialize()
             showspecico = {
                 type = 'toggle',
                 name = L['显示专精图标'],
+                hidden = function()
+                    return not Profile:GetShowClassIco()
+                end,
+                width = 'full',
+                order = order(),
+            },
+            showSmRoleIco = {
+                type = 'toggle',
+                name = L['显示小职责图标'],
                 hidden = function()
                     return not Profile:GetShowClassIco()
                 end,

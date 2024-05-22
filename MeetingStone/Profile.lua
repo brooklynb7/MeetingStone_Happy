@@ -28,7 +28,8 @@ function Profile:OnInitialize()
             searchProfiles    = {},
             enableIgnoreTitle = true,
             showclassico      = true,
-            showspecico      = false,
+            showspecico       = false,
+            showSmRoleIco     = false,
             classIcoMsOnly    = true,
             showWindClassIco  = false,
             useWindSkin       = true,
@@ -168,6 +169,10 @@ end
 
 function Profile:GetShowSpecIco()
     return self:GetGlobalOption('showspecico')
+end
+
+function Profile:GetShowSmRoleIco()
+    return self:GetGlobalOption('showSmRoleIco')
 end
 
 function Profile:GetClassIcoMsOnly()
