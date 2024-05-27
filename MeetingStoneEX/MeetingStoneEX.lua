@@ -691,6 +691,14 @@ function BrowsePanel:ToggleActivityMenu(anchor, activity)
                 BrowsePanel.ActivityList:Refresh()
             end,
         },
+        {
+            text = '复制队长名字',
+            func = function()                
+                local name = activity:GetLeader()
+                print(name)
+                GUI:CallUrlDialog(name)
+            end,
+        },
         { text = CANCEL },
     }, 'cursor')
 end

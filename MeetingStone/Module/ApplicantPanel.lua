@@ -365,6 +365,14 @@ function ApplicantPanel:ToggleEventMenu(button, applicant)
             disabled = not name,
         },
         {
+            text = '复制申请者名字',
+            func = function()                
+                local name = applicant:GetName()
+                print(name)
+                GUI:CallUrlDialog(name)
+            end,
+        },
+        {
             text = CANCEL,
         },
     }, 'cursor')
