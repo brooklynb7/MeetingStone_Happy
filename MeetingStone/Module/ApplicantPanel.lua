@@ -86,8 +86,8 @@ local APPLICANT_LIST_HEADER = {
                     local scoreText
                     local info = applicant:GetBestDungeonScore()
                     if info and info.mapScore and info.mapScore > 0 then
-                        local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
-                            HIGHLIGHT_FONT_COLOR
+                        local color =  C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
+                            
                         local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
                             info.bestRunLevel or 0)
                         scoreText = format("%s / %s / %s ", colorAll:WrapTextInColorCode(score),

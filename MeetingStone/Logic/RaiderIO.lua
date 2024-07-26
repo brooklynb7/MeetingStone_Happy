@@ -39,8 +39,8 @@ end
 function RaiderIOService:appendRaiderIOData(player, currentScore, tooltip)
   tooltip:AddSepatator()
   tooltip:AddLine(format("Raider.IO信息"))
-  local currentScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(currentScore) or
-      HIGHLIGHT_FONT_COLOR
+  local currentScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(currentScore) or HIGHLIGHT_FONT_COLOR
+      
   tooltip:AddLine(format("当前赛季分数: %s", currentScoreColor:WrapTextInColorCode(currentScore)))
 
   local name, realm = RaiderIOService:GetNameRealm(player)
@@ -101,21 +101,20 @@ function RaiderIOService:appendRaiderIOData(player, currentScore, tooltip)
     -- print(best.dungeon.shortName)
 
     if ioData.currentMainScore and ioData.currentMainScore > 0 then
-      local currentMainScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(ioData.currentMainScore) or
-          HIGHLIGHT_FONT_COLOR
+      local currentMainScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(ioData.currentMainScore) or HIGHLIGHT_FONT_COLOR
       tooltip:AddLine(format("当前赛季大号分数: %s",
         currentMainScoreColor:WrapTextInColorCode(ioData.currentMainScore)))
     end
 
     if ioData.previousSeasonNum then
-      local previousScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(ioData.previousScore) or
-          HIGHLIGHT_FONT_COLOR
+      local previousScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(ioData.previousScore) or HIGHLIGHT_FONT_COLOR
+          
       tooltip:AddLine(format("上赛季分数(第 %s 赛季): %s", ioData.previousSeasonNum + 1,
         previousScoreColor:WrapTextInColorCode(ioData.previousScore)))
 
       if ioData.previousMainScore and ioData.previousMainScore > 0 then
-        local previousMainScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(ioData.previousMainScore) or
-            HIGHLIGHT_FONT_COLOR
+        local previousMainScoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(ioData.previousMainScore) or HIGHLIGHT_FONT_COLOR
+            
         tooltip:AddLine(format("上赛季大号分数(第 %s 赛季): %s", ioData.previousSeasonNum + 1,
           previousMainScoreColor:WrapTextInColorCode(ioData.previousMainScore)))
       end
