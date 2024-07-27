@@ -1,6 +1,6 @@
 MEETINGSTONE_UI_E_POINTS = {}
 BuildEnv(...)
-local CreateColor = CreateColor 
+local CreateColor = CreateColor
 
 --- ColorMixin is a mixin that provides functionality for working with colors.
 ---@class ColorMixin : table
@@ -78,12 +78,12 @@ function ColorMixin:RGBToHex(r, g, b)
     local red = math.floor(r * 255 + 5)
     local green = math.floor(g * 255 + 5)
     local blue = math.floor(b * 255 + 5)
-    
+
     -- Ensure values are within range
     red = math.max(0, math.min(255, red))
     green = math.max(0, math.min(255, green))
     blue = math.max(0, math.min(255, blue))
-    
+
     -- Convert to hexadecimal format
     return string.format("%02X%02X%02X", red, green, blue)
 end
@@ -92,7 +92,7 @@ end
 ---@param text string The text to wrap.
 ---@return string The wrapped text with the color code.
 function ColorMixin:WrapTextInColorCode(text)
-    local color = CreateColor(self.r,self.g,self.b, 1)
+    local color = CreateColor(self.r, self.g, self.b, 1)
     local hex = color:GenerateHexColor()
     return "|c" .. hex .. text .. "|r"
 end
@@ -500,12 +500,12 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
 
         local score = activity:GetLeaderScore() or 0
         if activity:IsMythicPlusActivity() or score > 0 then
-            local color =  C_ChallengeMode.GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR
+            local color = GetDungeonScoreRarityColor(score)
             tooltip:AddLine(format(L['队长大秘评分：%s'], color:WrapTextInColorCode(score)))
             local info = activity:GetLeaderScoreInfo()
             if info and info.mapScore and info.mapScore > 0 then
-                local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
-                    
+                local color = GetSpecificDungeonOverallScoreRarityColor(info.mapScore)
+
                 local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
                     info.bestRunLevel or 0)
                 tooltip:AddLine(format("队长当前副本: %s / %s", color:WrapTextInColorCode(info.mapScore), levelText))
@@ -669,12 +669,12 @@ function MainPanel:OpenApplicantTooltip(applicant)
 
     local score = applicant:GetDungeonScore() or 0
     if applicant:IsMythicPlusActivity() or score > 0 then
-        local color = C_ChallengeMode.GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR 
+        local color = GetDungeonScoreRarityColor(score)
         GameTooltip:AddLine(format(L['大秘评分：%s'], color:WrapTextInColorCode(score)))
         local info = applicant:GetBestDungeonScore()
         if info and info.mapScore and info.mapScore > 0 then
-            local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
-                
+            local color = GetSpecificDungeonOverallScoreRarityColor(info.mapScore)
+
             local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
                 info.bestRunLevel or 0)
             GameTooltip:AddLine(format("当前副本: %s / %s", color:WrapTextInColorCode(info.mapScore), levelText))

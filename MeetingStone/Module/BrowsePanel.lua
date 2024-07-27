@@ -253,7 +253,7 @@ function BrowsePanel:OnInitialize()
                     if not score or score == 0 then
                         return NONE, GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b
                     else
-                        local color =  C_ChallengeMode.GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR
+                        local color = GetDungeonScoreRarityColor(score)
                         return score, color.r, color.g, color.b
                     end
                 end
