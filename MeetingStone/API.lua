@@ -4,25 +4,25 @@ local memorize = require('NetEaseMemorize-1.0')
 local nepy = require('NetEasePinyin-1.0')
 local Base64 = LibStub('NetEaseBase64-1.0')
 local AceSerializer = LibStub('AceSerializer-3.0')
-  
+
 local RoleIconTextures = {
-	[1] = "Interface/AddOns/MeetingStone/Media/SunUI/TANK.tga",
-	[2] = "Interface/AddOns/MeetingStone/Media/SunUI/Healer.tga",
-	[3] = "Interface/AddOns/MeetingStone/Media/SunUI/DPS.tga",
+    [1] = "Interface/AddOns/MeetingStone/Media/SunUI/TANK.tga",
+    [2] = "Interface/AddOns/MeetingStone/Media/SunUI/Healer.tga",
+    [3] = "Interface/AddOns/MeetingStone/Media/SunUI/DPS.tga",
 }
 local classNameToSpecIcon = {}
 local classNameToSpecId = {}
 for classID = 1, 13 do
-	local classFile = select(2, GetClassInfo(classID)) -- "WARRIOR"
-	if classFile then
-		for specIndex = 1, 4 do
-			local specId, localizedSpecName, _, icon = GetSpecializationInfoForClassID(classID, specIndex)
-			if specId and localizedSpecName and icon then                
-				classNameToSpecIcon[classFile..localizedSpecName] = icon
-                classNameToSpecId[classFile..localizedSpecName] = specId
-			end
-		end
-	end
+    local classFile = select(2, GetClassInfo(classID)) -- "WARRIOR"
+    if classFile then
+        for specIndex = 1, 4 do
+            local specId, localizedSpecName, _, icon = GetSpecializationInfoForClassID(classID, specIndex)
+            if specId and localizedSpecName and icon then
+                classNameToSpecIcon[classFile .. localizedSpecName] = icon
+                classNameToSpecId[classFile .. localizedSpecName] = specId
+            end
+        end
+    end
 end
 
 function GetClassColorText(className, text)
@@ -607,7 +607,7 @@ local function UpdateGroupRoles(self)
             roleCache[count][1] = roleIndex
             roleCache[count][2] = class
             roleCache[count][3] = i == 1
-			roleCache[count][4] = spec
+            roleCache[count][4] = spec
         end
     end
 
@@ -656,16 +656,15 @@ local function CheckShowIcons(frame)
 end
 
 local function ReplaceGroupRoles(self, numPlayers, _, disabled)
-
     local flagCheckShowIcons = CheckShowIcons(self)
     if flagCheckShowIcons == "orig" then
         return
-    elseif flagCheckShowIcons == "wind" then        
+    elseif flagCheckShowIcons == "wind" then
         return WindTools[1]:GetModule("LFGList"):UpdateEnumerate(self)
     end
 
     local flagCheckShowSpecIcon = Profile:GetShowSpecIco()
-    local flagCheckShowSmRoleIcon = Profile:GetShowSmRoleIco()    
+    local flagCheckShowSmRoleIcon = Profile:GetShowSmRoleIco()
 
     UpdateGroupRoles(self)
     for i = 1, 5 do
@@ -683,7 +682,6 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             icon.leader = self:CreateTexture(nil, "OVERLAY")
             icon.leader:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
             icon.leader:SetRotation(rad(-15))
-            
         end
 
         if i > numPlayers then
@@ -695,12 +693,12 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             icon.leader:SetDesaturated(disabled)
             icon.leader:SetAlpha(disabled and .5 or 1)
         end
-		
-		--icon.RoleIconWithBackground:Hide()
-		--icon.RoleIcon:Hide()
-		--icon.ClassCircle:Hide()
-		--icon.Textures
-		--icon.role:Hide()
+
+        --icon.RoleIconWithBackground:Hide()
+        --icon.RoleIcon:Hide()
+        --icon.ClassCircle:Hide()
+        --icon.Textures
+        --icon.role:Hide()
         icon.leader:Hide()
     end
 
@@ -712,32 +710,33 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             if flagCheckShowSmRoleIcon then
                 icon:SetSize(15, 15)
                 icon:SetPoint("TOPLEFT", icon.role, -4, 6)
-                icon.leader:SetSize(13, 13)     
+                icon.leader:SetSize(13, 13)
                 icon.leader:SetPoint("TOP", icon.role, 4, 8)
             else
                 icon:SetSize(18, 18)
                 icon:SetPoint("TOPLEFT", icon.role, -4, 5)
-                icon.leader:SetSize(16, 16)     
+                icon.leader:SetSize(16, 16)
                 icon.leader:SetPoint("TOP", icon.role, 4, 8)
             end
-            
-			if roleInfo[4] and flagCheckShowSpecIcon then
+
+            if roleInfo[4] and flagCheckShowSpecIcon then
                 -- print(classNameToSpecId[roleInfo[2]..roleInfo[4]])
-                local spec_id = classNameToSpecId[roleInfo[2]..roleInfo[4]]
+                local spec_id = classNameToSpecId[roleInfo[2] .. roleInfo[4]]
                 if spec_id == nil then
-                    icon.role:SetTexture(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
-                else                     
-                    icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/SpellIcon/circular_"..spec_id)
+                    icon.role:SetTexture(classNameToSpecIcon[roleInfo[2] .. roleInfo[4]])
+                else
+                    icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/SpellIcon/circular_" .. spec_id)
                 end
                 -- print(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
-			else
-				icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) .. "_flatborder2")
-			end
+            else
+                icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" ..
+                string.lower(roleInfo[2]) .. "_flatborder2")
+            end
 
-			if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
-				-- icon.RoleIconWithBackground:SetTexture(RoleIconTextures[roleInfo[1]])
+            if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
+                -- icon.RoleIconWithBackground:SetTexture(RoleIconTextures[roleInfo[1]])
                 icon.RoleIconWithBackground:SetAtlas(roleAtlas[roleInfo[1]])
-			end
+            end
 
             -- icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
@@ -791,3 +790,112 @@ function GetPortalByLocale()
 
     return portalVal
 end
+
+function GetDungeonScoreRarityColor(score)
+    return C_ChallengeMode.GetDungeonScoreRarityColor(score) or
+        HIGHLIGHT_FONT_COLOR
+end
+
+function GetSpecificDungeonOverallScoreRarityColor(score)
+    return C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(score) or
+        HIGHLIGHT_FONT_COLOR
+end
+
+-- ****** Fix ColorMixin issue from 11.0 - Start ****** --
+local CreateColor = CreateColor
+--- ColorMixin is a mixin that provides functionality for working with colors.
+---@class ColorMixin : table
+ColorMixin = {}
+
+---@class colorRGB : table, ColorMixin
+---@field r number
+---@field g number
+---@field b number
+
+---Sets the RGBA values of the color.
+---@param r number The red component of the color (0-1).
+---@param g number The green component of the color (0-1).
+---@param b number The blue component of the color (0-1).
+---@param a? number The alpha component of the color (0-1).
+function ColorMixin:SetRGBA(r, g, b, a) end
+
+---Sets the RGB values of the color.
+---@param r number The red component of the color (0-1).
+---@param g number The green component of the color (0-1).
+---@param b number The blue component of the color (0-1).
+function ColorMixin:SetRGB(r, g, b) end
+
+---Returns the RGB values of the color.
+---@return number r
+---@return number g
+---@return number b
+function ColorMixin:GetRGB() return 0, 0, 0 end
+
+---Returns the RGB values of the color as bytes (0-255).
+---@return number red
+---@return number green
+---@return number blue
+function ColorMixin:GetRGBAsBytes() return 0, 0, 0 end
+
+---Returns the RGBA values of the color.
+---@return number red
+---@return number green
+---@return number blue
+---@return number alpha
+function ColorMixin:GetRGBA() return 0, 0, 0, 0 end
+
+---Returns the RGBA values of the color as bytes (0-255).
+---@return number red
+---@return number green
+---@return number blue
+---@return number alpha
+function ColorMixin:GetRGBAAsBytes() return 0, 0, 0, 0 end
+
+---Checks if the RGB values of this color are equal to another color.
+---@param otherColor table The other color to compare with.
+---@return boolean bIsEqual if the RGB values are equal, false otherwise.
+function ColorMixin:IsRGBEqualTo(otherColor) return true end
+
+---Checks if this color is equal to another color.
+---@param otherColor table The other color to compare with.
+---@return boolean True if the RGB and alpha values are equal, false otherwise.
+function ColorMixin:IsEqualTo(otherColor) return true end
+
+---Generates a hexadecimal color string with alpha.
+---@return string hexadecimal color string with alpha.
+function ColorMixin:GenerateHexColor() return "" end
+
+---Generates a hexadecimal color string without alpha.
+---@return string hexadecimal color string without alpha.
+function ColorMixin:GenerateHexColorNoAlpha() return "" end
+
+---Generates a hexadecimal color markup string.
+---@return string hexadecimal color markup string.
+function ColorMixin:GenerateHexColorMarkup() return "" end
+
+-- Function to convert RGB values to hexadecimal string
+function ColorMixin:RGBToHex(r, g, b)
+    -- Convert normalized RGB values to 0-255 range
+    local red = math.floor(r * 255 + 5)
+    local green = math.floor(g * 255 + 5)
+    local blue = math.floor(b * 255 + 5)
+
+    -- Ensure values are within range
+    red = math.max(0, math.min(255, red))
+    green = math.max(0, math.min(255, green))
+    blue = math.max(0, math.min(255, blue))
+
+    -- Convert to hexadecimal format
+    return string.format("%02X%02X%02X", red, green, blue)
+end
+
+---Wraps the given text in a color code using this color.
+---@param text string The text to wrap.
+---@return string The wrapped text with the color code.
+function ColorMixin:WrapTextInColorCode(text)
+    local color = CreateColor(self.r, self.g, self.b, 1)
+    local hex = color:GenerateHexColor()
+    return "|c" .. hex .. text .. "|r"
+end
+
+-- ****** Fix ColorMixin issue from 11.0 - End ****** --
