@@ -6,11 +6,6 @@ local CreateColor = CreateColor
 ---@class ColorMixin : table
 ColorMixin = {}
 
----@class colorRGB : table, ColorMixin
----@field r number
----@field g number
----@field b number
-
 ---Sets the RGBA values of the color.
 ---@param r number The red component of the color (0-1).
 ---@param g number The green component of the color (0-1).
@@ -71,22 +66,6 @@ function ColorMixin:GenerateHexColorNoAlpha() return "" end
 ---Generates a hexadecimal color markup string.
 ---@return string hexadecimal color markup string.
 function ColorMixin:GenerateHexColorMarkup() return "" end
-
--- Function to convert RGB values to hexadecimal string
-function ColorMixin:RGBToHex(r, g, b)
-    -- Convert normalized RGB values to 0-255 range
-    local red = math.floor(r * 255 + 5)
-    local green = math.floor(g * 255 + 5)
-    local blue = math.floor(b * 255 + 5)
-    
-    -- Ensure values are within range
-    red = math.max(0, math.min(255, red))
-    green = math.max(0, math.min(255, green))
-    blue = math.max(0, math.min(255, blue))
-    
-    -- Convert to hexadecimal format
-    return string.format("%02X%02X%02X", red, green, blue)
-end
 
 ---Wraps the given text in a color code using this color.
 ---@param text string The text to wrap.
