@@ -737,8 +737,8 @@ function CreatePanel:UpdateActivityView()
     self.MemberWidget.Member:SetShown(self.MemberWidget.Member:SetMember(activity))
     self.MiscWidget.Voice:SetText(activity:GetVoiceChat())
     self.MiscWidget.ItemLevel:SetText(activity:GetItemLevel())
-    self.MiscWidget.Level:SetText(minLevel == maxLevel and minLevel or isMax and '≥' .. minLevel or
-        minLevel .. '-' .. maxLevel)
+    -- self.MiscWidget.Level:SetText(minLevel == maxLevel and minLevel or isMax and '≥' .. minLevel or
+    --     minLevel .. '-' .. maxLevel)
 
     if activity:GetPrivateGroup() then
         self.InfoWidget.PrivateGroup:Show()
