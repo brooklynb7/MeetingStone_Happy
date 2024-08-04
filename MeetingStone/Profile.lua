@@ -76,7 +76,7 @@ function Profile:OnInitialize()
     self.cdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_CHARACTER_DB', cdb)
 
     local settingVersion = self:GetLastCharacterVersion()
-    
+
     if settingVersion < 70300.12 then
         self.cdb.profile.settings.onlyms = nil
 
@@ -192,7 +192,8 @@ function Profile:GetUseWindSkin()
 end
 
 function Profile:GetEnableRaiderIO()
-    return self:GetGlobalOption('enableRaiderIO')
+    local region = GetPlayerRegion()
+    return self:GetGlobalOption('enableRaiderIO') and region ~= "CN"
 end
 
 function Profile:GetEnableLeaderColor()
