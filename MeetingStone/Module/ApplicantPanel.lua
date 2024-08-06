@@ -86,8 +86,9 @@ local APPLICANT_LIST_HEADER = {
                     local scoreText
                     local info = applicant:GetBestDungeonScore()
                     if info and info.mapScore and info.mapScore > 0 then
-                        local color =  C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
-                            
+                        local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
+                            HIGHLIGHT_FONT_COLOR
+
                         local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
                             info.bestRunLevel or 0)
                         scoreText = format("%s / %s / %s ", colorAll:WrapTextInColorCode(score),
@@ -268,6 +269,9 @@ end
 
 function ApplicantPanel:LFG_LIST_APPLICANT_LIST_UPDATED(_, hasNewPending, hasNewPendingWithData)
     self.hasNewPending = hasNewPending and hasNewPendingWithData and IsActivityManager()
+    if self.hasNewPending and Profile:GetSetting("sound") then
+        PlaySound(47615, "Master", false)
+    end
     self:UpdateApplicantsList()
     self:SendMessage('MEETINGSTONE_NEW_APPLICANT_STATUS_UPDATE')
     self:UpdateAutoInvite()
@@ -366,7 +370,7 @@ function ApplicantPanel:ToggleEventMenu(button, applicant)
         },
         {
             text = '复制申请者名字',
-            func = function()                
+            func = function()
                 local name = applicant:GetName()
                 print(name)
                 GUI:CallUrlDialog(name)
