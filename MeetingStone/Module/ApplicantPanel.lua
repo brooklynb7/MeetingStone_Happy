@@ -268,6 +268,9 @@ end
 
 function ApplicantPanel:LFG_LIST_APPLICANT_LIST_UPDATED(_, hasNewPending, hasNewPendingWithData)
     self.hasNewPending = hasNewPending and hasNewPendingWithData and IsActivityManager()
+    if self.hasNewPending and Profile:GetSetting("sound") then
+        PlaySound(47615, "Master", false)
+    end
     self:UpdateApplicantsList()
     self:SendMessage('MEETINGSTONE_NEW_APPLICANT_STATUS_UPDATE')
     self:UpdateAutoInvite()
