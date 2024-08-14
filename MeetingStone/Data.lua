@@ -5,8 +5,8 @@ L = LibStub('AceLocale-3.0'):GetLocale('MeetingStone')
 
 ADDON_NAME = ...
 ADDON_LOGO = [[Interface\AddOns\]] .. ADDON_NAME .. [[\Media\Logo]]
-ADDON_VERSION = GetAddOnMetadata(ADDON_NAME, 'Version')
-ADDON_VERSION_DATE = GetAddOnMetadata(ADDON_NAME, 'VersionDate')
+ADDON_VERSION = C_AddOns.GetAddOnMetadata(ADDON_NAME, 'Version')
+ADDON_VERSION_DATE = C_AddOns.GetAddOnMetadata(ADDON_NAME, 'VersionDate')
 ADDON_VERSION_SHORT = ADDON_VERSION:gsub('(%d)%d(%d)%d%d%.(%d%d)', '%1%2%3')
 ADDON_REGIONSUPPORT = GetCurrentRegion() == 5 or true --GetCurrentRegion() == 4 and GetLocale() == "zhCN"
 ADDON_SERVER = (NETEASE_SERVER_PREFIX or 'S1') .. UnitFactionGroup('player')
