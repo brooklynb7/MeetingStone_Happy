@@ -425,7 +425,7 @@ function GetAddonSource()
         '\066\105\103\070\111\111\116\058\049\010\033\033\033\049\054\051\085\073\033\033\033\058\050\010\068\117\111\119\097\110\058\052\010\069\108\118\085\073\058\056',
         '[^\r\n]+') do
         local n, v = line:match('^(.+):(%d+)$')
-        if IsAddOnLoaded(n) then
+        if C_AddOns.IsAddOnLoaded(n) then
             return tonumber(v)
         end
     end
@@ -631,10 +631,10 @@ local function CheckShowIcons(frame)
     if not isLFGList then
         if not Profile:GetShowClassIco() then
             return "orig"
-        elseif IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
+        elseif C_AddOns.IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
             -- Module LFGList does not initialize when PremadeGroupsFilter is loaded
             -- print(WindTools[3].private.WT.misc.lfgList.enable)
-            if not IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
+            if not C_AddOns.IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
                 return "wind"
             else
                 return "orig"
@@ -643,9 +643,9 @@ local function CheckShowIcons(frame)
             return "meet"
         end
     else
-        if IsAddOnLoaded("PremadeGroupsFilter") then
+        if C_AddOns.IsAddOnLoaded("PremadeGroupsFilter") then
             return "orig"
-        elseif IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
+        elseif C_AddOns.IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
             return "wind"
         elseif Profile:GetShowClassIco() and not Profile:GetClassIcoMsOnly() then
             return "meet"
@@ -754,7 +754,7 @@ function InitMeetingStoneClass()
     local F = "LFGListGroupDataDisplayEnumerate_Update"
     Profile:OnInitialize()
 
-    if not IsAddOnLoaded("ElvUI_WindTools") then
+    if not C_AddOns.IsAddOnLoaded("ElvUI_WindTools") then
         hooksecurefunc(F, ReplaceGroupRoles)
     else
         local W, _, E = unpack(WindTools)

@@ -173,10 +173,10 @@ function SettingPanel:OnInitialize()
                 width = 'full',
                 order = order(),
                 hidden = function()
-                    return not IsAddOnLoaded("ElvUI_WindTools")
+                    return not C_AddOns.IsAddOnLoaded("ElvUI_WindTools")
                 end,
                 disabled = function()
-                    return not IsAddOnLoaded("ElvUI_WindTools")
+                    return not C_AddOns.IsAddOnLoaded("ElvUI_WindTools")
                 end
             },
             -- 增加wind职业图标设置选项
@@ -186,10 +186,10 @@ function SettingPanel:OnInitialize()
                 width = 'full',
                 order = order(),
                 hidden = function()
-                    return not IsAddOnLoaded("ElvUI_WindTools")
+                    return not C_AddOns.IsAddOnLoaded("ElvUI_WindTools")
                 end,
                 disabled = function()
-                    return not IsAddOnLoaded("ElvUI_WindTools")
+                    return not C_AddOns.IsAddOnLoaded("ElvUI_WindTools")
                 end
             },
             uiScale = {
