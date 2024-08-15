@@ -1,6 +1,6 @@
 BuildEnv(...)
 
-debug = IsAddOnLoaded('!!!!!tdDevTools') and print or nop
+debug = C_AddOns.IsAddOnLoaded('!!!!!tdDevTools') and print or nop
 
 Addon = LibStub('AceAddon-3.0'):GetAddon('MeetingStone')
 GUI = LibStub('NetEaseGUI-2.0')

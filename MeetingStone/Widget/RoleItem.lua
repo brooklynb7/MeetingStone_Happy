@@ -1,4 +1,3 @@
-
 BuildEnv(...)
 
 local RoleItem = Addon:NewClass('RoleItem', GUI:GetClass('DataGridViewGridItem'))
@@ -8,7 +7,8 @@ function RoleItem:Constructor()
         self:GetParent():FireHandler('OnRoleClick', object.role)
     end
 
-    local RoleIcon1 = CreateFrame('Button', nil, self) do
+    local RoleIcon1 = CreateFrame('Button', nil, self)
+    do
         GUI:Embed(RoleIcon1, 'Tooltip')
         RoleIcon1:SetTooltipAnchor('ANCHOR_TOP')
         RoleIcon1:SetSize(19, 19)
@@ -18,7 +18,8 @@ function RoleItem:Constructor()
         RoleIcon1:SetScript('OnClick', ButtonOnClick)
     end
 
-    local RoleIcon2 = CreateFrame('Button', nil, self) do
+    local RoleIcon2 = CreateFrame('Button', nil, self)
+    do
         GUI:Embed(RoleIcon2, 'Tooltip')
         RoleIcon2:SetTooltipAnchor('ANCHOR_TOP')
         RoleIcon2:SetSize(19, 19)
@@ -40,10 +41,10 @@ function RoleItem:SetMember(applicant)
     local result = applicant:GetResult()
     local touchy = applicant:GetTouchy()
 
-    local RoleIcon1 = self.RoleIcon1 do
+    local RoleIcon1 = self.RoleIcon1
+    do
         local role1 = tank and 'TANK' or (healer and 'HEALER' or (damage and 'DAMAGER'))
         local RoleIcon1NormalTexture = RoleIcon1:GetNormalTexture()
-
         RoleIcon1NormalTexture:SetTexCoord(GetTexCoordsForRoleSmallCircle(role1))
         RoleIcon1NormalTexture:SetDesaturated(not result)
 
@@ -56,7 +57,8 @@ function RoleItem:SetMember(applicant)
         RoleIcon1.role = role1
     end
 
-    local RoleIcon2 = self.RoleIcon2 do
+    local RoleIcon2 = self.RoleIcon2
+    do
         local role2 = (tank and healer and 'HEALER') or ((tank or healer) and damage and 'DAMAGER')
 
         RoleIcon2:SetShown(role2)

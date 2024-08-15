@@ -425,7 +425,7 @@ function GetAddonSource()
         '\066\105\103\070\111\111\116\058\049\010\033\033\033\049\054\051\085\073\033\033\033\058\050\010\068\117\111\119\097\110\058\052\010\069\108\118\085\073\058\056',
         '[^\r\n]+') do
         local n, v = line:match('^(.+):(%d+)$')
-        if IsAddOnLoaded(n) then
+        if C_AddOns.IsAddOnLoaded(n) then
             return tonumber(v)
         end
     end
@@ -631,10 +631,10 @@ local function CheckShowIcons(frame)
     if not isLFGList then
         if not Profile:GetShowClassIco() then
             return "orig"
-        elseif IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
+        elseif C_AddOns.IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
             -- Module LFGList does not initialize when PremadeGroupsFilter is loaded
             -- print(WindTools[3].private.WT.misc.lfgList.enable)
-            if not IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
+            if not C_AddOns.IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
                 return "wind"
             else
                 return "orig"
@@ -643,9 +643,9 @@ local function CheckShowIcons(frame)
             return "meet"
         end
     else
-        if IsAddOnLoaded("PremadeGroupsFilter") then
+        if C_AddOns.IsAddOnLoaded("PremadeGroupsFilter") then
             return "orig"
-        elseif IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
+        elseif C_AddOns.IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
             return "wind"
         elseif Profile:GetShowClassIco() and not Profile:GetClassIcoMsOnly() then
             return "meet"
@@ -730,7 +730,11 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
                 -- print(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
             else
                 icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" ..
+<<<<<<< HEAD
                 string.lower(roleInfo[2]) .. "_flatborder2")
+=======
+                    string.lower(roleInfo[2]) .. "_flatborder2")
+>>>>>>> main
             end
 
             if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
@@ -753,7 +757,7 @@ function InitMeetingStoneClass()
     local F = "LFGListGroupDataDisplayEnumerate_Update"
     Profile:OnInitialize()
 
-    if not IsAddOnLoaded("ElvUI_WindTools") then
+    if not C_AddOns.IsAddOnLoaded("ElvUI_WindTools") then
         hooksecurefunc(F, ReplaceGroupRoles)
     else
         local W, _, E = unpack(WindTools)
@@ -899,3 +903,14 @@ function ColorMixin:WrapTextInColorCode(text)
 end
 
 -- ****** Fix ColorMixin issue from 11.0 - End ****** --
+
+-- originally sourced from Blizzard_Deprecated/Deprecated_10_1_5.lua
+function GetTexCoordsForRoleSmallCircle(role)
+    if (role == 'TANK') then
+        return 0, 19 / 64, 22 / 64, 41 / 64
+    elseif (role == 'HEALER') then
+        return 20 / 64, 39 / 64, 1 / 64, 20 / 64
+    elseif (role == 'DAMAGER') then
+        return 20 / 64, 39 / 64, 22 / 64, 41 / 64
+    end
+end

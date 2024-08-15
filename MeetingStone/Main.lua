@@ -1,7 +1,7 @@
 
 BuildEnv(...)
 
-debug = IsAddOnLoaded('!!!!!tdDevTools') and print or nop
+debug = C_AddOns.IsAddOnLoaded('!!!!!tdDevTools') and print or nop
 
 Addon = LibStub('AceAddon-3.0'):NewAddon('MeetingStone', 'AceEvent-3.0', 'LibModule-1.0', 'LibClass-2.0', 'AceHook-3.0')
 
@@ -47,7 +47,7 @@ function Addon:OnInitialize()
 end
 
 function Addon:OnEnable()
-    if IsAddOnLoaded('RaidBuilder') then
+    if C_AddOns.IsAddOnLoaded('RaidBuilder') then
         DisableAddOn('RaidBuilder')
         GUI:CallWarningDialog(L.FoundRaidBuilder, true, nil, ReloadUI)
         return

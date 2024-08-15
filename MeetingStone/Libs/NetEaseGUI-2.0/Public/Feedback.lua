@@ -78,8 +78,8 @@ function Feedback:Send(text)
 end
 
 function Feedback:Open(addonName, callback)
-    local title = select(2, GetAddOnInfo(addonName))
-    local version = GetAddOnMetadata(addonName, 'Version')
+    local title = select(2, C_AddOns.GetAddOnInfo(addonName))
+    local version = C_AddOns.GetAddOnMetadata(addonName, 'Version')
 
     self.title = title
     self.addonName = addonName

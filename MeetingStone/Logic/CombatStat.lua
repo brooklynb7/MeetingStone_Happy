@@ -17,7 +17,7 @@ function CombatStat:OnInitialize()
     self.groupUnits = {}
     self.data = Profile:GetCombatData()
 
-    if IsAddOnLoaded('!!!!!tdDevTools') then
+    if C_AddOns.IsAddOnLoaded('!!!!!tdDevTools') then
         self:Debug()
     end
 end
