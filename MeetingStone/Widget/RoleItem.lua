@@ -45,7 +45,6 @@ function RoleItem:SetMember(applicant)
     do
         local role1 = tank and 'TANK' or (healer and 'HEALER' or (damage and 'DAMAGER'))
         local RoleIcon1NormalTexture = RoleIcon1:GetNormalTexture()
-        print(role1)
         RoleIcon1NormalTexture:SetTexCoord(GetTexCoordsForRoleSmallCircle(role1))
         RoleIcon1NormalTexture:SetDesaturated(not result)
 
