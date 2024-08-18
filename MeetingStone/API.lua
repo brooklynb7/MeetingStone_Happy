@@ -730,11 +730,7 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
                 -- print(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
             else
                 icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" ..
-<<<<<<< HEAD
-                string.lower(roleInfo[2]) .. "_flatborder2")
-=======
                     string.lower(roleInfo[2]) .. "_flatborder2")
->>>>>>> main
             end
 
             if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
