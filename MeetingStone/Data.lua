@@ -263,7 +263,7 @@ CATEGORY = {
             [143] = true,
             [144] = true,
             [145] = true,
-            [146] = true,
+            [146] = true, -- 围攻
             [251] = true,
             [252] = true,
             [253] = true,
@@ -280,10 +280,10 @@ CATEGORY = {
             [259] = true,
             [260] = true,
             [261] = true,
-            [262] = true,
+            [262] = true, --塞兹仙林
             [263] = true,
             [264] = true,
-            [265] = true,
+            [265] = true, -- 通灵战潮
             [266] = true,
             [267] = true,
             --20220301 by 易安玥 恢复世界首领的显示
@@ -333,10 +333,32 @@ CATEGORY = {
             [1146] = true, -- 世界首领
         },
     },
+    [10] = {
+        groups = {
+            --地心之战： 329,324,322,327,328,326,323,325
+            --史诗钥石地下城：329,328 326, 323,56,262,265,146
+            --团队副本：
+            [363] = true, -- 地心之战
+            [329] = true, -- 千丝之城
+            [324] = true, -- 圣焰隐修院
+            [322] = true, -- 暗焰裂口
+            [327] = true, -- 燧酿酒庄
+            [328] = true, -- 矶石宝库
+            [326] = true, -- 破晨号
+            [323] = true, -- 艾拉-卡拉，回响之城
+            [325] = true, -- 驭雷栖巢
+            [362] = true, -- 尼鲁巴尔王宫
+        },
+        activities = {
+            [1289] = true, -- 世界首领
+        },
+    },
 }
 
 --/run a=LFGListFrame.EntryCreation dump(C_LFGList.GetAvailableActivityGroups(a.selectedCategory, bit.bor(a.baseFilters, a.selectedFilters)))
 --/dump C_LFGList.GetActivityGroupInfo(313)
+-- /run for i=300,400 do local info = C_LFGList.GetActivityGroupInfo(i); if info then print(i, info) end end
+--/dump C_LFGList.GetActivityInfoTable(1146)
 --/run a=LFGListFrame.EntryCreation dump(C_LFGList.GetAvailableActivities(a.selectedCategory, 0, bit.bor(a.baseFilters, a.selectedFilters)))
 --/dump C_LFGList.GetActivityInfo(657)
 --/dump C_LFGList.GetAvailableActivityGroups(302)

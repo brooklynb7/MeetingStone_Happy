@@ -42,7 +42,7 @@ GUI = LibStub('NetEaseGUI-2.0')
 ACTIVITY_NAMES = {}
 do
     -- local Dungeons = { 302, 306, 307, 308, 12, 120, 114, 61 }
-    local Dungeons = { 302,303,304,305,306,307,308,309 }
+    local Dungeons = { 329,328 ,326, 323,56,262,265,146 }
     -- local Activitys = {1160,1176,1180,1184,1193,466,461,1195}
     for k, groupId in ipairs(Dungeons) do
         local DeText = C_LFGList.GetActivityGroupInfo(groupId)

@@ -405,16 +405,6 @@ function ListOfDungeons(menuType)
     -- S3
     -- local Dungeons = { 11, 54, 113, 118, 137, 145, 316, 317 }
     -- local Activitys = { 184, 1274, 460, 463, 502, 530, 1247, 1248 }
-
-    -- S4
-    local Dungeons = { 302,303,304,305,306,307,308,309 }
-    local Activitys = { 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188 }
-
-    -- C_MythicPlus.IsMythicPlusActive()
-    -- /run for i=500,600 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
-    -- /dump C_LFGList.GetActivityGroupInfo(145)
-    -- /dump C_LFGList.GetAvailableActivities(2,145)
-
     -- 永茂林地  184 / 11
     -- 潮汐王座  1274 / 54
     -- 黑心林地 460 / 113
@@ -423,6 +413,29 @@ function ListOfDungeons(menuType)
     -- 维克雷丝庄园 530 / 145
     -- 永恒黎明1 1247 / 316
     -- 永恒黎明2 1248 / 317
+
+    -- S4
+    -- local Dungeons = { 302,303,304,305,306,307,308,309 }
+    -- local Activitys = { 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188 }
+
+    -- 11.0 S1
+    local Dungeons = { 329,328 ,326, 323,56,262,265,146 }
+    local Activitys = { 1288, 1287, 1285, 1284,1290,703,713,659 }
+    -- 千丝之城  1288 / 329
+    -- 矶石宝库  1287 / 328
+    -- 破晨号  1285 / 326
+    -- 回响之城  1284 / 323
+    -- 格瑞姆巴托  1290 / 56
+    -- 塞兹仙林  703 / 262
+    -- 通灵战潮  713 / 265
+    -- 围攻  659 / 146
+    
+    -- C_MythicPlus.IsMythicPlusActive()
+    -- /run for i=284,300 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
+    -- /dump C_LFGList.GetActivityGroupInfo(145)
+    -- /dump C_LFGList.GetAvailableActivities(2,145)
+
+
 
     for k, groupId in ipairs(Dungeons) do
         local data = {}

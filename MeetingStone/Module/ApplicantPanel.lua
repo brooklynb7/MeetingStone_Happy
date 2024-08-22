@@ -82,12 +82,11 @@ local APPLICANT_LIST_HEADER = {
             local score = applicant:GetDungeonScore()
             if applicant:IsMythicPlusActivity() or score > 0 then
                 if applicant:GetResult() and score > 0 then
-                    local colorAll = C_ChallengeMode.GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR
+                    local colorAll = GetDungeonScoreRarityColor(score)
                     local scoreText
                     local info = applicant:GetBestDungeonScore()
                     if info and info.mapScore and info.mapScore > 0 then
-                        local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
-                            HIGHLIGHT_FONT_COLOR
+                        local color = GetSpecificDungeonOverallScoreRarityColor(info.mapScore)
 
                         local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
                             info.bestRunLevel or 0)
