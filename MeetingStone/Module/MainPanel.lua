@@ -520,9 +520,9 @@ function MainPanel:OpenActivityTooltip(activity, tooltip)
         tooltip:AddDoubleLine(' ', GetFullVersion(version), 1, 1, 1, 0.5, 0.5, 0.5)
     end
 
-    if RaiderIO and RaiderIO.GetProfile and Profile:GetEnableRaiderIO() then
-        RaiderIOService:appendRaiderIOData(activity:GetLeader(), activity:GetLeaderScore(), tooltip)
-    end
+    -- if RaiderIO and RaiderIO.GetProfile and Profile:GetEnableRaiderIO() then
+    --     RaiderIOService:appendRaiderIOData(activity:GetLeader(), activity:GetLeaderScore(), tooltip)
+    -- end
 
     --[=[@debug@
     if activity:IsMeetingStone() then
@@ -629,9 +629,9 @@ function MainPanel:OpenApplicantTooltip(applicant)
         end
     end
 
-    if RaiderIO and RaiderIO.GetProfile and Profile:GetEnableRaiderIO() then
-        RaiderIOService:appendRaiderIOData(applicant:GetName(), applicant:GetDungeonScore(), GameTooltip)
-    end
+    -- if RaiderIO and RaiderIO.GetProfile and Profile:GetEnableRaiderIO() then
+    --     RaiderIOService:appendRaiderIOData(applicant:GetName(), applicant:GetDungeonScore(), GameTooltip)
+    -- end
 
     GameTooltip:Show()
 end
