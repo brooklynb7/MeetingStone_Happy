@@ -419,8 +419,8 @@ function ListOfDungeons(menuType)
     -- local Activitys = { 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188 }
 
     -- 11.0 S1
-    local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
-    local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713, 659 }
+    local Dungeons = { 329, 328, 326, 323, 56, 262, 265 ,146}
+    local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713 ,534}
     -- local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713, 534 }
 
     -- 千丝之城  1288 / 329
@@ -436,8 +436,6 @@ function ListOfDungeons(menuType)
     -- /run for i=284,300 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
     -- /dump C_LFGList.GetActivityGroupInfo(145)
     -- /dump C_LFGList.GetAvailableActivities(2,145)
-
-
 
     for k, groupId in ipairs(Dungeons) do
         local data = {}
