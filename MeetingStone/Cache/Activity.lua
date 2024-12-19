@@ -115,6 +115,9 @@ function Activity:Update()
     local showQuickJoin = activityInfo.showQuickJoinToast;
     local isMythicPlusActivity = activityInfo.isMythicPlusActivity;
 
+    if maxMembers == numMembers or isDelisted then
+        return false
+    end
 
     local _, appStatus, pendingStatus, appDuration = C_LFGList.GetApplicationInfo(id)
 
