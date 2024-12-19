@@ -68,7 +68,7 @@ function Applicant:Constructor(id, index, activityId, isMythicPlusActivity)
     local msg, isMeetingStone, progression, pvpRating, source  = DecodeDescriptionData(comment)
 
 	local activeEntryInfo = C_LFGList.GetActiveEntryInfo();
-	activityID = activeEntryInfo.activityID
+	activityID = activeEntryInfo.activityIDs[1]
 	
 	local bestDungeonScoreForEntry = C_LFGList.GetApplicantDungeonScoreForListing(id, index, activityID);
 	local pvpRatingInfo = C_LFGList.GetApplicantPvpRatingInfoForListing(id, index, activityID);

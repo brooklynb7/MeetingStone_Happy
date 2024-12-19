@@ -60,12 +60,12 @@ function LfgService:UpdateActivity(id)
     end
 
     local activity = self:GetActivity(id)
-    
+
     if not activity then
         self:CacheActivity(id)
         self:SendMessage('MEETINGSTONE_ACTIVITIES_COUNT_UPDATED', #self.activityList)
     else
-        -- activity:Update()             
+        -- activity:Update()
         -- if activity:GetNumMembers() == 5 then
         if not activity:Update() then
             self:RemoveActivity(id)
@@ -141,7 +141,7 @@ function LfgService:LFG_LIST_SEARCH_RESULT_UPDATED_BUCKET(results)
     self:SendMessage('MEETINGSTONE_ACTIVITIES_RESULT_UPDATED')
 end
 
-function LfgService:LFG_LIST_SEARCH_RESULT_UPDATED(_, id)    
+function LfgService:LFG_LIST_SEARCH_RESULT_UPDATED(_, id)
     if self.inSearch then
         return
     end

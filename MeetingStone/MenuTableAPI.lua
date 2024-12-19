@@ -301,7 +301,7 @@ function GetActivitesMenuTable(menuType)
         })
     end
 
-    
+
 
     -- if UnitLevel('player') >= 70 then
     --     if menuType == ACTIVITY_FILTER_CREATE then
@@ -419,8 +419,10 @@ function ListOfDungeons(menuType)
     -- local Activitys = { 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188 }
 
     -- 11.0 S1
-    local Dungeons = { 329,328 ,326, 323,56,262,265,146 }
-    local Activitys = { 1288, 1287, 1285, 1284,1290,703,713,659 }
+    local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
+    local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713, 659 }
+    -- local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713, 534 }
+
     -- 千丝之城  1288 / 329
     -- 矶石宝库  1287 / 328
     -- 破晨号  1285 / 326
@@ -429,7 +431,7 @@ function ListOfDungeons(menuType)
     -- 塞兹仙林  703 / 262
     -- 通灵战潮  713 / 265
     -- 围攻  659 / 146
-    
+
     -- C_MythicPlus.IsMythicPlusActive()
     -- /run for i=284,300 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
     -- /dump C_LFGList.GetActivityGroupInfo(145)

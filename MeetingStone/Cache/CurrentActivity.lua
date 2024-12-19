@@ -1,15 +1,14 @@
-
 BuildEnv(...)
 
 CurrentActivity = Addon:NewClass('CurrentActivity', BaseActivity)
 
-CurrentActivity:InitAttr{
+CurrentActivity:InitAttr {
     'Title',
     'PrivateGroup',
-	'QuestID',
-	'MythicPlusRating',
-	'PvpRating',
-	'CrossFactionGroup'
+    'QuestID',
+    'MythicPlusRating',
+    'PvpRating',
+    'CrossFactionGroup'
 }
 
 function CurrentActivity:FromAddon(data)
@@ -51,15 +50,26 @@ end
 
 function CurrentActivity:GetCreateArguments(autoAccept)
     local comment = CodeCommentData(self)
-    return  self:GetActivityID(),
-            self:GetItemLevel(),
-            self:GetHonorLevel(),
-            autoAccept,
-            self:GetPrivateGroup(),
-            self:GetQuestID(),
-            self:GetMythicPlusRating(),
-            self:GetPvpRating(),
-			1,
-            self:GetCrossFactionGroup()
-			
+    return {
+        activityIDs = { self:GetActivityID() },
+        questID = self:GetQuestID(),
+        isAutoAccept = autoAccept,
+        isCrossFactionListing = self:GetCrossFactionGroup(),
+        isPrivateGroup = self:GetPrivateGroup(),
+        playstyle = nil,
+        requiredDungeonScore = self:GetMythicPlusRating(),
+        requiredItemLevel = self:GetItemLevel(),
+        requiredPvpRating = self:GetPvpRating()
+    };
+
+    -- return self:GetActivityID(),
+    --     self:GetItemLevel(),
+    --     self:GetHonorLevel(),
+    --     autoAccept,
+    --     self:GetPrivateGroup(),
+    --     self:GetQuestID(),
+    --     self:GetMythicPlusRating(),
+    --     self:GetPvpRating(),
+    --     1,
+    --     self:GetCrossFactionGroup()
 end
