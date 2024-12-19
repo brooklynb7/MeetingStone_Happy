@@ -56,8 +56,13 @@ function Activity:Update()
     if not info then
         return
     end
+
+    -- for key, value in pairs(info.activityIDs) do
+    --     print(key, value)
+    -- end
+
     local id = info.searchResultID
-    local activityId = info.activityID
+    local activityId = info.activityIDs[1]
     local title = info.name
     local comment = info.comment
     local voiceChat = info.voiceChat
@@ -72,10 +77,10 @@ function Activity:Update()
     local numMembers = info.numMembers
     --9.1
     local leaderOverallDungeonScore = info.leaderOverallDungeonScore
-    local leaderDungeonScoreInfo = info.leaderDungeonScoreInfo
+    local leaderDungeonScoreInfo = info.leaderDungeonScoreInfo[1]
 
     --9.1.5
-    local leaderPvpRatingInfo = info.leaderPvpRatingInfo
+    local leaderPvpRatingInfo = info.leaderPvpRatingInfo[1]
     local leaderPvpRating = 0
     local requiredPvpRating = info.requiredPvpRating
     if leaderPvpRatingInfo then
@@ -222,7 +227,7 @@ end
 
 function Activity:IsInActivity()
     return self:GetLeader() and IsInGroup(LE_PARTY_CATEGORY_HOME) and
-    (UnitInRaid(self:GetLeader()) or UnitInParty(self:GetLeader()))
+        (UnitInRaid(self:GetLeader()) or UnitInParty(self:GetLeader()))
 end
 
 function Activity:IsSelf()

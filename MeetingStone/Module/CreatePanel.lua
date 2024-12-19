@@ -788,8 +788,10 @@ function CreatePanel:UpdateActivityView()
 end
 
 function CreatePanel:GetCurrentActivity()
-    if C_LFGList.HasActiveEntryInfo() then
+    if C_LFGList.HasActiveEntryInfo() then        
         self.Activity = CurrentActivity:FromSystem(C_LFGList.GetActiveEntryInfo())
+        local activityIDs = C_LFGList.GetActiveEntryInfo().activityIDs
+        self.Activity:SetActivityID(activityIDs[1])
         return self.Activity
     else
         self.Activity = nil
