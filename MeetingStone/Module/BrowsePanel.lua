@@ -72,7 +72,7 @@ function BrowsePanel:OnInitialize()
             key = 'Title',
             text = L['活动标题'],
             style = 'LEFT',
-            width = 160,
+            width = 150,
             showHandler = function(activity)
                 if activity:IsUnusable() then
                     return activity:GetSummary(), GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b
@@ -87,7 +87,7 @@ function BrowsePanel:OnInitialize()
             key = 'ActivityName',
             text = L['活动类型'],
             style = 'LEFT',
-            width = 190,
+            width = 170,
             showHandler = function(activity)
                 local activeName = activity:GetName()
                 activeName = string.gsub(activeName, "塔扎维什：索·莉亚的宏图", "塔扎维什：宏图")
@@ -186,7 +186,7 @@ function BrowsePanel:OnInitialize()
             {
                 key = 'ItemLeave',
                 text = L['要求'],
-                width = 40,
+                width = 55,
                 textHandler = function(activity)
                     -- PVP状态要求列也显示装等
                     -- if activity:IsArenaActivity() then
@@ -237,7 +237,7 @@ function BrowsePanel:OnInitialize()
         }, {
             key = 'LeaderScore',
             text = L['分数'],
-            width = 50,
+            width = 60,
             textHandler = function(activity)
                 if activity:IsArenaActivity() then
                     local pvpRating = activity:GetLeaderPvpRating()
@@ -268,7 +268,7 @@ function BrowsePanel:OnInitialize()
         }, {
             key = 'Summary',
             text = L['说明'],
-            width = 208,
+            width = 215,
             class = Addon:GetClass('SummaryGrid'),
             formatHandler = function(grid, activity)
                 grid:SetActivity(activity)
