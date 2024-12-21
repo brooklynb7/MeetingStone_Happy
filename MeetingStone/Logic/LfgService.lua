@@ -174,7 +174,7 @@ function LfgService:IsDirty()
     return self.dirty
 end
 
-LfgService.GetSearchResultMemberInfo = function(...)
+function LfgService:GetSearchResultMemberInfo(...)
     local info = C_LFGList.GetSearchResultPlayerInfo(...);
     if (info) then
         return info.assignedRole, info.classFilename, info.className, info.specName, info.isLeader;
