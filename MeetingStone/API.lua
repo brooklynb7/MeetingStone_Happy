@@ -550,7 +550,7 @@ local sort = sort
 
 local UnitClass = UnitClass
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local C_LFGList_GetSearchResultMemberInfo = C_LFGList.GetSearchResultMemberInfo
+local C_LFGList_GetSearchResultMemberInfo = LfgService.GetSearchResultMemberInfo
 local hooksecurefunc = hooksecurefunc
 
 local roleCache = {}

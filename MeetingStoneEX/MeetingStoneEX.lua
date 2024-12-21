@@ -5,6 +5,13 @@ debug = C_AddOns.IsAddOnLoaded('!!!!!tdDevTools') and print or nop
 Addon = LibStub('AceAddon-3.0'):GetAddon('MeetingStone')
 GUI = LibStub('NetEaseGUI-2.0')
 
+local function LfgService_GetSearchResultMemberInfo(...)
+    local info = C_LFGList.GetSearchResultPlayerInfo(...);
+    if (info) then
+        return info.assignedRole, info.classFilename, info.className, info.specName, info.isLeader;
+    end
+end
+
 --当前版本的地下城副本
 -- ACTIVITY_NAMES = {
 -- '麦卡贡垃圾场'
@@ -125,7 +132,7 @@ local function CheckJobsFilter(data, tcount, hcount, dcount, ignore_same_job, ac
     if ignore_same_job and MEETINGSTONE_UI_DB.FILTER_JOB then
         local _, myclass, _2 = UnitClass("player")
         for i = 1, activity:GetNumMembers() do
-            local role, class = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
+            local role, class = LfgService_GetSearchResultMemberInfo(activity:GetID(), i)
             if role == 'DAMAGER' and class == myclass then
                 return false
             end
@@ -323,7 +330,7 @@ BrowsePanel.ActivityList:RegisterFilter(function(activity, ...)
         local allnoCheck = true
 
         for i = 1, activity:GetNumMembers() do
-            local role, class, classLocalized, specLocalized = C_LFGList.GetSearchResultMemberInfo(activity:GetID(), i)
+            local role, class, classLocalized, specLocalized = LfgService_GetSearchResultMemberInfo(activity:GetID(), i)
             if MEETINGSTONE_UI_DB[class] == true then
                 if MEETINGSTONE_UI_DB.ClassNeed then
                     classFilter = true
