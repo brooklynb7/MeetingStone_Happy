@@ -432,6 +432,16 @@ function ListOfDungeons(menuType)
     -- 通灵战潮  713 / 265
     -- 围攻  659 / 146
 
+    -- 11.1 S2
+    -- 暗焰裂口  
+    -- 燧酿酒庄
+    -- 圣焰隐修院
+    -- 麦卡贡车间
+    -- 暴富矿区
+    -- 水闸行动
+    -- 伤逝剧场
+
+
     -- C_MythicPlus.IsMythicPlusActive()
     -- /run for i=284,300 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
     -- /dump C_LFGList.GetActivityGroupInfo(145)
