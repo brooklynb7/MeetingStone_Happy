@@ -1,4 +1,3 @@
-
 -- MEETINGSTONE_UI_BLACKLISTEDLEADERS = {}
 MEETINGSTONE_UI_E_FILTERAD = false
 local MAJOR, MINOR = 'NetEaseEnv-1.0', 2
@@ -7,10 +6,12 @@ if not Env then return end
 
 Env._NSList = Env._NSList or {}
 Env._NSModules = Env._NSModules or {}
-Env._NSInclude = Env._NSInclude or setmetatable({}, {__index = function(o, k)
-    o[k] = {}
-    return o[k]
-end})
+Env._NSInclude = Env._NSInclude or setmetatable({}, {
+    __index = function(o, k)
+        o[k] = {}
+        return o[k]
+    end
+})
 
 local _NSList = Env._NSList
 local _NSModules = Env._NSModules
