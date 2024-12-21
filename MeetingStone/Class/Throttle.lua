@@ -10,9 +10,9 @@ local Throttle = Addon:NewClass('Throttle')
 
 function Throttle:Constructor(interval, total)
     self.interval = interval * 1000
-    self.total    = total
-    self.count    = 0
-    self.tick     = 0
+    self.total = total
+    self.count = 0
+    self.tick = 0
 end
 
 local function now()
@@ -22,7 +22,7 @@ end
 function Throttle:Mark()
     local now = now()
     if now - self.tick > self.interval then
-        self.tick  = now
+        self.tick = now
         self.count = 1
     else
         self.count = self.count + 1
