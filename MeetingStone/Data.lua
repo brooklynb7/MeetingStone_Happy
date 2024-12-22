@@ -357,7 +357,7 @@ CATEGORY = {
 
 --/run a=LFGListFrame.EntryCreation dump(C_LFGList.GetAvailableActivityGroups(a.selectedCategory, bit.bor(a.baseFilters, a.selectedFilters)))
 --/dump C_LFGList.GetActivityGroupInfo(313)
--- /run for i=300,400 do local info = C_LFGList.GetActivityGroupInfo(i); if info then print(i, info) end end
+-- /run for i=350,400 do local info = C_LFGList.GetActivityGroupInfo(i); if info then print(i, info) end end
 --/dump C_LFGList.GetActivityInfoTable(1146)
 --/run a=LFGListFrame.EntryCreation dump(C_LFGList.GetAvailableActivities(a.selectedCategory, 0, bit.bor(a.baseFilters, a.selectedFilters)))
 --/dump C_LFGList.GetActivityInfo(657)

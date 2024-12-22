@@ -6,7 +6,7 @@ MemberDisplay = Addon:NewClass('MemberDisplay', GUI:GetClass('DataGridViewGridIt
 function MemberDisplay:Constructor()
     local DataDisplay = CreateFrame('Frame', nil, self, 'LFGListGroupDataDisplayTemplate') do
         DataDisplay:SetPoint('CENTER')
-        DataDisplay.RoleCount.DamagerCount:SetWidth(18)
+        DataDisplay.RoleCount.DamagerCount:SetWidth(20)
         DataDisplay.RoleCount.HealerCount:SetWidth(18)
         DataDisplay.RoleCount.TankCount:SetWidth(18)
         DataDisplay.PlayerCount.Count:SetWidth(20)
