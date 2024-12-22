@@ -225,7 +225,7 @@ function BrowsePanel:OnInitialize()
                     rstColor = GRAY_FONT_COLOR
                     text = activity:GetLeaderShort()
                 elseif Profile:GetEnableLeaderColor() then
-                    local role, class, classLocalized, specLocalized = C_LFGList.GetSearchResultMemberInfo(
+                    local role, class, classLocalized, specLocalized = LfgService:GetSearchResultMemberInfo(
                         activity:GetID(), 1)
                     if class and RAID_CLASS_COLORS[class] then
                         rstColor = RAID_CLASS_COLORS[class]

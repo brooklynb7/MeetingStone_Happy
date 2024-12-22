@@ -1,4 +1,3 @@
-
 BuildEnv(...)
 
 Object = Addon:NewClass('Object')
@@ -33,8 +32,9 @@ function Object:Define(k, checker)
             return true
         end
     elseif t == 'string' then
-        local types = {} do
-            for _, v in ipairs({strsplit(',', checker)}) do
+        local types = {}
+        do
+            for _, v in ipairs({ strsplit(',', checker) }) do
                 types[v] = true
             end
         end

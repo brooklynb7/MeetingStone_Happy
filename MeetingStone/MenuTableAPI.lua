@@ -419,8 +419,8 @@ function ListOfDungeons(menuType)
     -- local Activitys = { 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188 }
 
     -- 11.0 S1
-    local Dungeons = { 329, 328, 326, 323, 56, 262, 265 ,146}
-    local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713 ,534}
+    local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
+    local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713, 534 }
     -- local Activitys = { 1288, 1287, 1285, 1284, 1290, 703, 713, 534 }
 
     -- 千丝之城  1288 / 329
@@ -431,6 +431,16 @@ function ListOfDungeons(menuType)
     -- 塞兹仙林  703 / 262
     -- 通灵战潮  713 / 265
     -- 围攻  659 / 146
+
+    -- 11.1 S2
+    -- 暗焰裂口
+    -- 燧酿酒庄
+    -- 圣焰隐修院
+    -- 麦卡贡车间
+    -- 暴富矿区
+    -- 水闸行动
+    -- 伤逝剧场
+
 
     -- C_MythicPlus.IsMythicPlusActive()
     -- /run for i=284,300 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
