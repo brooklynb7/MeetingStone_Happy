@@ -49,9 +49,15 @@ local APPLICANT_LIST_HEADER = {
         width = 40,
         style = 'ICON:18:18',
         iconHandler = function(applicant)
+            local flagCheckShowSpecIcon = Profile:GetShowSpecIco()
+            local icon = "Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(applicant:GetClass()) .. "_flatborder2"
+
+            if applicant:GetSpecID() and flagCheckShowSpecIcon then
+                icon = "Interface/AddOns/MeetingStone/Media/SpellIcon/circular_" .. string.lower(applicant:GetSpecID())
+            end
+
             -- return [[INTERFACE\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES]], CLASS_ICON_TCOORDS[applicant:GetClass()]
-            return "Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(applicant:GetClass()) ..
-                "_flat"
+            return icon
         end,
         sortHandler = function(applicant)
             return _PartySortHandler(applicant) or applicant:GetClass()

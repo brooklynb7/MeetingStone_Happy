@@ -433,19 +433,25 @@ function ListOfDungeons(menuType)
     -- 围攻  659 / 146
 
     -- 11.1 S2
-    -- 暗焰裂口
-    -- 燧酿酒庄
-    -- 圣焰隐修院
-    -- 麦卡贡车间
-    -- 暴富矿区
+    -- local Dungeons = { 322, 324, 325, 327, 140, 257, 266 }
+    -- local Activitys = { 1282, 1281, 1283, 1286, 510, 683, 717 }
+    -- 11.1 S2
+    -- 暗焰裂口 322 /1282
+    -- 圣焰隐修院 324 / 1281
+    -- 驭雷栖巢 325 / 1283
+    -- 燧酿酒庄 327 / 1286
+    -- 暴富矿区 140 / 510
+    -- 麦卡贡车间 257 / 683
+    -- 伤逝剧场 266 / 717
     -- 水闸行动
-    -- 伤逝剧场
 
 
     -- C_MythicPlus.IsMythicPlusActive()
-    -- /run for i=284,300 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
+    -- /run for i=1500,1600 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
     -- /dump C_LFGList.GetActivityGroupInfo(145)
-    -- /dump C_LFGList.GetAvailableActivities(2,145)
+    -- /dump C_LFGList.GetActivityInfoTable(1283)
+    -- /dump C_LFGList.GetAvailableActivityGroups(2,145)
+    -- /dump C_LFGList.GetAvailableActivities(2,1016)
 
     for k, groupId in ipairs(Dungeons) do
         local data = {}
