@@ -36,7 +36,7 @@ function Profile:OnInitialize()
             enableRaiderIO    = true,
             enableLeaderColor = true,
             enableClassFilter = false,
-            filters           = {},
+            filters           = {}
         },
     }
 
@@ -71,7 +71,6 @@ function Profile:OnInitialize()
 
     self.chatGroupListeningTemp = { APP_WHISPER = {} }
     self.ignoreCache = {}
-
     self.gdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_UI_DB', gdb, true)
     self.cdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_CHARACTER_DB', cdb)
 
@@ -152,6 +151,11 @@ function Profile:GetActivityProfile(activityType)
 end
 
 function Profile:GetGlobalDB()
+    -- self.gdb.global.settings = nil
+    if not self.gdb.global.settings then
+        self.gdb.global.settings = self.cdb.profile.settings
+    end
+
     return self.gdb
 end
 
