@@ -26,6 +26,7 @@ function Profile:OnInitialize()
             ignoreHash        = {},
             spamWord          = {},
             searchProfiles    = {},
+            globalPanelPos    = false,
             enableIgnoreTitle = true,
             showclassico      = true,
             showspecico       = false,
@@ -151,16 +152,23 @@ function Profile:GetActivityProfile(activityType)
 end
 
 function Profile:GetGlobalDB()
-    -- self.gdb.global.settings = nil
-    if not self.gdb.global.settings then
-        self.gdb.global.settings = self.cdb.profile.settings
-    end
-
     return self.gdb
 end
 
 function Profile:GetGlobalOption(key)
     return self.gdb.global[key]
+end
+
+function Profile:GetGlobalDataBrokerStorage()
+    if not self.gdb.global.dataBrokerStorage then
+        self.gdb.global.dataBrokerStorage = self.cdb.profile.settings.storage
+    end
+
+    return self.gdb.global.dataBrokerStorage
+end
+
+function Profile:GetProfileDataBrokerStorage()
+    return self.cdb.profile.settings.storage
 end
 
 function Profile:GetEnableIgnoreTitle()
@@ -200,6 +208,10 @@ function Profile:GetEnableRaiderIO()
     return self:GetGlobalOption('enableRaiderIO') and region ~= "CN"
 end
 
+function Profile:GetGlobalPanelPos()
+    return self:GetGlobalOption('globalPanelPos')
+end
+
 function Profile:GetEnableLeaderColor()
     return self:GetGlobalOption('enableLeaderColor')
 end
@@ -210,7 +222,8 @@ function Profile:SaveGlobalOption(key, value)
         ['classIcoMsOnly']    = true,
         ['showWindClassIco']  = true,
         ['useWindSkin']       = true,
-        ['enableClassFilter'] = true
+        ['enableClassFilter'] = true,
+        ['globalPanelPos']    = true
     }
 
     self.gdb.global[key] = value

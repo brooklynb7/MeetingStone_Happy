@@ -10,7 +10,8 @@ local TEXT_FORMAT_WITH_APP = format('%s %%d   %s %%d   %s %%d', ICON1, ICON2, IC
 
 function DataBroker:OnInitialize()
     self.profile = Profile:GetCharacterDB().profile
-    self.global = Profile:GetGlobalDB().global
+    self.globalStorage = Profile:GetGlobalDataBrokerStorage()
+    self.profileStorage = Profile:GetProfileDataBrokerStorage()
     local LDB = LibStub('LibDataBroker-1.1')
     local BrokerObject = LDB:NewDataObject('MeetingStone', {
         type = 'data source',
@@ -71,7 +72,11 @@ function DataBroker:OnInitialize()
             BrokerPanel:SetScript('OnClick', BrokerObject.OnClick)
             BrokerPanel:RegisterForClicks('anyUp')
         end
-        BrokerPanel:RegisterConfig(self.global.settings.storage)
+        if Profile:GetGlobalPanelPos() == true then
+            BrokerPanel:RegisterConfig(self.globalStorage)
+        else
+            BrokerPanel:RegisterConfig(self.profileStorage)
+        end
         BrokerPanel:MakeDraggable()
         BrokerPanel:RestorePosition()
     end
