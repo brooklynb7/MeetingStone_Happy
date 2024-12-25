@@ -205,7 +205,8 @@ end
 function DataBroker:UpdateLabel()
     self.BrokerObject.text = format(
         App:HasApp() and TEXT_FORMAT_WITH_APP or TEXT_FORMAT,
-        C_LFGList.HasActiveEntryInfo() and select(2, C_LFGList.GetNumApplicants()) or select(2, C_LFGList.GetNumApplications()),
+        C_LFGList.HasActiveEntryInfo() and select(2, C_LFGList.GetNumApplicants()) or
+        select(2, C_LFGList.GetNumApplications()),
         self.activityCount or 0,
         self.followQueryCount or 0
     )
