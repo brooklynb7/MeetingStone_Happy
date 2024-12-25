@@ -74,6 +74,7 @@ function Profile:OnInitialize()
     self.ignoreCache = {}
     self.gdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_UI_DB', gdb, true)
     self.cdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_CHARACTER_DB', cdb)
+
     -- self.gdb.global.dataBrokerStorage = nil
 
     local settingVersion = self:GetLastCharacterVersion()
@@ -230,7 +231,7 @@ function Profile:SaveGlobalOption(key, value)
     self.gdb.global[key] = value
     if key == 'globalPanelPos' then
         if value == true then
-            self.gdb.global.dataBrokerStorage = self.cdb.profile.settings.storage
+            self.gdb.global.dataBrokerStorage = { point = 'CENTER', x = 0, y = 0 }
         else
             self.cdb.profile.settings.storage = self.gdb.global.dataBrokerStorage
         end
