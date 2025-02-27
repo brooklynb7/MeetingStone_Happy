@@ -26,6 +26,7 @@ function Profile:OnInitialize()
             ignoreHash        = {},
             spamWord          = {},
             searchProfiles    = {},
+            globalPanelPos    = false,
             enableIgnoreTitle = true,
             showclassico      = true,
             showspecico       = false,
@@ -36,7 +37,7 @@ function Profile:OnInitialize()
             enableRaiderIO    = true,
             enableLeaderColor = true,
             enableClassFilter = false,
-            filters           = {},
+            filters           = {}
         },
     }
 
@@ -71,9 +72,10 @@ function Profile:OnInitialize()
 
     self.chatGroupListeningTemp = { APP_WHISPER = {} }
     self.ignoreCache = {}
-
     self.gdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_UI_DB', gdb, true)
     self.cdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_CHARACTER_DB', cdb)
+
+    -- self.gdb.global.dataBrokerStorage = nil
 
     local settingVersion = self:GetLastCharacterVersion()
 
@@ -159,6 +161,18 @@ function Profile:GetGlobalOption(key)
     return self.gdb.global[key]
 end
 
+function Profile:GetGlobalDataBrokerStorage()
+    if not self.gdb.global.dataBrokerStorage then
+        self.gdb.global.dataBrokerStorage = self.cdb.profile.settings.storage
+    end
+
+    return self.gdb.global.dataBrokerStorage
+end
+
+function Profile:GetProfileDataBrokerStorage()
+    return self.cdb.profile.settings.storage
+end
+
 function Profile:GetEnableIgnoreTitle()
     return self:GetGlobalOption('enableIgnoreTitle')
 end
@@ -196,6 +210,10 @@ function Profile:GetEnableRaiderIO()
     return self:GetGlobalOption('enableRaiderIO') and region ~= "CN"
 end
 
+function Profile:GetGlobalPanelPos()
+    return self:GetGlobalOption('globalPanelPos')
+end
+
 function Profile:GetEnableLeaderColor()
     return self:GetGlobalOption('enableLeaderColor')
 end
@@ -206,10 +224,18 @@ function Profile:SaveGlobalOption(key, value)
         ['classIcoMsOnly']    = true,
         ['showWindClassIco']  = true,
         ['useWindSkin']       = true,
-        ['enableClassFilter'] = true
+        ['enableClassFilter'] = true,
+        ['globalPanelPos']    = true
     }
 
     self.gdb.global[key] = value
+    if key == 'globalPanelPos' then
+        if value == true then
+            self.gdb.global.dataBrokerStorage = { point = 'CENTER', x = 0, y = 0 }
+        else
+            self.cdb.profile.settings.storage = self.gdb.global.dataBrokerStorage
+        end
+    end
     return needReload[key] == true
 end
 

@@ -1,5 +1,5 @@
-## Interface: 110007
-## Version: 11.0.7
+## Interface: 110100
+## Version: 11.1.0
 ## Title: Meeting Stone EX
 ## Title-zhCN: |cffff565e[Happy]|r 集合石EX
 ## Title-zhTW: |cffff565e[Happy]|r 集合石EX

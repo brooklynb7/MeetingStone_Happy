@@ -48,9 +48,9 @@ end
 -- 2023-01-01 使用ID，避免台服文字不匹配
 ACTIVITY_NAMES = {}
 do
-    -- local Dungeons = { 302, 306, 307, 308, 12, 120, 114, 61 }
-    local Dungeons = { 329,328 ,326, 323,56,262,265,146 }
-    -- local Activitys = {1160,1176,1180,1184,1193,466,461,1195}
+    -- 11.0 S1
+    local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
+    -- local Dungeons = { 322, 324, 325, 327, 140, 257, 266, 371 }
     for k, groupId in ipairs(Dungeons) do
         local DeText = C_LFGList.GetActivityGroupInfo(groupId)
         tinsert(ACTIVITY_NAMES, DeText)
@@ -700,7 +700,7 @@ function BrowsePanel:ToggleActivityMenu(anchor, activity)
         },
         {
             text = '复制队长名字',
-            func = function()                
+            func = function()
                 local name = activity:GetLeader()
                 print(name)
                 GUI:CallUrlDialog(name)
