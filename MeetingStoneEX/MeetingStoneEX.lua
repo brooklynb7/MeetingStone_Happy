@@ -49,8 +49,9 @@ end
 ACTIVITY_NAMES = {}
 do
     -- 11.0 S1
-    local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
-    -- local Dungeons = { 322, 324, 325, 327, 140, 257, 266, 371 }
+    -- local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
+    -- 11.0 S2
+    local Dungeons = { 322, 324, 325, 327, 140, 257, 266, 371 }
     for k, groupId in ipairs(Dungeons) do
         local DeText = C_LFGList.GetActivityGroupInfo(groupId)
         tinsert(ACTIVITY_NAMES, DeText)
