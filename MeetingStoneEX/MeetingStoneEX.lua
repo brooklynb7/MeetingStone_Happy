@@ -43,18 +43,28 @@ end
 -- 10.1
 -- local Dungeons = {303,304,305,309,142,138,115,59}
 -- local Activitys = {1164,1168,1172,1188,518,507,462,1192}
--- /run for i=750,2000 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
+-- /run for i=510,511 do local info = C_LFGList.GetActivityInfoTable(i); if info then print(i, info.fullName) end end
+
+-- 11.1
+-- local Dungeons = { 322, 324, 325, 327, 140, 257, 266, 371 }
+-- local Activitys = { 1282, 1281, 1283, 1286, 510, 683, 717, 1550 }
+-- 暗焰裂口 322 /1282
+-- 圣焰隐修院 324 / 1281
+-- 驭雷栖巢 325 / 1283
+-- 燧酿酒庄 327 / 1286
+-- 暴富矿区 140 / 510
+-- 麦卡贡车间 257 / 683
+-- 伤逝剧场 266 / 717
+-- 水闸行动 371 / 1550
 
 -- 2023-01-01 使用ID，避免台服文字不匹配
 ACTIVITY_NAMES = {}
 do
-    -- 11.0 S1
-    -- local Dungeons = { 329, 328, 326, 323, 56, 262, 265, 146 }
     -- 11.0 S2
-    local Dungeons = { 322, 324, 325, 327, 140, 257, 266, 371 }
-    for k, groupId in ipairs(Dungeons) do
-        local DeText = C_LFGList.GetActivityGroupInfo(groupId)
-        tinsert(ACTIVITY_NAMES, DeText)
+    local Activitys = { 1282, 1281, 1283, 1286, 510, 683, 717, 1550 }
+    for k, actId in ipairs(Activitys) do
+        local info = C_LFGList.GetActivityInfoTable(actId)
+        tinsert(ACTIVITY_NAMES, info.fullName)
     end
 end
 
@@ -412,15 +422,16 @@ function BrowsePanel:CreateExSearchPanel()
             if not self.MDSearchs then
                 self.MDSearchs = {}
             end
-            local activitytypeText7
-            if gameLocale == "zhCN" then
-                activitytypeText7 = '（史诗钥石）'
-            elseif gameLocale == "enUS" then
-                activitytypeText7 = ' (Mythic Keystone)'
-            else
-                activitytypeText7 = '(傳奇鑰石)'
-            end
-            self.MDSearchs[text .. activitytypeText7] = box.Check:GetChecked()
+            -- local activitytypeText7
+            -- if gameLocale == "zhCN" then
+            --     activitytypeText7 = '（史诗钥石）'
+            -- elseif gameLocale == "enUS" then
+            --     activitytypeText7 = ' (Mythic Keystone)'
+            -- else
+            --     activitytypeText7 = '(傳奇鑰石)'
+            -- end
+            -- self.MDSearchs[text .. activitytypeText7] = box.Check:GetChecked()
+            self.MDSearchs[text] = box.Check:GetChecked()
             if not box.Check:GetChecked() then
                 local clear = true
                 for k, v2 in pairs(self.MDSearchs) do
