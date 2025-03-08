@@ -156,6 +156,15 @@ function SummaryGrid:SetActivity(activity)
         self.ExpirationTime:Hide()
         self.CancelButton:Hide()
     end
+    local searchResultInfo = C_LFGList.GetSearchResultInfo(activity:GetID())
+    local declined_color = LfgService:GetDeclinedColor(searchResultInfo)
+    if declined_color then
+        if not self.PendingLabel:IsShown() then
+            self.PendingLabel:SetText("["..LFG_LIST_APP_DECLINED.."]")
+        end
+        self.PendingLabel:SetTextColor(declined_color.R, declined_color.G, declined_color.B)
+        self.PendingLabel:Show()
+    end
 
     if self.ExpirationTime:IsShown() then
         self.PendingLabel:SetPoint('RIGHT', self.ExpirationTime, 'LEFT', -3, 0);
