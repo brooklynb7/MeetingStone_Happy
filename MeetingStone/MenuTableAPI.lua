@@ -299,6 +299,21 @@ function GetActivitesMenuTable(menuType)
             hasArrow = true,
             menuTable = ListOfDungeons(menuType),
         })
+		local dungeonItem = CrossFaction(menuType)[1] -- 获取唯一的副本数据
+		if dungeonItem then
+			tinsert(list, 3, {
+				text = L['|cffffff00跨阵营自定义|r'],
+				notClickable = false, 
+				categoryId = dungeonItem.categoryId,
+				groupId = dungeonItem.groupId,
+				activityId = dungeonItem.activityId,
+				customId = dungeonItem.customId,
+				baseFilter = dungeonItem.baseFilter,
+				value = dungeonItem.value, 
+				fullName = dungeonItem.fullName,
+			})
+		end
+
     end
 
 
@@ -486,3 +501,46 @@ function ListOfDungeons(menuType)
     end
     return DungeonsList
 end
+
+function CrossFaction(menuType)
+    local DungeonsList = {}
+
+    local groupId = 0
+    local activityId = 9
+
+    local data = {}
+    local actInfo = C_LFGList.GetActivityInfoTable(activityId) 
+
+    data.text = actInfo.fullName
+    data.fullName = actInfo.fullName
+    data.categoryId = 3
+    data.groupId = groupId
+    data.activityId = activityId
+    data.baseFilter = 4
+    data.customId = 0
+    data.notClickable = true
+    data.value = format('2-%d-%d-0', groupId, activityId)
+
+    if data then
+        local item = {
+            categoryId = data.categoryId,
+            groupId = groupId,
+            activityId = data.activityId,
+            customId = data.customId,
+            baseFilter = data.baseFilter,
+            value = data.value,
+            text = data.text,
+            fullName = data.fullName,
+        }
+
+        if menuType == ACTIVITY_FILTER_BROWSE then
+            local categoryInfo = C_LFGList.GetLfgCategoryInfo(data.categoryId)
+            item.full = categoryInfo.name
+        end
+
+        tinsert(DungeonsList, item)
+    end
+
+    return DungeonsList
+end
+
