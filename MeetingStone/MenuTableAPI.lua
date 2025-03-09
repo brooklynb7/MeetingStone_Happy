@@ -299,20 +299,20 @@ function GetActivitesMenuTable(menuType)
             hasArrow = true,
             menuTable = ListOfDungeons(menuType),
         })
-		local dungeonItem = CrossFaction(menuType)[1] -- 获取唯一的副本数据
-		if dungeonItem then
-			tinsert(list, 3, {
-				text = L['|cffffff00跨阵营自定义|r'],
-				notClickable = false, 
-				categoryId = dungeonItem.categoryId,
-				groupId = dungeonItem.groupId,
-				activityId = dungeonItem.activityId,
-				customId = dungeonItem.customId,
-				baseFilter = dungeonItem.baseFilter,
-				value = dungeonItem.value, 
-				fullName = dungeonItem.fullName,
-			})
-		end
+        local dungeonItem = CrossFaction(menuType)[1] 
+        if dungeonItem then
+            tinsert(list, 3, {
+                text = L['|cffff0000跨阵营自定义|r'],
+                notClickable = false, 
+                categoryId = dungeonItem.categoryId,
+                groupId = dungeonItem.groupId,
+                activityId = dungeonItem.activityId,
+                customId = dungeonItem.customId,
+                baseFilter = dungeonItem.baseFilter,
+                value = dungeonItem.value, 
+                fullName = dungeonItem.fullName,
+            })
+        end
 
     end
 
